@@ -1,0 +1,53 @@
+// init-mongo.js
+db = db.getSiblingDB('ArtFlow');
+
+// Insertar datos
+db.textcontent.insertMany([
+  {
+    key: "hero_title",
+    value: "Tu podrias ser el proximo Paulo Cohelo",
+    isActive: true
+  },
+  {
+    key: "hero_subtitle",
+    value: "No necesitas ser un genio para ser un gran artista",
+    isActive: true
+  }
+]);
+
+db.imagescontent.insertMany([
+  {
+    key: "main_image_1",
+    url: "https://drive.google.com/thumbnail?id=1Jiuf0anVc2rNSrlUUB9fZdkA3WOgGCqq&sz=w1000", 
+    altText: "Imagen principal 1",
+    isActive: true,
+    order: 1,
+    group: "main_menu"
+  },
+  {
+    key: "main_image_2",
+    url: "https://drive.google.com/thumbnail?id=1xSJoLpd_l8ekYT9xCtrShYPNE4OPc09Y&sz=w1000",
+    altText: "Imagen principal hero section",
+    isActive: true,
+    order: 1,
+    group: "main_menu"
+  },
+  {
+    key: "main_image_3",
+    url: "https://drive.google.com/thumbnail?id=1_CPnjPf7IYQpgoFCZvZQ0OCRsLd_YXe1&sz=w1000",
+    altText: "Imagen principal hero section",
+    isActive: true,
+    order: 1,
+    group: "main_menu"
+  },
+  {
+    key: "main_image_4",
+    url: "https://drive.google.com/thumbnail?id=1ufnYfrGzrgpDX_N8xlKtr6zdLV5szkBM&sz=w1000",
+    altText: "Imagen principal hero section",
+    isActive: true,
+    order: 1,
+    group: "main_menu"
+  }
+]);
+
+// Puedes agregar más colecciones, índices, etc.
