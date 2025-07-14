@@ -15,6 +15,7 @@ db.textcontent.insertMany([
   }
 ]);
 
+// schema para las imagenes, tengo que cambiar este hosting para las imagenes
 db.imagescontent.insertMany([
   {
     key: "main_image_1",
