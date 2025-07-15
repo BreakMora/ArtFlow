@@ -16,8 +16,11 @@ body {
 .logo {
   font-size: 1.8em;
   font-weight: bold;
+  text-decoration: none; /* Para quitar el subrayado */
 }
-
+.logo:visited {
+  color: white; /* Mantiene el mismo color después de hacer clic */
+}
 .search-bar {
   flex: 1;
   margin: 0 20px;
