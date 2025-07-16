@@ -31,6 +31,10 @@ nav {
     color: #333;
     text-transform: uppercase;
     letter-spacing: 1.5px;
+    text-decoration: none; /* Para quitar el subrayado */
+}
+.logo:visited {
+  color: rgb(0, 0, 0); /* Mantiene el mismo color después de hacer clic */
 }
 
 .nav-links {

@@ -1,10 +1,97 @@
 <!DOCTYPE html>
-<html lang="es">    </html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARTFLOW - Descubre</title>
-    <link rel="stylesheet" href="/public/assets/css/style.css">
-    <script src="/public/assets/js/descubre.js" type="module" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArtFlow - Descubre</title>
+  <link rel="stylesheet" href="/public/assets/css/styles.css">
 </head>
+<body>
+
+  <header class="header">
+    <a href="index.html" class="logo">ArtFlow</a>
+    <input type="text" placeholder="Buscar artistas" class="search-bar">
+    <div class="auth-buttons">
+      <button class="login-btn">Iniciar sesión</button>
+      <button class="register-btn" onclick="location.href='registro.html'">Regístrate</button>
+    </div>
+  </header>
+
+  <nav class="categories">
+    <button>Todo</button>
+    <button>Dibujo y pintura</button>
+    <button>Películas</button>
+    <button>Fotografías</button>
+    <button>Educación</button>
+    <button>Salud</button>
+    <button>Juegos</button>
+    <button>Novelas</button>
+    <button>Historietas</button>
+    <button>Esculturas</button>
+  </nav>
+
+  <main class="main-content">
+    <h2>Productos destacados</h2>
+    <section class="featured-products">
+      <div class="card">
+        <img src="https://picsum.photos/500/300?random=1" alt="Escultura">
+        <div class="card-info">
+          <h3>Más de 2+ esculturas</h3>
+          <p>Lorem ipsum es simplemente un texto ficticio de la industria.</p>
+          <span class="price">$35</span>
+        </div>
+      </div>
+      <div class="card">
+        <img src="https://picsum.photos/500/300?random=2" alt="Arte">
+        <div class="card-info">
+          <h3>Más de 2+ arte de varios artistas</h3>
+          <p>Lorem ipsum es simplemente un texto ficticio de la industria.</p>
+          <span class="price">$19</span>
+        </div>
+      </div>
+      <div class="card">
+        <img src="https://picsum.photos/500/300?random=3" alt="Comic">
+        <div class="card-info">
+          <h3>Más de 2+ libros de varios artistas</h3>
+          <p>Lorem ipsum es simplemente un texto ficticio de la industria.</p>
+          <span class="price">$24</span>
+        </div>
+      </div>
+    </section>
+
+
+<section class="marketplace">
+    <aside class="filters">
+      <h3>Filtros</h3>
+      <button>Mejor puntuación →</button>
+      <button>Último mes →</button>
+      <button>Contenido gratuito →</button>
+    </aside>
+
+    <div class="market-header">
+      <div class="market-card">
+        <img src="https://picsum.photos/150/150?random=7" alt="Amilcar">
+        <p><strong>Amilcar [Vtuber]</strong></p>
+        <p class="rating">4.6 (1k)</p>
+      </div>
+      <div class="market-card">
+        <img src="https://picsum.photos/150/150?random=6" alt="Ilustradora">
+        <p><strong>Jaiden Animation (ilustradora)</strong></p>
+        <p class="rating">4.2 (540)</p>
+      </div>
+      <div class="market-card">
+        <img src="https://picsum.photos/150/150?random=5" alt="Banda musical">
+        <p><strong>Adrian y los necios</strong></p>
+        <p class="rating">4.9 (2.7k)</p>
+      </div>
+      <div class="market-card">
+        <img src="https://picsum.photos/150/150?random=4" alt="Banda musical 2">
+        <p><strong>La boina roja</strong></p>
+        <p class="rating">4.0 (1.1k)</p>
+      </div>
+    </div>
+    </section>
+  </main>
+
+</body>
 </html>
