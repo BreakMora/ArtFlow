@@ -35,7 +35,7 @@ fastify.register(fastifyStatic, {
     root: path.join(__dirname),
     prefix: '/',
     decorateReply: true, // Solo una vez
-    wildcard: false
+    wildcard: true
 });
 
 // Ruta para archivos en /src
@@ -48,6 +48,18 @@ fastify.get('/src/*', (req, reply) => {
 fastify.get('/assets/*', (req, reply) => {
     const filePath = path.join(__dirname, 'public', req.url);
     reply.sendFile(filePath);
+});
+
+fastify.get('/descubre.html', (req, reply) => {
+    reply.sendFile('descubre.html', path.join(__dirname, 'public'));
+});
+
+fastify.get('/registro.html', (req, reply) => {
+    reply.sendFile('registro.html', path.join(__dirname, 'public'));
+});
+
+fastify.get('/index.html', (req, reply) => {
+    reply.sendFile('index.html', path.join(__dirname, 'public'));
 });
 
 // Ruta principal
