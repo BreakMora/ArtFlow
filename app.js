@@ -6,6 +6,10 @@ import { connectDatabase } from "./src/DataBase/connection.js";
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// route Login
+import authPlugin from './src/Routes/Auth/Plugins/auth.js';
+import loginRoute from './src/Routes/Auth/login.js'; 
+
 // constantes, puertos y url de la base de datos
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = 3000;
@@ -17,6 +21,9 @@ const fastify = Fastify({
         level: 'info'
     }
 });
+
+// registrar el plugin de inicio de sesion
+fastify.register(authPlugin);
 
 // manejo de cors para peticiones
 fastify.register(fastifyCors, {
@@ -58,10 +65,6 @@ fastify.get('/registro.html', (req, reply) => {
     reply.sendFile('registro.html', path.join(__dirname, 'public'));
 });
 
-fastify.get('/index.html', (req, reply) => {
-    reply.sendFile('index.html', path.join(__dirname, 'public'));
-});
-
 // Ruta principal
 fastify.get('/', (req, reply) => {
     reply.sendFile('index.html', path.join(__dirname, 'public'));
@@ -69,9 +72,14 @@ fastify.get('/', (req, reply) => {
 
 async function registerRoutes() {
     // Contenido, pagina principal
-    await fastify.register(import('./src/Routes/discover/main.js'), {
+    await fastify.register(import('./src/Routes/Main/main.js'), {
         prefix: '/api/v1'
     });
+
+    // Ruta de inicio de sesion
+    await fastify.register(loginRoute, {
+        prefix: '/api/v1/auth'
+    })
 };
 
 
