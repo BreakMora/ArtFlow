@@ -1,14 +1,18 @@
+// dependencies
 import Fastify from "fastify";
 import fastifyCors from "@fastify/cors";
 import fastifyStatic from "@fastify/static";
 import mongoose from "mongoose";
-import { connectDatabase } from "./src/DataBase/connection.js";
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// route Login
+// route Connection Database
+import { connectDatabase } from "./src/DataBase/connection.js";
+
+// route Login and register
 import authPlugin from './src/Routes/Auth/Plugins/auth.js';
-import loginRoute from './src/Routes/Auth/login.js'; 
+import loginRoute from './src/Routes/Auth/login.js';
+import registerRoute from './src/Routes/Auth/register.js';
 
 // constantes, puertos y url de la base de datos
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -75,6 +79,11 @@ async function registerRoutes() {
     await fastify.register(import('./src/Routes/Main/main.js'), {
         prefix: '/api/v1'
     });
+
+    // Ruta registro de usuariop
+    await fastify.register(registerRoute, {
+        prefix: '/api/v1/auth'
+    })
 
     // Ruta de inicio de sesion
     await fastify.register(loginRoute, {
