@@ -1,7 +1,7 @@
 import User from '../../Models/user.js'
-import jwt from 'jsonwebtoken';
+import jsonwebtoken from 'jsonwebtoken';
 
-async function Login(fastify, reply) {
+async function Login(fastify, options) {
     
     fastify.post('/login', async (request, reply) => {
         try {
@@ -10,13 +10,13 @@ async function Login(fastify, reply) {
             // buscar el usuario por email
             const user = await User.findOne({ email }).select('+password');
 
-            // generar token JWT
-            const token = jwt.sign(
+            // generar token jsonwebtoken
+            const token = jsonwebtoken.sign(
                 {
                     id: user._id,
                     role: (await user.getRole())[0]
                 },
-                process.env.JWT_SECRET || 'secreto',
+                process.env.JSONWEBTOKEN_SECRET || 'secreto',
                 { expiresIn: '6h' }
             );
 
@@ -36,7 +36,7 @@ async function Login(fastify, reply) {
             reply.code(404).send({
                 status: 'error',
                 message: 'Error al obtener los datos solicitados'
-            })
+            });
         }
     });
 }

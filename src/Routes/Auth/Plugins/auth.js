@@ -1,12 +1,12 @@
-import jwt from 'jsonwebtoken';
+import jsonwebtoken from 'jsonwebtoken';
 
-async function authPlugin(fastify, options) {
+async function authPlugin(fastify, reply) {
     fastify.decorate('authenticate', async (request, reply) => {
         try {
             const authHeader = request.headers?.authorization;
             const token = authHeader.split(' ')[1];
 
-            const decode = jwt.verify(token, process.env.JWT_SECRET || 'secreto');
+            const decode = jsonwebtoken.verify(token, process.env.JSONWEBTOKEN_SECRET || 'secreto');
             
             request.user = decode;
 

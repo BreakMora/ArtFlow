@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Role from "./role.js";
 import UserRole from './userRole.js';
 
 const userSchema = new mongoose.Schema({
@@ -52,9 +53,14 @@ const userSchema = new mongoose.Schema({
     versionKey: false // quita el campo __v
 });
 
-userSchema.methods.getRole = async function () {
-    const role = await UserRole.find({ userId: this._id }).populate('roleId', 'name - _id');
-    return role.map(ur => userRole.roleId.name);
+// obtiene el rol de la persona que ah iniciado sesion
+userSchema.methods.getRole = async function() {
+    try {
+        const userRoles = await UserRole.find({ userId: this._id }).populate({ path: 'roleId', select: 'name -_id' });
+        return userRoles.map(ur => ur.roleId.name);
+    } catch (error) {
+        console.error('Error al obtener roles:', error);
+    }
 }
 
 const User = mongoose.model('User', userSchema);

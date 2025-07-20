@@ -22,5 +22,5 @@ const userRoleSchema = new mongoose.Schema({
 // Índice compuesto para evitar duplicados (no pregunten xd es algo que chatgtp hizo por mi)
 userRoleSchema.index({ userId: 1, roleId: 1 }, { unique: true });
 
-const UserRole = mongoose.model('UserRole', userRoleSchema);
+const UserRole = mongoose.model('User_role', userRoleSchema);
 export default UserRole;

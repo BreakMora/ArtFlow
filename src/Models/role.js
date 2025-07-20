@@ -20,5 +20,5 @@ const roleSchema = new mongoose.Schema({
     versionKey: false
 });
 
-const role = mongoose.model('Role', roleSchema);
-export default role;
+const Role = mongoose.model('Role', roleSchema);
+export default Role;
