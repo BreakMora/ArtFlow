@@ -35,7 +35,7 @@ fastify.register(fastifyStatic, {
     root: path.join(__dirname),
     prefix: '/',
     decorateReply: true, // Solo una vez
-    wildcard: true
+    wildcard: false
 });
 
 // Ruta para archivos en /src
@@ -50,26 +50,23 @@ fastify.get('/assets/*', (req, reply) => {
     reply.sendFile(filePath);
 });
 
-fastify.get('/descubre.html', (req, reply) => {
-    reply.sendFile('descubre.html', path.join(__dirname, 'public'));
+// Ruta principal
+fastify.get('/', (req, reply) => {
+    reply.sendFile('index.html', path.join(__dirname, 'public'));
 });
 
 fastify.get('/registro.html', (req, reply) => {
     reply.sendFile('registro.html', path.join(__dirname, 'public'));
 });
 
-fastify.get('/index.html', (req, reply) => {
-    reply.sendFile('index.html', path.join(__dirname, 'public'));
+fastify.get('/descubre.html', (req, reply) => {
+    reply.sendFile('descubre.html', path.join(__dirname, 'public'));
 });
 
-// Ruta principal
-fastify.get('/', (req, reply) => {
-    reply.sendFile('index.html', path.join(__dirname, 'public'));
-});
 
 async function registerRoutes() {
     // Contenido, pagina principal
-    await fastify.register(import('./src/Routes/discover/main.js'), {
+    await fastify.register(import('./src/Routes/Main/main.js'), {
         prefix: '/api/v1'
     });
 };
