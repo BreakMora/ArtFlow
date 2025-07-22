@@ -91,7 +91,6 @@ async function registerRoutes() {
     })
 };
 
-
 fastify.get('/health', async (request, reply) => {
     const dbStatus = mongoose.connection.readyState === 1  ? 'connected' : 'disconnected';
 
