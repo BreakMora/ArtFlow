@@ -71,6 +71,10 @@ async function registerRoutes() {
     });
 };
 
+await fastify.register(import('./src/Routes/Auth/register.js'), {
+    prefix: '/api/v1/auth'
+});
+
 
 fastify.get('/health', async (request, reply) => {
     const dbStatus = mongoose.connection.readyState === 1  ? 'connected' : 'disconnected';

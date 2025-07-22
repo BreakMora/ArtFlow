@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const validateForm = (formData) => {
     const errors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
 
     if (!formData.firstName) {
       errors.firstName = 'El nombre es requerido';
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!formData.password) {
       errors.password = 'La contraseña es requerida';
     } else if (!passwordRegex.test(formData.password)) {
-      errors.password = 'Debe tener al menos 8 caracteres, una mayúscula y un número';
+      errors.password = 'Debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número';
     }
 
     if (formData.password !== formData.confirmPassword) {
@@ -46,14 +46,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!formData.gender) {
       errors.gender = 'Selecciona un género';
+    } else if (!['Masculino', 'Femenino', 'otro'].includes(formData.gender)) {
+      errors.gender = 'Género no válido';
     }
 
     if (!formData.birthDate) {
       errors.birthDate = 'La fecha de nacimiento es requerida';
     }
 
-    if (!formData.rol) {
-      errors.rol = 'Selecciona un rol';
+    if (!formData.role) {
+      errors.role = 'Selecciona un rol';
     }
 
     return errors;
@@ -63,7 +65,21 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.error-message').forEach(el => el.remove());
 
     Object.keys(errors).forEach(key => {
-      const input = form.querySelector(`[name="${key}"]`);
+      const htmlNames = {
+        firstName: 'nombre',
+        lastName: 'apellido',
+        username: 'usuario',
+        email: 'correo',
+        password: 'contrasena',
+        confirmPassword: 'repetirContrasena',
+        gender: 'genero',
+        birthDate: 'fechaNacimiento',
+        role: 'rol'
+      };
+      
+      const htmlName = htmlNames[key] || key;
+      const input = form.querySelector(`[name="${htmlName}"]`);
+      
       if (input) {
         const errorElement = document.createElement('p');
         errorElement.className = 'error-message';
@@ -106,6 +122,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  const clearForm = () => {
+    form.querySelector('input[name="nombre"]').value = '';
+    form.querySelector('input[name="apellido"]').value = '';
+    form.querySelector('input[name="usuario"]').value = '';
+    form.querySelector('input[name="correo"]').value = '';
+    form.querySelector('input[name="contrasena"]').value = '';
+    form.querySelector('input[name="repetirContrasena"]').value = '';
+    form.querySelector('select[name="genero"]').value = '';
+    form.querySelector('input[name="fechaNacimiento"]').value = '';
+    form.querySelector('select[name="rol"]').value = '';
+  };
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -118,9 +146,14 @@ document.addEventListener('DOMContentLoaded', () => {
       confirmPassword: form.querySelector('input[name="repetirContrasena"]').value,
       gender: form.querySelector('select[name="genero"]').value,
       birthDate: form.querySelector('input[name="fechaNacimiento"]').value,
-      status: 'active',
-      rol: form.querySelector('select[name="rol"]').value
+      role: form.querySelector('select[name="rol"]').value,
+      status: form.querySelector('input[name="estado"]').value
     };
+
+    // Capitalizar género para coincidir con el enum del backend
+    if (formData.gender && formData.gender !== 'otro') {
+      formData.gender = formData.gender.charAt(0).toUpperCase() + formData.gender.slice(1).toLowerCase();
+    }
 
     const errors = validateForm(formData);
     if (Object.keys(errors).length > 0) {
@@ -135,10 +168,32 @@ document.addEventListener('DOMContentLoaded', () => {
     submitBtn.style.opacity = '0.7';
 
     try {
-      const { user, token } = await registerUser(formData);
+      const { confirmPassword, ...userData } = formData;
+      const { user, token } = await registerUser(userData);
 
+      if (formData.role) {
+        await fetch(`${API_BASE_URL}/user-roles`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            userId: user._id,
+            role: formData.role
+          })
+        });
+      }
+
+      // Mostrar alerta de éxito
+      alert('¡Registro exitoso! Tus datos han sido guardados correctamente.');
+      
+      // Limpiar el formulario
+      clearForm();
+      
+      /*// Redirigir al dashboard (opcional)
       localStorage.setItem('authToken', token);
-      window.location.href = 'dashboard.html';
+      window.location.href = 'http://localhost:3000/';*/
 
     } catch (error) {
       const errorContainer = document.createElement('div');
@@ -148,7 +203,10 @@ document.addEventListener('DOMContentLoaded', () => {
       errorContainer.style.margin = '10px 0';
       errorContainer.style.textAlign = 'center';
 
-      form.insertBefore(errorContainer, submitBtn);
+      const existingError = form.querySelector('.error-message');
+      if (!existingError) {
+        form.insertBefore(errorContainer, submitBtn);
+      }
 
       submitBtn.disabled = false;
       submitBtn.textContent = originalBtnText;
