@@ -1,18 +1,10 @@
-// dependencies
 import Fastify from "fastify";
 import fastifyCors from "@fastify/cors";
 import fastifyStatic from "@fastify/static";
 import mongoose from "mongoose";
+import { connectDatabase } from "./src/DataBase/connection.js";
 import path from 'path';
 import { fileURLToPath } from 'url';
-
-// route Connection Database
-import { connectDatabase } from "./src/DataBase/connection.js";
-
-// route Login and register
-import authPlugin from './src/Routes/Auth/Plugins/auth.js';
-import loginRoute from './src/Routes/Auth/login.js';
-import registerRoute from './src/Routes/Auth/register.js';
 
 // constantes, puertos y url de la base de datos
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -25,9 +17,6 @@ const fastify = Fastify({
         level: 'info'
     }
 });
-
-// registrar el plugin de inicio de sesion
-fastify.register(authPlugin);
 
 // manejo de cors para peticiones
 fastify.register(fastifyCors, {
@@ -46,7 +35,7 @@ fastify.register(fastifyStatic, {
     root: path.join(__dirname),
     prefix: '/',
     decorateReply: true, // Solo una vez
-    wildcard: true
+    wildcard: false
 });
 
 // Ruta para archivos en /src
@@ -61,34 +50,25 @@ fastify.get('/assets/*', (req, reply) => {
     reply.sendFile(filePath);
 });
 
-fastify.get('/descubre.html', (req, reply) => {
-    reply.sendFile('descubre.html', path.join(__dirname, 'public'));
+// Ruta principal
+fastify.get('/', (req, reply) => {
+    reply.sendFile('index.html', path.join(__dirname, 'public'));
 });
 
 fastify.get('/registro.html', (req, reply) => {
     reply.sendFile('registro.html', path.join(__dirname, 'public'));
 });
 
-// Ruta principal
-fastify.get('/', (req, reply) => {
-    reply.sendFile('index.html', path.join(__dirname, 'public'));
+fastify.get('/descubre.html', (req, reply) => {
+    reply.sendFile('descubre.html', path.join(__dirname, 'public'));
 });
+
 
 async function registerRoutes() {
     // Contenido, pagina principal
     await fastify.register(import('./src/Routes/Main/main.js'), {
         prefix: '/api/v1'
     });
-
-    // Ruta registro de usuariop
-    await fastify.register(registerRoute, {
-        prefix: '/api/v1/auth'
-    })
-
-    // Ruta de inicio de sesion
-    await fastify.register(loginRoute, {
-        prefix: '/api/v1/auth'
-    })
 };
 
 fastify.get('/health', async (request, reply) => {
