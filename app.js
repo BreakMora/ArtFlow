@@ -1,15 +1,22 @@
+// dependencias
 import Fastify from "fastify";
 import fastifyCors from "@fastify/cors";
 import fastifyStatic from "@fastify/static";
 import mongoose from "mongoose";
-import { connectDatabase } from "./src/DataBase/connection.js";
 import path from 'path';
 import { fileURLToPath } from 'url';
+
+// route Connection Database
+import { connectDatabase } from "./src/DataBase/connection.js";
 
 // constantes, puertos y url de la base de datos
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = 3000;
 const MONGO_URI = 'mongodb://root:Abcd123!@mongo:27017/ArtFlow?authSource=admin';
+
+// route Login and register
+import loginRoute from './src/Routes/Auth/login.js';
+import registerRoute from './src/Routes/Auth/register.js';
 
 // isntancia de fastify
 const fastify = Fastify({
@@ -69,6 +76,16 @@ async function registerRoutes() {
     await fastify.register(import('./src/Routes/Main/main.js'), {
         prefix: '/api/v1'
     });
+
+     // Ruta registro de usuariop
+    await fastify.register(registerRoute, {
+        prefix: '/api/v1/auth'
+    })
+
+    // Ruta de inicio de sesion
+    await fastify.register(loginRoute, {
+        prefix: '/api/v1/auth'
+    })
 };
 
 fastify.get('/health', async (request, reply) => {
