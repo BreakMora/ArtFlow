@@ -76,7 +76,7 @@ fastify.get('/', (req, reply) => {
 
 async function registerRoutes() {
     // Contenido, pagina principal
-    await fastify.register(import('./src/Routes/discover/main.js'), {
+    await fastify.register(import('./src/Routes/Main/main.js'), {
         prefix: '/api/v1'
     });
 
