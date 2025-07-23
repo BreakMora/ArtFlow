@@ -18,7 +18,7 @@ const MONGO_URI = 'mongodb://root:Abcd123!@mongo:27017/ArtFlow?authSource=admin'
 import loginRoute from './src/Routes/Auth/login.js';
 import registerRoute from './src/Routes/Auth/register.js';
 
-// isntancia de fastify
+// instancia de fastify
 const fastify = Fastify({
     logger: {
         level: 'info'
@@ -65,8 +65,12 @@ fastify.get('/registro.html', (req, reply) => {
     reply.sendFile('registro.html', path.join(__dirname, 'public'));
 });
 
-fastify.get('/index.html', (req, reply) => {
-    reply.sendFile('index.html', path.join(__dirname, 'public'));
+fastify.get('/login.html', (req, reply) => {
+    reply.sendFile('login.html', path.join(__dirname, 'public'));
+});
+
+fastify.get('/header.html', (req, reply) => {
+    reply.sendFile('header.html', path.join(__dirname, 'public'));
 });
 
 // Ruta principal
@@ -74,6 +78,7 @@ fastify.get('/', (req, reply) => {
     reply.sendFile('index.html', path.join(__dirname, 'public'));
 });
 
+// construye las rutas de la api
 async function registerRoutes() {
     // Contenido, pagina principal
     await fastify.register(import('./src/Routes/Main/main.js'), {

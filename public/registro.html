@@ -1,47 +1,62 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ArtFlow - Registro</title>
-  <link rel="stylesheet" href="/public/assets/css/registro.css" />
+  <title>ArtFlow • Registro</title>
+  <link rel="stylesheet" href="/public/assets/css/base.css"/>
+  <link rel="stylesheet" href="/public/assets/css/auth.css"/>
 </head>
 <body>
-  <header class="topbar">
-    <a href="index.html" class="logo">ArtFlow</a>
-    <nav>
-      <a href="#">Blog</a>
-      <button class="login-btn">Inicia Sesión</button>
-    </nav>
-  </header>
+  <div id="header-placeholder"></div>
 
-  <main class="container">
-    <section class="left-panel">
-      <form class="form">
-        <label>Correo</label>
-        <input type="email" placeholder="ejemplo@mail.com" />
-
-        <label>Nombre</label>
-        <input type="text" placeholder="ejemplo: nombre apellido" />
-
-        <label>Usuario</label>
-        <input type="text" placeholder="ejemplo: nombre123" />
-
-        <label>Contraseña</label>
-        <input type="password" />
-
-        <label>Repetir contraseña</label>
-        <input type="password" />
-
-        <button type="submit" class="register-btn">Registro</button>
+  <main class="container auth-page">
+    <section class="auth-panel form-panel">
+      <h2 class="title">Crear Cuenta</h2>
+      <form class="form grid-form">
+        <!-- Nombre / Apellido -->
+        <div><label for="nombre">Nombre</label><input id="nombre" name="nombre" required></div>
+        <div><label for="apellido">Apellido</label><input id="apellido" name="apellido" required></div>
+        <!-- Usuario / Correo -->
+        <div><label for="usuario">Usuario</label><input id="usuario" name="usuario" required></div>
+        <div><label for="correo">Correo</label><input type="email" id="correo" name="correo" required></div>
+        <!-- Contraseñas -->
+        <div><label for="contrasena">Contraseña</label><input type="password" id="contrasena" name="contrasena" required></div>
+        <div><label for="repetirContrasena">Repetir Contraseña</label><input type="password" id="repetirContrasena" name="repetirContrasena" required></div>
+        <!-- Género / Fecha -->
+        <div>
+          <label for="genero">Género</label>
+          <select id="genero" name="genero" required>
+            <option value="" disabled selected>Selecciona género</option>
+            <option>Masculino</option><option>Femenino</option><option>Otro</option>
+          </select>
+        </div>
+        <div><label for="fechaNacimiento">Nacimiento</label><input type="date" id="fechaNacimiento" name="fechaNacimiento" required></div>
+        <!-- Rol / oculto Estado -->
+        <div>
+          <label for="rol">Rol</label>
+          <select id="rol" name="rol" required>
+            <option value="" disabled selected>Selecciona rol</option>
+            <option value="fan">Fan</option><option value="artista">Artista</option>
+          </select>
+        </div>
+        <input type="hidden" name="estado" value="activo"/>
+        <!-- Botón -->
+        <div class="full-row">
+          <button type="submit" class="btn-primary auth-btn">Registrarse</button>
+        </div>
       </form>
     </section>
 
-    <section class="right-panel">
-      <img src="https://picsum.photos/800/800?random=1" class="circle-img circle1">
-      <img src="https://picsum.photos/800/800?random=2" class="circle-img circle2">
-      <img src="https://picsum.photos/800/800?random=3" class="circle-img circle3">
+    <!-- Panel de imágenes igual que en login -->
+    <section class="auth-panel right-panel">
+      <img src="https://picsum.photos/400/600?random=7" class="decor-img img1"/>
+      <img src="https://picsum.photos/400/600?random=8" class="decor-img img2"/>
+      <img src="https://picsum.photos/400/600?random=9" class="decor-img img3"/>
     </section>
   </main>
+
+  <script type="module" src="/public/assets/js/header.js"></script>
+  <script type="module" src="/public/assets/js/registro.js"></script>
 </body>
 </html>
