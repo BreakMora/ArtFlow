@@ -11,7 +11,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = 3000;
 const MONGO_URI = 'mongodb://root:Abcd123!@mongo:27017/ArtFlow?authSource=admin';
 
-// isntancia de fastify
+// instancia de fastify
 const fastify = Fastify({
     logger: {
         level: 'info'
@@ -63,6 +63,13 @@ fastify.get('/descubre.html', (req, reply) => {
     reply.sendFile('descubre.html', path.join(__dirname, 'public'));
 });
 
+fastify.get('/login.html', (req, reply) => {
+    reply.sendFile('login.html', path.join(__dirname, 'public'));
+});
+
+fastify.get('/header.html', (req, reply) => {
+    reply.sendFile('header.html', path.join(__dirname, 'public'));
+});
 
 async function registerRoutes() {
     // Contenido, pagina principal
