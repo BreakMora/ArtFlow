@@ -5,11 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ArtFlow - Registro</title>
   <link rel="stylesheet" href="/public/assets/css/registro.css" />
-  <script src="/public/assets/js/registro.js" type="module"></script>
 </head>
 <body>
   <header class="topbar">
-    <a href="http://localhost:3000/" class="logo">ArtFlow</a>
+    <a href="index.html" class="logo">ArtFlow</a>
     <nav>
       <a href="#">Blog</a>
       <button class="login-btn">Inicia Sesión</button>
@@ -19,45 +18,22 @@
   <main class="container">
     <section class="left-panel">
       <form class="form">
-        <label for="nombre">Nombre</label>
-        <input type="text" id="nombre" name="nombre" placeholder="ejemplo: Juan" required />
+        <label>Correo</label>
+        <input type="email" placeholder="ejemplo@mail.com" />
 
-        <label for="apellido">Apellido</label>
-        <input type="text" id="apellido" name="apellido" placeholder="ejemplo: Pérez" required />
+        <label>Nombre</label>
+        <input type="text" placeholder="ejemplo: nombre apellido" />
 
-        <label for="usuario">Nombre de usuario</label>
-        <input type="text" id="usuario" name="usuario" placeholder="ejemplo: juan123" required />
+        <label>Usuario</label>
+        <input type="text" placeholder="ejemplo: nombre123" />
 
-        <label for="correo">Correo</label>
-        <input type="email" id="correo" name="correo" placeholder="ejemplo@mail.com" required />
+        <label>Contraseña</label>
+        <input type="password" />
 
-        <label for="contrasena">Contraseña</label>
-        <input type="password" id="contrasena" name="contrasena" required />
+        <label>Repetir contraseña</label>
+        <input type="password" />
 
-        <label for="repetirContrasena">Repetir contraseña</label>
-        <input type="password" id="repetirContrasena" name="repetirContrasena" required />
-
-        <label for="genero">Género</label>
-        <select id="genero" name="genero" required>
-          <option value="" disabled selected>Selecciona tu género</option>
-          <option value="masculino">Masculino</option>
-          <option value="femenino">Femenino</option>
-          <option value="otro">Otro</option>
-        </select>
-
-        <label for="fechaNacimiento">Fecha de nacimiento</label>
-        <input type="date" id="fechaNacimiento" name="fechaNacimiento" required />
-
-        <input type="hidden" name="estado" value="activo" />
-
-        <label for="rol">Rol</label>
-        <select id="rol" name="rol" required>
-          <option value="" disabled selected>Selecciona tu rol</option>
-          <option value="artista">Artista</option>
-          <option value="fan">Fan</option>
-        </select>
-
-        <button type="submit" class="register-btn">Registrarse</button>
+        <button type="submit" class="register-btn">Registro</button>
       </form>
     </section>
 
