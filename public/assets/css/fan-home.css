@@ -1,0 +1,142 @@
+/* fan-home.css */
+
+:root {
+  --mexican-pink: #e12279;
+  --rose: #f72585;
+  --red-violet: #d61e92;
+  --fandango: #b5179e;
+  --grape: #7209b7;
+  --chrysler-blue: #560bad;
+  --zaffre: #3a0ca3;
+  --neon-blue: #4361ee;
+  --chefchaouen-blue: #4895ef;
+  --vivid-sky-blue: #4cc9f0;
+  --white: #ffffff;
+  --black: #000000;
+  --light-gray: #f2f2f2;
+  --dark-gray: #333333;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--light-gray);
+  color: var(--dark-gray);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  height: 100vh;
+}
+
+.sidebar {
+  background-color: var(--chrysler-blue);
+  color: var(--white);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.nav a {
+  display: block;
+  margin-bottom: 1rem;
+  text-decoration: none;
+  color: var(--white);
+  font-weight: 500;
+}
+
+.user-box {
+  background-color: var(--zaffre);
+  padding: 0.75rem;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.main-content {
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.top-bar {
+  margin-bottom: 1rem;
+}
+
+.search-bar {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 30px;
+  border: none;
+  font-size: 1rem;
+}
+
+.recomendados h2 {
+  margin-bottom: 0.5rem;
+}
+
+.carousel {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+}
+
+.artist-bubble {
+  background-color: var(--rose);
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  color: var(--white);
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.post-card {
+  background-color: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.post-card header,
+.post-card footer {
+  padding: 1rem;
+}
+
+.post-card .artist-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.post-card .tag {
+  background-color: var(--vivid-sky-blue);
+  color: var(--black);
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 6px;
+  display: inline-block;
+  margin-top: 0.25rem;
+}
+
+.post-card img {
+  width: 100%;
+  display: block;
+}
+
+.stats {
+  font-size: 0.9rem;
+  color: var(--dark-gray);
+}
