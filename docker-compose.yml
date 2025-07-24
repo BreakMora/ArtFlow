@@ -47,6 +47,7 @@ services:
 
 volumes:
   mongo_data:
+  node_modules:
 
 networks:
   development:
