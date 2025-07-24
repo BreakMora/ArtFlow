@@ -51,4 +51,62 @@ db.imagescontent.insertMany([
   }
 ]);
 
+db.roles.insertMany([
+  {
+    name: "admin",
+    permissions: ["all"],
+    description: "Administrador del sistema"
+  },
+  {
+    name: "artista",
+    permissions: ["create_content", "edit_own_content", "view_stats", "edit_own_comments"],
+    description: "Artista creador de contenido"
+  },
+  {
+    name: "fan",
+    permissions: ["edit_own_comments", "view_stats"],
+    description: "Afiliado que ve los publicaciones y apoya el conetnido"
+  }
+]);
+
+db.users.insertMany([ 
+  {
+    firstName: "Admin",
+    lastName: "System",
+    username: "admin",
+    email: "admin@artflow.com",
+    password: "admin123", // "admin123" hay que hashearlo
+    gender: "masculino",
+    birthDate: new Date("1980-01-01"),
+    status: "active",
+    createdAt: new Date(),
+    updatedAt: new Date()
+  },
+  {
+    firstName: "Juan",
+    lastName: "Pérez",
+    username: "juanperez",
+    email: "juan@artflow.com",
+    password: "user123", // "user123" hay que hashearlo
+    gender: "masculino",
+    birthDate: new Date("1990-05-15"),
+    status: "active",
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }
+]);
+
+// Asignar roles a usuarios
+db.user_roles.insertMany([
+  {
+    userId: db.users.findOne({username: "admin"})._id,
+    roleId: db.roles.findOne({name: "admin"})._id,
+    assignedAt: new Date()
+  },
+  {
+    userId: db.users.findOne({username: "juanperez"})._id,
+    roleId: db.roles.findOne({name: "artista"})._id,
+    assignedAt: new Date()
+  }
+]);
 // Puedes agregar más colecciones, índices, etc.
