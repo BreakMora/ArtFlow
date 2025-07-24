@@ -11,9 +11,23 @@ const multimediaSchema = new mongoose.Schema({
         required: [true, 'La URL del archivo multimedia es requerida'],
         trim: true
     },
-    type: {
+    title: {
         type: String,
-        enum: ['image', 'video', 'audio'],
-        required: [true, 'El tipo de archivo multimedia es requerido']
+        required: [true, 'El título del archivo multimedia es requerido'],
+        trim: true,
+    },
+    format: {
+        type: String,
+        required: [true, 'El formato del archivo multimedia es requerido'],
+        trim: true,
+        enum: ['jpg', 'png', 'gif', 'mp4', 'avi', 'mp3', 'wav']
     }
+}, {
+    timestamps: true, // mongoose maneja automáticamente createdAt y updatedAt
+    versionKey: false // quita el campo __v
 });
+
+
+const MultimediaModel = mongoose.model('Multimedia', multimediaSchema, 'multimedia');
+
+export default MultimediaModel;

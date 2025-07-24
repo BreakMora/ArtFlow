@@ -45,3 +45,6 @@ const publicationSchema = new mongoose.Schema({
     versionKey: false // quita el campo __v
 });
 
+const PublicationModel = mongoose.model('Publication', publicationSchema, 'publications');
+
+export default PublicationModel;

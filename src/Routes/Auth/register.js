@@ -19,6 +19,15 @@ async function Register(fastify, options) {
                 role 
             } = request.body;
 
+            // Obtener roles permitidos en la base de datos
+            const validRRoles = Role.schema.path('name').enumValues;
+            if (!validRRoles.includes(role)) {
+                return reply.code(400).send({
+                    status: 'error',
+                    message: `Rol no permitido. Roles válidos: ${validRRoles.join(', ')}`
+                });
+            }
+
             // Validar que el rol exista
             const roleExists = await Role.findOne({ name: role });
             if (!roleExists) {
