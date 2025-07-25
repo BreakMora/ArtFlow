@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil del Artista | ArtFlow</title>
+  <link rel="stylesheet" href="/public/assets/css/base.css">
+  <link rel="stylesheet" href="/public/assets/css/perfil-artista.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="left">
+      <a href="/" class="logo">ArtFlow</a>
+    </div>
+    <div class="center">
+      <a href="/explorar.html" class="center-link">Descubre</a>
+    </div>
+    <div class="right auth-buttons">
+      <button class="login-btn">Iniciar sesión</button>
+      <button class="register-btn">Registrarse</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="perfil card">
+      <div class="perfil-header">
+        <img src="https://i.pravatar.cc/150?img=32" alt="Foto del artista" class="foto-perfil">
+        <div class="perfil-info">
+          <h1 class="nombre-artista">@Artista1</h1>
+          <p class="bio">Artista digital enfocada en ilustración fantástica. Aquí comparto obras gratis y exclusivas para mis fans 💜</p>
+          <div class="social-links">
+            <a href="#">🌐 Web</a>
+            <a href="#">🐦 Twitter</a>
+            <a href="#">📷 Instagram</a>
+          </div>
+        </div>
+        <div class="suscripcion">
+          <!-- Mostrar ícono si ya está suscrito -->
+          <button class="btn-primary">Suscribirse</button>
+          <!-- <span class="icono-suscrito">✅ Suscrito</span> -->
+        </div>
+      </div>
+    </section>
+
+    <section class="galeria">
+      <h2>Últimas publicaciones gratuitas</h2>
+      <div class="grid-galeria">
+        <img src="https://picsum.photos/300/300?random=1" alt="Publicación 1">
+        <img src="https://picsum.photos/300/300?random=2" alt="Publicación 2">
+        <img src="https://picsum.photos/300/300?random=3" alt="Publicación 3">
+        <img src="https://picsum.photos/300/300?random=4" alt="Publicación 4">
+        <img src="https://picsum.photos/300/300?random=5" alt="Publicación 5">
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>
+
+<!--
+📌 Variables necesarias para hacerlo funcional:
+
+Desde la base de datos:
+- artistId (string)
+- artist.username (string)
+- artist.profilePicture (URL)
+- artist.bio (string)
+- artist.socials: {
+    website: string,
+    twitter: string,
+    instagram: string
+  }
+- artist.isSubscribed (boolean): Si el fan ya está suscrito
+- artist.publicPosts: Array de publicaciones gratuitas más recientes
+    - Cada post: {
+        id: string,
+        imageUrl: string,
+        title?: string,
+        createdAt?: Date
+      }
+
+Procesos backend:
+- GET /api/artists/:id  → Obtener datos públicos del artista
+- GET /api/artists/:id/posts?freeOnly=true&limit=5  → Obtener 5 publicaciones gratuitas
+- POST /api/subscribe/:artistId  → Suscribir al fan
+- GET /api/subscribe/check/:artistId  → Verificar si ya está suscrito
+
+En el HTML se espera que los datos dinámicos sean insertados por JS o por template engine (EJS, Handlebars, etc.).
+-->
