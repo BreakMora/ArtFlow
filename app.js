@@ -6,6 +6,9 @@ import mongoose from "mongoose";
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// plugins de autenticación
+import authPlugin from './src/Routes/Auth/Plugins/auth.js';
+
 // route Connection Database
 import { connectDatabase } from "./src/DataBase/connection.js";
 
@@ -17,6 +20,9 @@ const MONGO_URI = 'mongodb://root:Abcd123!@mongo:27017/ArtFlow?authSource=admin'
 // route Login and register
 import loginRoute from './src/Routes/Auth/login.js';
 import registerRoute from './src/Routes/Auth/register.js';
+
+// route publication
+import publicationRoutes from "./src/Routes/Posts/publication.js";
 
 // instancia de fastify
 const fastify = Fastify({
@@ -96,6 +102,9 @@ async function registerRoutes() {
         prefix: '/api/v1'
     });
 
+    // Plugin de autenticación
+    await fastify.register(authPlugin);
+
      // Ruta registro de usuariop
     await fastify.register(registerRoute, {
         prefix: '/api/v1/auth'
@@ -105,6 +114,11 @@ async function registerRoutes() {
     await fastify.register(loginRoute, {
         prefix: '/api/v1/auth'
     })
+
+    // Ruta de publicaciones
+    await fastify.register(publicationRoutes, {
+        prefix: '/api/v1/publications'
+    });
 };
 
 fastify.get('/health', async (request, reply) => {
