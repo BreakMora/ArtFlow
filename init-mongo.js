@@ -58,12 +58,12 @@ db.roles.insertMany([
     description: "Administrador del sistema"
   },
   {
-    name: "artist",
+    name: "artista",
     permissions: ["create_content", "edit_own_content", "view_stats", "edit_own_comments"],
     description: "Artista creador de contenido"
   },
   {
-    name: "affiliate",
+    name: "fan",
     permissions: ["edit_own_comments", "view_stats"],
     description: "Afiliado que ve los publicaciones y apoya el conetnido"
   }
@@ -76,7 +76,7 @@ db.users.insertMany([
     username: "admin",
     email: "admin@artflow.com",
     password: "admin123", // "admin123" hay que hashearlo
-    gender: "male",
+    gender: "masculino",
     birthDate: new Date("1980-01-01"),
     status: "active",
     createdAt: new Date(),
@@ -88,7 +88,7 @@ db.users.insertMany([
     username: "juanperez",
     email: "juan@artflow.com",
     password: "user123", // "user123" hay que hashearlo
-    gender: "male",
+    gender: "masculino",
     birthDate: new Date("1990-05-15"),
     status: "active",
     createdAt: new Date(),
@@ -105,7 +105,7 @@ db.user_roles.insertMany([
   },
   {
     userId: db.users.findOne({username: "juanperez"})._id,
-    roleId: db.roles.findOne({name: "artist"})._id,
+    roleId: db.roles.findOne({name: "artista"})._id,
     assignedAt: new Date()
   }
 ]);

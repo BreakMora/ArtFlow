@@ -14,14 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
 
-    if (!formData.firstName) {
-      errors.firstName = 'El nombre es requerido';
-    }
-
-    if (!formData.lastName) {
-      errors.lastName = 'El apellido es requerido';
-    }
-
+    if (!formData.firstName) errors.firstName = 'El nombre es requerido';
+    if (!formData.lastName) errors.lastName = 'El apellido es requerido';
     if (!formData.username) {
       errors.username = 'El nombre de usuario es requerido';
     } else if (formData.username.length < 4) {
@@ -37,26 +31,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!formData.password) {
       errors.password = 'La contraseña es requerida';
     } else if (!passwordRegex.test(formData.password)) {
-      errors.password = 'Debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número';
+      errors.password = 'Debe tener al menos 8 caracteres, un símbolo, una mayúscula, una minúscula y un número';
     }
 
-    if (formData.password !== formData.confirmPassword) {
+    if (!formData.confirmPassword) {
+      errors.confirmPassword = 'Repite la contraseña';
+    } else if (formData.password !== formData.confirmPassword) {
       errors.confirmPassword = 'Las contraseñas no coinciden';
     }
 
     if (!formData.gender) {
       errors.gender = 'Selecciona un género';
-    } else if (!['Masculino', 'Femenino', 'otro'].includes(formData.gender)) {
+    } else if (!['Masculino', 'Femenino', 'Otro'].includes(formData.gender)) {
       errors.gender = 'Género no válido';
     }
 
-    if (!formData.birthDate) {
-      errors.birthDate = 'La fecha de nacimiento es requerida';
-    }
-
-    if (!formData.role) {
-      errors.role = 'Selecciona un rol';
-    }
+    if (!formData.birthDate) errors.birthDate = 'La fecha de nacimiento es requerida';
+    if (!formData.role) errors.role = 'Selecciona un rol';
 
     return errors;
   };
@@ -76,10 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
         birthDate: 'fechaNacimiento',
         role: 'rol'
       };
-      
+
       const htmlName = htmlNames[key] || key;
       const input = form.querySelector(`[name="${htmlName}"]`);
-      
+
       if (input) {
         const errorElement = document.createElement('p');
         errorElement.className = 'error-message';
@@ -89,8 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
         errorElement.style.fontSize = '0.8rem';
 
         input.insertAdjacentElement('afterend', errorElement);
-
         input.style.borderColor = 'red';
+
         input.addEventListener('input', () => {
           input.style.borderColor = '';
           errorElement.remove();
@@ -100,42 +91,29 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const registerUser = async (userData) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/auth/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
+    const response = await fetch(`${API_BASE_URL}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData),
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Error en el registro');
-      }
-
-      return data;
-    } catch (error) {
-      console.error('Error al registrar:', error);
-      throw error;
-    }
+    if (!response.ok) throw new Error(data.message || 'Error en el registro');
+    return data;
   };
 
   const clearForm = () => {
-    form.querySelector('input[name="nombre"]').value = '';
-    form.querySelector('input[name="apellido"]').value = '';
-    form.querySelector('input[name="usuario"]').value = '';
-    form.querySelector('input[name="correo"]').value = '';
-    form.querySelector('input[name="contrasena"]').value = '';
-    form.querySelector('input[name="repetirContrasena"]').value = '';
-    form.querySelector('select[name="genero"]').value = '';
-    form.querySelector('input[name="fechaNacimiento"]').value = '';
-    form.querySelector('select[name="rol"]').value = '';
+    const fields = ['nombre', 'apellido', 'usuario', 'correo', 'contrasena', 'repetirContrasena', 'genero', 'fechaNacimiento', 'rol'];
+    fields.forEach(name => {
+      const input = form.querySelector(`[name="${name}"]`);
+      if (input) input.value = '';
+    });
   };
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    document.querySelectorAll('.error-message').forEach(el => el.remove());
 
     const formData = {
       firstName: form.querySelector('input[name="nombre"]').value.trim(),
@@ -163,6 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalBtnText = submitBtn.textContent;
+
     submitBtn.disabled = true;
     submitBtn.textContent = 'Registrando...';
     submitBtn.style.opacity = '0.7';
@@ -171,58 +150,36 @@ document.addEventListener('DOMContentLoaded', () => {
       const { confirmPassword, ...userData } = formData;
       const { user, token } = await registerUser(userData);
 
-      if (formData.role) {
-        await fetch(`${API_BASE_URL}/user-roles`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            userId: user._id,
-            role: formData.role
-          })
-        });
-      }
-
-      // Mostrar alerta de éxito
       alert('¡Registro exitoso! Tus datos han sido guardados correctamente.');
-      
-      // Limpiar el formulario
       clearForm();
-      
-      /*// Redirigir al dashboard (opcional)
-      localStorage.setItem('authToken', token);
-      window.location.href = 'http://localhost:3000/';*/
-
     } catch (error) {
-      const errorContainer = document.createElement('div');
-      errorContainer.className = 'error-message';
-      errorContainer.textContent = error.message || 'Error al registrar. Intenta nuevamente.';
-      errorContainer.style.color = 'red';
-      errorContainer.style.margin = '10px 0';
-      errorContainer.style.textAlign = 'center';
+      const message = error.message.toLowerCase();
+      const fieldErrors = {};
 
-      const existingError = form.querySelector('.error-message');
-      if (!existingError) {
-        form.insertBefore(errorContainer, submitBtn);
+      if (message.includes('correo')) {
+        fieldErrors.email = 'El correo ya está registrado';
+      } else if (message.includes('usuario')) {
+        fieldErrors.username = 'El nombre de usuario ya está en uso';
       }
 
+      if (Object.keys(fieldErrors).length > 0) {
+        showErrors(fieldErrors);
+      } else {
+        const existingError = form.querySelector('.error-message.global');
+        if (!existingError) {
+          const errorContainer = document.createElement('p');
+          errorContainer.className = 'error-message global';
+          errorContainer.textContent = error.message || 'Error al registrar. Intenta nuevamente.';
+          errorContainer.style.color = 'red';
+          errorContainer.style.margin = '10px 0';
+          errorContainer.style.textAlign = 'center';
+          form.insertBefore(errorContainer, submitBtn);
+        }
+      }
+    } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = originalBtnText;
       submitBtn.style.opacity = '1';
     }
-  });
-
-  const circleImages = document.querySelectorAll('.circle-img');
-  circleImages.forEach(img => {
-    img.addEventListener('mouseenter', () => {
-      img.style.transform = 'scale(1.05)';
-      img.style.transition = 'transform 0.3s ease';
-    });
-
-    img.addEventListener('mouseleave', () => {
-      img.style.transform = 'scale(1)';
-    });
   });
 });

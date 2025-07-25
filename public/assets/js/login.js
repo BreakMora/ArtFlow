@@ -1,7 +1,7 @@
 
-import { loadHeader } from 'header.js';
-import { qs, showError } from 'domUtils.js';
-import { loginUser } from 'api.js';
+import { loadHeader } from './header.js';
+import { qs, showError } from './domUtils.js';
+import { loginUser } from './api.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   await loadHeader();

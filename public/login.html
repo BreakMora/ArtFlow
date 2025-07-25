@@ -8,8 +8,7 @@
   <link rel="stylesheet" href="/public/assets/css/login.css"/>
 </head>
 <body>
-  <div id="header-placeholder">
-  </div>
+  <div id="header-placeholder"></div>
 
   <main class="container auth-page">
     <section class="auth-panel left-panel">
@@ -35,7 +34,9 @@
     </section>
   </main>
 
-  <script type="module" src="/public/assets/js/header.js"></script>
-  <script type="module" src="/public/assets/js/login.js"></script>
+<script type="module">
+  import { loadHeader } from '/public/assets/js/header.js';
+  loadHeader();
+</script>  <script type="module" src="./public/assets/js/login.js"></script>
 </body>
 </html>

@@ -1,15 +1,22 @@
+// dependencias
 import Fastify from "fastify";
 import fastifyCors from "@fastify/cors";
 import fastifyStatic from "@fastify/static";
 import mongoose from "mongoose";
-import { connectDatabase } from "./src/DataBase/connection.js";
 import path from 'path';
 import { fileURLToPath } from 'url';
+
+// route Connection Database
+import { connectDatabase } from "./src/DataBase/connection.js";
 
 // constantes, puertos y url de la base de datos
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = 3000;
 const MONGO_URI = 'mongodb://root:Abcd123!@mongo:27017/ArtFlow?authSource=admin';
+
+// route Login and register
+import loginRoute from './src/Routes/Auth/login.js';
+import registerRoute from './src/Routes/Auth/register.js';
 
 // instancia de fastify
 const fastify = Fastify({
@@ -35,7 +42,7 @@ fastify.register(fastifyStatic, {
     root: path.join(__dirname),
     prefix: '/',
     decorateReply: true, // Solo una vez
-    wildcard: false
+    wildcard: true
 });
 
 // Ruta para archivos en /src
@@ -50,17 +57,16 @@ fastify.get('/assets/*', (req, reply) => {
     reply.sendFile(filePath);
 });
 
-// Ruta principal
-fastify.get('/', (req, reply) => {
-    reply.sendFile('index.html', path.join(__dirname, 'public'));
+fastify.get('/descubre.html', (req, reply) => {
+    reply.sendFile('descubre.html', path.join(__dirname, 'public'));
+});
+
+fastify.get('/fan-home.html', (req, reply) => {
+    reply.sendFile('fan-home.html', path.join(__dirname, 'public'));
 });
 
 fastify.get('/registro.html', (req, reply) => {
     reply.sendFile('registro.html', path.join(__dirname, 'public'));
-});
-
-fastify.get('/descubre.html', (req, reply) => {
-    reply.sendFile('descubre.html', path.join(__dirname, 'public'));
 });
 
 fastify.get('/login.html', (req, reply) => {
@@ -71,17 +77,35 @@ fastify.get('/header.html', (req, reply) => {
     reply.sendFile('header.html', path.join(__dirname, 'public'));
 });
 
+fastify.get('/perfil-artista.html', (req, reply) => {
+    reply.sendFile('perfil-artista.html', path.join(__dirname, 'public'));
+});
+
+fastify.get('/artista-dashboard.html', (req, reply) => {
+    reply.sendFile('artista-dashboard.html', path.join(__dirname, 'public'));
+});
+// Ruta principal
+fastify.get('/', (req, reply) => {
+    reply.sendFile('index.html', path.join(__dirname, 'public'));
+});
+
+// construye las rutas de la api
 async function registerRoutes() {
     // Contenido, pagina principal
     await fastify.register(import('./src/Routes/Main/main.js'), {
         prefix: '/api/v1'
     });
+
+     // Ruta registro de usuariop
+    await fastify.register(registerRoute, {
+        prefix: '/api/v1/auth'
+    })
+
+    // Ruta de inicio de sesion
+    await fastify.register(loginRoute, {
+        prefix: '/api/v1/auth'
+    })
 };
-
-await fastify.register(import('./src/Routes/Auth/register.js'), {
-    prefix: '/api/v1/auth'
-});
-
 
 fastify.get('/health', async (request, reply) => {
     const dbStatus = mongoose.connection.readyState === 1  ? 'connected' : 'disconnected';
