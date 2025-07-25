@@ -30,11 +30,10 @@ const publicationSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    multimedia: {
-        type: String,
-        required: [true, 'El archivo multimedia es requerido'],
-        trim: true,
-    },
+    multimedia: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Multimedia'
+    }],
     status: {
         type: String,
         enum: ['active', 'inactive', 'deleted'],

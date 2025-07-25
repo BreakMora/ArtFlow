@@ -20,7 +20,7 @@ const multimediaSchema = new mongoose.Schema({
         type: String,
         required: [true, 'El formato del archivo multimedia es requerido'],
         trim: true,
-        enum: ['jpg', 'png', 'gif', 'mp4', 'avi', 'mp3', 'wav']
+        enum: ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'avi', 'mp3', 'wav', 'webm']
     }
 }, {
     timestamps: true, // mongoose maneja automáticamente createdAt y updatedAt
