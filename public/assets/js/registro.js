@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) {
       const message = error.message.toLowerCase();
       const fieldErrors = {};
-      fieldErrors.username =  'El email o nombre de usuario ya esta en uso';
+      fieldErrors.username =  'El correo o nombre de usuario ya esta en uso';
 
       if (Object.keys(fieldErrors).length > 0) {
         showErrors(fieldErrors);
