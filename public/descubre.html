@@ -4,19 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ArtFlow - Descubre</title>
-  <link rel="stylesheet" href="/public/assets/css/styles.css">
+  <link rel="stylesheet" href="/public/assets/css/base.css">
+  <link rel="stylesheet" href="/public/assets/css/descubre.css">
 </head>
 <body>
 
-  <header class="header">
-    <a href="index.html" class="logo">ArtFlow</a>
-    <input type="text" placeholder="Buscar artistas" class="search-bar">
-    <div class="auth-buttons">
-      <button class="login-btn" onclick="location.href='login.html'">Inicia Sesión</button>
-      <button class="register-btn" onclick="location.href='registro.html'">Regístrate</button>
-    </div>
-  </header>
-
+  <div id="header-placeholder"></div>
   <nav class="categories">
     <button>Todo</button>
     <button>Dibujo y pintura</button>
@@ -92,6 +85,9 @@
     </div>
     </section>
   </main>
-
+<script type="module">
+  import { loadHeader } from '/public/assets/js/header.js';
+  loadHeader();
+</script>  
 </body>
 </html>

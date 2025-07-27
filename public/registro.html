@@ -10,53 +10,59 @@
 <body>
   <div id="header-placeholder"></div>
 
-  <main class="container auth-page">
+  <main class="auth-page">
+    <!-- Panel izquierdo: formulario -->
     <section class="auth-panel form-panel">
-      <h2 class="title">Crear Cuenta</h2>
-      <form class="form grid-form">
-        <!-- Nombre / Apellido -->
-        <div><label for="nombre">Nombre</label><input id="nombre" name="nombre" ></div>
-        <div><label for="apellido">Apellido</label><input id="apellido" name="apellido" ></div>
-        <!-- Usuario / Correo -->
-        <div><label for="usuario">Usuario</label><input id="usuario" name="usuario" ></div>
-        <div><label for="correo">Correo</label><input type="email" id="correo" name="correo" ></div>
-        <!-- Contraseñas -->
-        <div><label for="contrasena">Contraseña</label><input type="password" id="contrasena" name="contrasena" ></div>
-        <div><label for="repetirContrasena">Repetir Contraseña</label><input type="password" id="repetirContrasena" name="repetirContrasena" ></div>
-        <!-- Género / Fecha -->
-        <div>
-          <label for="genero">Género</label>
-          <select id="genero" name="genero" >
-            <option value="" disabled selected>Selecciona género</option>
-            <option>Masculino</option><option>Femenino</option><option>Otro</option>
-          </select>
-        </div>
-        <div><label for="fechaNacimiento">Nacimiento</label><input type="date" id="fechaNacimiento" name="fechaNacimiento" ></div>
-        <!-- Rol / oculto Estado -->
-        <div>
-          <label for="rol">Rol</label>
-          <select id="rol" name="rol" >
-            <option value="" disabled selected>Selecciona rol</option>
-            <option value="fan">Fan</option><option value="artista">Artista</option>
-          </select>
-        </div>
-        <input type="hidden" name="estado" value="activo"/>
-        <!-- Botón -->
-        <div class="full-row">
-          <button type="submit" class="btn-primary auth-btn">Registrarse</button>
-        </div>
-      </form>
+      <div class="form-wrapper">
+        <h2 class="title">Crear Cuenta</h2>
+        <form class="form grid-form">
+          <!-- Nombre / Apellido -->
+          <div><label for="nombre">Nombre</label><input id="nombre" name="nombre" ></div>
+          <div><label for="apellido">Apellido</label><input id="apellido" name="apellido" ></div>
+          <!-- Usuario / Correo -->
+          <div><label for="usuario">Usuario</label><input id="usuario" name="usuario" ></div>
+          <div><label for="correo">Correo</label><input type="email" id="correo" name="correo" ></div>
+          <!-- Contraseñas -->
+          <div><label for="contrasena">Contraseña</label><input type="password" id="contrasena" name="contrasena" ></div>
+          <div><label for="repetirContrasena">Repetir Contraseña</label><input type="password" id="repetirContrasena" name="repetirContrasena" ></div>
+          <!-- Género / Fecha -->
+          <div>
+            <label for="genero">Género</label>
+            <select id="genero" name="genero" >
+              <option value="" disabled selected>Selecciona género</option>
+              <option>Masculino</option><option>Femenino</option><option>Otro</option>
+            </select>
+          </div>
+          <div><label for="fechaNacimiento">Nacimiento</label><input type="date" id="fechaNacimiento" name="fechaNacimiento" ></div>
+          <!-- Rol / Estado oculto -->
+          <div>
+            <label for="rol">Rol</label>
+            <select id="rol" name="rol" >
+              <option value="" disabled selected>Selecciona rol</option>
+              <option value="fan">Fan</option><option value="artista">Artista</option>
+            </select>
+          </div>
+          <input type="hidden" name="estado" value="activo"/>
+          <!-- Botón -->
+          <div class="full-row">
+            <button type="submit" class="btn-primary auth-btn">Registrarse</button>
+          </div>
+        </form>
+      </div>
     </section>
 
-    <!-- Panel de imágenes igual que en login -->
+    <!-- Panel derecho: imágenes decorativas -->
     <section class="auth-panel right-panel">
-      <img src="https://picsum.photos/400/600?random=7" class="decor-img img1"/>
-      <img src="https://picsum.photos/400/600?random=8" class="decor-img img2"/>
-      <img src="https://picsum.photos/400/600?random=9" class="decor-img img3"/>
+      <img src="https://picsum.photos/400/600?random=7" class="decor-img img1" />
+      <img src="https://picsum.photos/400/600?random=8" class="decor-img img2" />
+      <img src="https://picsum.photos/400/600?random=9" class="decor-img img3" />
     </section>
   </main>
 
-  <script type="module" src="/public/assets/js/header.js"></script>
+  <script type="module">
+    import { loadHeader } from '/public/assets/js/header.js';
+    loadHeader();
+  </script>
   <script type="module" src="/public/assets/js/registro.js"></script>
 </body>
 </html>

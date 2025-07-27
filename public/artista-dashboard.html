@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Artista | ArtFlow</title>
+  <link rel="stylesheet" href="/public/assets/css/base.css">
+  <link rel="stylesheet" href="/public/assets/css/artista-dashboard.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <h2 class="logo">ArtFlow</h2>
+      <nav class="nav-menu">
+        <a href="#" class="nav-link active">Dashboard</a>
+        <a href="#">Configuración</a>
+        <a href="#">Método de Retiro</a>
+        <a href="#">Perfil Público</a>
+        <a href="#">Cerrar Sesión</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <section class="stats">
+        <div class="stat-card">
+          <h3>Ingresos Totales</h3>
+          <p>$1,250.00</p>
+        </div>
+        <div class="stat-card">
+          <h3>Suscripciones Activas</h3>
+          <p>120</p>
+        </div>
+        <div class="stat-card">
+          <h3>Publicaciones</h3>
+          <p>35</p>
+        </div>
+      </section>
+
+      <section class="graficas">
+        <div class="grafica">
+          <h4>Ingresos por Mes</h4>
+          <canvas id="grafica-ingresos"></canvas>
+        </div>
+        <div class="grafica">
+          <h4>Suscripciones por Categoría</h4>
+          <canvas id="grafica-suscripciones"></canvas>
+        </div>
+        <div class="grafica">
+          <h4>Reacciones a Publicaciones</h4>
+          <canvas id="grafica-reacciones"></canvas>
+        </div>
+      </section>
+    </main>
+
+    <button class="boton-flotante" onclick="window.location.href='crear-publicacion.html'">+</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Datos dummy para mostrar las gráficas
+    const ingresosCtx = document.getElementById('grafica-ingresos');
+    new Chart(ingresosCtx, {
+      type: 'line',
+      data: {
+        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+        datasets: [{
+          label: 'Ingresos ($)',
+          data: [200, 250, 180, 320, 400, 300],
+          borderColor: '#a855f7',
+          backgroundColor: 'rgba(168, 85, 247, 0.2)',
+          fill: true,
+          tension: 0.3
+        }]
+      }
+    });
+
+    const suscripcionesCtx = document.getElementById('grafica-suscripciones');
+    new Chart(suscripcionesCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Arte digital', 'Fotografía', 'Música', 'Escritura'],
+        datasets: [{
+          data: [40, 30, 15, 15],
+          backgroundColor: ['#9333ea', '#6b21a8', '#7c3aed', '#c084fc']
+        }]
+      }
+    });
+
+    const reaccionesCtx = document.getElementById('grafica-reacciones');
+    new Chart(reaccionesCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Post 1', 'Post 2', 'Post 3', 'Post 4'],
+        datasets: [{
+          label: 'Reacciones',
+          data: [25, 30, 20, 35],
+          backgroundColor: '#8b5cf6'
+        }]
+      }
+    });
+  </script>
+
+</body>
+</html>
