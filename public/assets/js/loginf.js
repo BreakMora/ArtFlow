@@ -1,10 +1,11 @@
-
-import { loadHeader } from 'header.js';
-import { qs, showError } from 'domUtils.js';
-import { loginUser } from 'api.js';
+import { loadHeader } from './header.js';
+import { qs, showError } from './domUtils.js';
+import { loginUser } from './api.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   await loadHeader();
+
+console.log('Cargando ---------------------------------');
 
   const form = qs('.form');
   const identifierInput = qs('input[name="identifier"]', form);
@@ -13,6 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
+    console.log('Cargando ---------------------------------2');
 
     form.querySelectorAll('.error-message').forEach(n => n.remove());
 
@@ -38,14 +40,17 @@ document.addEventListener('DOMContentLoaded', async () => {
       const { user, token } = await loginUser({ identifier, password });
       localStorage.setItem('authToken', token);
       localStorage.setItem('activeUser', JSON.stringify(user));
+      console.log('Cargando ---------------------------------3');
 
       if (user.role === 'fan') {
         window.location.href = 'fan-home.html';
-      } else if (user.role === 'artist') {
+      } else if (user.role === 'artista') {
         window.location.href = 'artist-home.html';
       } else {
         throw new Error('Rol desconocido');
       }
+      console.log('Cargando ---------------------------------4');
+      console.log('Cargando ---------------------------------user', user.role);
     } catch (err) {
       showError(passwordInput, err.message);
       submitBtn.disabled = false;

@@ -2,17 +2,15 @@
 
 /* ===== VARIABLES CSS GLOBALES ===== */
 :root {
-  /* 🎨 Paleta principal - Tonos vibrantes estilo ArtFlow */
-  --color-mexican-pink: #e12279ff;
-  --color-rose: #f72585ff;
-  --color-red-violet: #d61e92ff;
-  --color-fandango: #b5179eff;
-  --color-grape: #7209b7ff;
-  --color-chrysler-blue: #560badff;
-  --color-zaffre: #3a0ca3ff;
-  --color-neon-blue: #4361eeff;
-  --color-chefchaouen-blue: #4895efff;
-  --color-vivid-sky-blue: #4cc9f0ff;
+  /* 🎨 Nueva paleta - Tonos púrpura estilo ArtFlow */
+  --russian-violet: #10002bff;
+  --russian-violet-2: #240046ff;
+  --persian-indigo: #3c096cff;
+  --tekhelet: #5a189aff;
+  --french-violet: #7b2cbfff;
+  --amethyst: #9d4eddff;
+  --heliotrope: #c77dffff;
+  --mauve: #e0aaffff;
 
   /* 🎨 Contraste y neutros */
   --color-white: #ffffff;
@@ -21,8 +19,8 @@
   --color-gray-medium: #c6c6c6;
 
   /* 🎨 Seleccionados para interfaz */
-  --color-primary: var(--color-fandango);  /* Principal visual */
-  --color-accent: var(--color-vivid-sky-blue);  /* Botones, links */
+  --color-primary: var(--french-violet);     /* Principal visual */
+  --color-accent: var(--heliotrope);         /* Botones, links */
   --color-success: #27AE60;
   --color-warning: #f2c94c;
   --color-error: #eb5757;
@@ -70,7 +68,7 @@ a {
 }
 
 a:hover {
-  color: var(--color-neon-blue);
+  color: var(--amethyst);
 }
 
 /* ===== BOTONES ===== */
@@ -91,7 +89,7 @@ button {
 }
 
 .btn-primary:hover {
-  background-color: var(--color-grape);
+  background-color: var(--tekhelet);
 }
 
 /* Botón secundario */
@@ -119,7 +117,7 @@ input, select, textarea {
 input:focus, textarea:focus {
   border-color: var(--color-primary);
   outline: none;
-  box-shadow: 0 0 0 2px rgba(181, 23, 158, 0.2);
+  box-shadow: 0 0 0 2px rgba(123, 44, 191, 0.2); /* french violet */
 }
 
 label {
@@ -163,3 +161,124 @@ label {
   padding: 1rem;
   margin-bottom: 1rem;
 }
+
+.logo {
+  font-size: 1.8em;
+  font-family: var(--font-alt);
+  color: var(--russian-violet);
+  text-decoration: none;
+}
+.logo:visited {
+  color: var(--persian-indigo);
+}
+/* Estilos para el header */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: white;
+  border-bottom: 1px solid #eaeaea;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  font-family: 'Poppins', sans-serif;
+}
+
+nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+nav a {
+  text-decoration: none;
+  color: #a040f6;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #7d2ae8;
+}
+
+.auth-buttons button {
+  margin-left: 10px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: bold;
+  font-family: var(--font-main);
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+
+.login-btn {
+  background-color: var(--tekhelet);
+  color: var(--color-white);
+}
+.login-btn:hover {
+  background-color: var(--french-violet);
+}
+
+.register-btn {
+  background-color: var(--amethyst);
+  color: var(--color-white);
+}
+.register-btn:hover {
+  background-color: var(--heliotrope);
+}
+/*
+.nav-links a {
+  margin-right: 1.5rem;
+  color: #4a4a4a;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #7e5bef;
+}*/
+/* Header Topbar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  padding: 1rem 2rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  z-index: 10;
+}
+
+/* Left (Logo), Right (Botones), Center (Descubre) */
+.topbar .left,
+.topbar .right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.topbar .right {
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.topbar .center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Estilo para el link central */
+.center-link {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #7f00ff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.center-link:hover {
+  color: #e100ff;
+}
+

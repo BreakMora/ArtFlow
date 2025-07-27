@@ -1,8 +1,15 @@
 <header class="topbar">
-  <a href="index.html" class="logo">ArtFlow</a>
+
+   <div class="left">
+    <a href="http://localhost:3000/" class="logo">ArtFlow</a>
+  </div>
   <nav>
-    <a href="descubre.html">Descubre</a>
-    <a href="blog.html">Blog</a>
-    <button class="login-btn" onclick="location.href='login.html'">Inicia Sesión</button>
-  </nav>
+     <div class="center">
+      <a href="descubre.html">Descubre</a>
+    </div>
+    <div class="auth-buttons">
+      <button class="login-btn"data-link="login" onclick="location.href='login.html'">Inicia Sesión</button>
+      <button class="register-btn" data-link="registro"   onclick="location.href='registro.html'">Regístrate</button>
+    </div>
+    </nav>
 </header>

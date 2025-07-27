@@ -30,26 +30,17 @@
       <section class="recomendados">
         <h2>Artistas recomendados</h2>
         <div class="carousel">
-          <!-- DATOS DESDE BD:
-               - Lista de artistas sugeridos: nombre, avatar (si aplica), categoría o estilo -->
+      
           <div class="artist-bubble">Artista A</div>
           <div class="artist-bubble">Artista B</div>
           <div class="artist-bubble">Arte Digital</div>
           <div class="artist-bubble">Acrílico</div>
           <div class="artist-bubble">Arte Fantástico</div>
-
         </div>
       </section>
 
       <section class="feed">
-        <!-- DATOS DESDE BD:
-             - Lista de publicaciones de artistas a los que el fan está suscrito.
-             - Cada publicación debe incluir: 
-               • autor (nombre, avatar, tipo de cuenta)
-               • imagen o video
-               • título y/o descripción
-               • stats (likes, comentarios, vistas)
-               • fecha -->
+  
         <article class="post-card">
           <header>
             <div class="artist-info">
@@ -72,14 +63,185 @@
             </div>
             <span class="date">5 jul.</span>
           </header>
-          <img src="https://picsum.photos/800/800?random=1 alt="Obra de arte" />
+          <img src="https://picsum.photos/800/800?random=2" alt="Obra de arte" />
           <footer class="stats">
             ❤️ 310 &nbsp; 💬 42 &nbsp; 👁️ 1002
           </footer>
         </article>
-
       </section>
     </main>
   </div>
+
+  <!-- ==================== COMENTARIOS ORIGINALES AL FINAL ==================== -->
+
+  <!--
+    DATOS DESDE BD:
+    - Lista de artistas sugeridos: nombre, avatar (si aplica), categoría o estilo
+
+    DATOS DESDE BD:
+    - Lista de publicaciones de artistas a los que el fan está suscrito.
+    - Cada publicación debe incluir: 
+      • autor (nombre, avatar, tipo de cuenta)
+      • imagen o video
+      • título y/o descripción
+      • stats (likes, comentarios, vistas)
+      • fecha
+  -->
 </body>
 </html>
+
+<!-- 
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inicio | ArtFlow</title>
+  <link rel="stylesheet" href="public/assets/css/base.css" />
+  <link rel="stylesheet" href="public/assets/css/fan-home.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <h1 class="logo">ArtFlow</h1>
+      <nav class="nav">
+        <a href="/fan-home.html">🎨 Inicio</a>
+        <a href="/descubre.html">🔍 Explorar</a>
+        <a href="/configuracion.html">⚙️ Configuración</a>
+      </nav>
+      <div class="user-box">
+        Variable dinámica con el nombre del fan 
+        <span>👤 {{ user.username }}</span>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-bar">
+        <input 
+          type="text" 
+          class="search-bar" 
+          placeholder="Buscar artistas / temas"
+          oninput="handleSearch(this.value)"
+        />
+      </header>
+
+      
+      <section class="recomendados">
+        <h2>Artistas recomendados</h2>
+        <div class="carousel" id="recommended-artists">
+           Ejemplo de render dinámico (plantilla): 
+        
+            recommendedArtists.forEach(artist => {
+              <div class="artist-bubble">
+                ${artist.name}
+              </div>
+            })
+       
+        </div>
+      </section>
+
+      <section class="feed" id="feed-posts">
+      
+          posts.forEach(post => {
+            <article class="post-card">
+              <header>
+                <div class="artist-info">
+                  <strong>${post.artist.name}</strong>
+                  <span class="tag">${post.artist.category}</span>
+                </div>
+                <span class="date">${formatDate(post.createdAt)}</span>
+              </header>
+              <img src="${post.imageUrl}" alt="Obra de ${post.artist.name}" />
+              <footer class="stats">
+                ❤️ ${post.likes} &nbsp; 💬 ${post.comments} &nbsp; 👁️ ${post.views}
+              </footer>
+            </article>
+          })
+       
+      </section>
+    </main>
+  </div>
+
+  <script type="module">
+    // ====== Variables simuladas desde el backend ======
+    const user = {
+      id: "fan123",
+      username: "YurianysFan",
+    };
+
+    const recommendedArtists = [
+      { id: "a1", name: "Claude Monet" },
+      { id: "a2", name: "Van Gogh" },
+      { id: "a3", name: "Arte Digital" },
+      { id: "a4", name: "Acrílico" },
+      { id: "a5", name: "Arte Fantástico" },
+    ];
+
+    const posts = [
+      {
+        id: "p1",
+        artist: { name: "Claude Monet", category: "Impresionismo" },
+        imageUrl: "https://picsum.photos/800/800?random=1",
+        likes: 211,
+        comments: 10,
+        views: 344,
+        createdAt: "2025-07-07",
+      },
+      {
+        id: "p2",
+        artist: { name: "Van Gogh", category: "Postimpresionismo" },
+        imageUrl: "https://picsum.photos/800/800?random=2",
+        likes: 310,
+        comments: 42,
+        views: 1002,
+        createdAt: "2025-07-05",
+      },
+    ];
+
+    // ====== Funciones ======
+    function formatDate(dateStr) {
+      const options = { day: "numeric", month: "short" };
+      const date = new Date(dateStr);
+      return date.toLocaleDateString("es-ES", options);
+    }
+
+    function renderRecommendedArtists() {
+      const container = document.getElementById("recommended-artists");
+      container.innerHTML = recommendedArtists
+        .map(artist => `<div class="artist-bubble">${artist.name}</div>`)
+        .join("");
+    }
+
+    function renderPosts() {
+      const container = document.getElementById("feed-posts");
+      container.innerHTML = posts
+        .map(post => `
+          <article class="post-card">
+            <header>
+              <div class="artist-info">
+                <strong>${post.artist.name}</strong>
+                <span class="tag">${post.artist.category}</span>
+              </div>
+              <span class="date">${formatDate(post.createdAt)}</span>
+            </header>
+            <img src="${post.imageUrl}" alt="Obra de ${post.artist.name}" />
+            <footer class="stats">
+              ❤️ ${post.likes} &nbsp; 💬 ${post.comments} &nbsp; 👁️ ${post.views}
+            </footer>
+          </article>
+        `)
+        .join("");
+    }
+
+    function handleSearch(query) {
+      console.log("Buscando:", query);
+      // Aquí iría una llamada fetch() al backend con el término de búsqueda.
+    }
+
+    // ====== Inicialización ======
+    renderRecommendedArtists();
+    renderPosts();
+  </script>
+</body>
+</html> -->
