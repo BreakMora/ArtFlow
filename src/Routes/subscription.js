@@ -1,4 +1,4 @@
-import SubscriptionModel from "../Models/subscription";
+import SubscriptionModel from "../Models/subscription.js";
 
 async function Subscriptions(fastify, options) {
 

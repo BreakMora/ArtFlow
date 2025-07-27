@@ -6,16 +6,16 @@ import mongoose from "mongoose";
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// plugins de autenticación
-import authPlugin from "./src/Plugins/auth.js";
-
-// route Connection Database
-import { connectDatabase } from "./src/DataBase/connection.js";
-
 // constantes, puertos y url de la base de datos
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = 3000;
 const MONGO_URI = 'mongodb://root:Abcd123!@mongo:27017/ArtFlow?authSource=admin';
+
+// plugins de autenticación
+import authPlugin from "./src/Routes/Auth/Plugins/auth.js";
+
+// route Connection Database
+import { connectDatabase } from "./src/Database/connection.js";
 
 // route Login and register
 import loginRoute from './src/Routes/Auth/login.js';
