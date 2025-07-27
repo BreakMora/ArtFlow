@@ -18,23 +18,22 @@ const publicationSchema = new mongoose.Schema({
         trim: true,
         maxlength: [200, 'La descripción no puede exceder los 200 caracteres']
     },
-    likes: {
-        type: Number,
-        default: 0
-    },
-    dislikes: {
-        type: Number,
-        default: 0
-    },
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    dislikes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     views: {
         type: Number,
         default: 0
     },
-    multimedia: {
-        type: String,
-        required: [true, 'El archivo multimedia es requerido'],
-        trim: true,
-    },
+    multimedia: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Multimedia'
+    }],
     status: {
         type: String,
         enum: ['active', 'inactive', 'deleted'],
@@ -45,3 +44,6 @@ const publicationSchema = new mongoose.Schema({
     versionKey: false // quita el campo __v
 });
 
+const PublicationModel = mongoose.model('Publication', publicationSchema, 'publications');
+
+export default PublicationModel;
