@@ -28,7 +28,7 @@ async function Login(fastify, options) {
             reply.code(200).send({
                 status: 'success',
                 token,
-                user: userResponse
+                user: userResponse // datos del usuario sin la contraseña y otros campos sensibles, borrar a futuro
             });
 
         } catch (error) {

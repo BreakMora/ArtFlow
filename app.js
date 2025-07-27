@@ -7,7 +7,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 // plugins de autenticación
-import authPlugin from './src/Routes/Auth/Plugins/auth.js';
+import authPlugin from "./src/Plugins/auth.js";
 
 // route Connection Database
 import { connectDatabase } from "./src/DataBase/connection.js";
@@ -23,6 +23,12 @@ import registerRoute from './src/Routes/Auth/register.js';
 
 // route publication
 import publicationRoutes from "./src/Routes/Posts/publication.js";
+
+// route comments
+import commentRoutes from "./src/Routes/Posts/comment.js";
+
+// rout subscription
+import Subscriptions from "./src/Routes/subscription.js";
 
 // instancia de fastify
 const fastify = Fastify({
@@ -94,7 +100,7 @@ async function registerRoutes() {
     // Plugin de autenticación
     await fastify.register(authPlugin);
 
-     // Ruta registro de usuariop
+     // Ruta registro de usuario
     await fastify.register(registerRoute, {
         prefix: '/api/v1/auth'
     })
@@ -107,6 +113,16 @@ async function registerRoutes() {
     // Ruta de publicaciones
     await fastify.register(publicationRoutes, {
         prefix: '/api/v1/publications'
+    });
+
+    // Ruta de comentarios
+    await fastify.register(commentRoutes, {
+        prefix: '/api/v1/comments'
+    });
+
+    // Ruta de suscripciones
+    await fastify.register(Subscriptions, {
+        prefix: '/api/v1/subscriptions'
     });
 };
 
