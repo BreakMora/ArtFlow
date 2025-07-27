@@ -1,6 +1,6 @@
-import CommentModel from "../../Models/comments";
-import PublicationModel from "../../Models/publication";
-import SubscriptionModel from "../../Models/subscription";
+import CommentModel from "../../Models/comments.js";
+import PublicationModel from "../../Models/publication.js";
+import SubscriptionModel from "../../Models/subscription.js";
 
 async function Comments(fastify, options) {
 
