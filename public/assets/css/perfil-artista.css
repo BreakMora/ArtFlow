@@ -1,0 +1,95 @@
+/* perfil-artista.css */
+
+.perfil {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.perfil-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.foto-perfil {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--color-primary);
+}
+
+.perfil-info {
+  flex: 1;
+  min-width: 240px;
+}
+
+.nombre-artista {
+  font-size: var(--text-lg);
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.bio {
+  font-size: var(--text-md);
+  color: var(--color-black);
+  margin-bottom: 1rem;
+}
+
+.social-links a {
+  margin-right: 1rem;
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+}
+
+.social-links a:hover {
+  text-decoration: underline;
+}
+
+.suscripcion {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.icono-suscrito {
+  color: var(--color-success);
+  font-weight: bold;
+}
+
+.galeria {
+  margin-top: 3rem;
+}
+
+.grid-galeria {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.grid-galeria img {
+  width: 100%;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  transition: transform 0.3s ease;
+}
+
+.grid-galeria img:hover {
+  transform: scale(1.03);
+}
+
+@media (max-width: 600px) {
+  .perfil-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .foto-perfil {
+    width: 100px;
+    height: 100px;
+  }
+}

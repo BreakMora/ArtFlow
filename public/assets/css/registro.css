@@ -5,72 +5,23 @@ body {
 }
 
 
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #000;
-  color: white;
-  padding: 10px 20px;
-}
-
-.topbar .logo {
-  font-size: 1.6em;
-  font-weight: bold;
-  text-decoration: none; /* Para quitar el subrayado */
-}
-.topbar .logo:visited {
-  color: white; /* Mantiene el mismo color después de hacer clic */
-}
-
-.topbar nav {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.topbar nav a {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.login-btn {
-  background-color: #29aaf4;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 4px;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-}
-
 .container {
   display: flex;
   flex-direction: row;
   height: calc(100vh - 60px);
 }
 
-.left-panel {
-  width: 50%;
-  background-image: url('https://picsum.photos/500/300?random=9'); /* Imagen artística ovalada de fondo */
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center left;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
 .form {
+  width: 100%;
+  max-width: 360px;
+  gap: 1rem;
   background: rgba(255, 255, 255, 0.8);
   padding: 30px;
   border-radius: 10px;
   width: 80%;
-  max-width: 350px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
 }
 
 .form label {
@@ -96,12 +47,6 @@ body {
   cursor: pointer;
 }
 
-.right-panel {
-  width: 50%;
-  position: relative;
-  background: #fff;
-  overflow: hidden;
-}
 
 .circle-img {
   position: absolute;
@@ -131,4 +76,13 @@ body {
   left: 75%;
   width: 140px;
   border-radius: 30px;
+}
+.right-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
 }

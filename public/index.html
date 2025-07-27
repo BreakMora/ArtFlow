@@ -1,37 +1,34 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARTFLOW - Página Principal</title>
-    <link rel="stylesheet" href="/public/assets/css/style.css">
-    <script src="/public/assets/js/index.js" type="module" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ArtFlow - Explora tu creatividad</title>
+  <link rel="stylesheet" href="/public/assets/css/style.css" />
+  <link rel="stylesheet" href="/public/assets/css/base.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@400;500&display=swap" rel="stylesheet">
+  <script src="/public/assets/js/index.js" type="module" defer></script>
 </head>
 <body>
-    <nav>
-        <a href="index.html" class="logo">ArtFlow</a>
-        <div class="nav-links">
-            <a href="descubre.html">Descubre</a>
-            <a href="#">Blog</a>
-        </div>
-        <div class="auth-buttons">
-            <button class="login-btn" onclick="location.href='login.html'">Inicia Sesión</button>
-            <button class="register-btn" onclick="location.href='registro.html'">Regístrate</button>
-        </div>
-    </nav>
-    
-    <main class="hero">
-        <div class="hero-content">
-            <h1 id="hero_title"></h1>
-            <p id="hero_subtitle"></p>
-        </div>
-        <div class="hero-images" id="hero_images">
-            <!-- Las imágenes se cargarán dinámicamente desde JS -->
-            <div class="image-placeholder"></div>
-            <div class="image-placeholder"></div>
-            <div class="image-placeholder"></div>
-            <div class="image-placeholder"></div>
-        </div>
-    </main>
+   <div id="header-placeholder"></div>
+  <main class="hero">
+    <div class="hero-content">
+      <h1>Explora, Crea, Inspira</h1>
+      <p>ArtFlow es tu espacio para descubrir artistas, compartir tu arte y dejar que fluya tu creatividad.</p>
+    </div>
+
+    <div class="hero-images">
+      <div class="hero-image"><img src="https://picsum.photos/400/600?random=4" alt="Obra de arte 1" /></div>
+      <div class="hero-image"><img src="https://picsum.photos/400/600?random=6" alt="Obra de arte 2" /></div>
+      <div class="hero-image"><img src="https://picsum.photos/400/600?random=7" alt="Obra de arte 3" /></div>
+      <div class="hero-image"><img src="https://picsum.photos/400/600?random=24" alt="Obra de arte 4" /></div>
+    </div>
+  </main>
+  <script type="module">
+  import { loadHeader } from '/public/assets/js/header.js';
+  loadHeader();
+</script>  
 </body>
 </html>

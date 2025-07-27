@@ -1,3 +1,17 @@
+export function qs(selector, parent = document) {
+  return parent.querySelector(selector);
+}
+
+export function showError(input, message) {
+  const errorElement = document.createElement('p');
+  errorElement.className = 'error-message';
+  errorElement.style.color = 'red';
+  errorElement.textContent = message;
+  input.insertAdjacentElement('afterend', errorElement);
+}
+
+
+
 export function getFormFields(form) {
   const email = form.querySelector('input[type="email"]').value.trim();
   const name = form.querySelector('input[placeholder*="nombre"]').value.trim();

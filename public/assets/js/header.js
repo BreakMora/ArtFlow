@@ -3,19 +3,36 @@ export async function loadHeader() {
   const res = await fetch('/public/header.html');
   const html = await res.text();
   document.getElementById('header-placeholder').innerHTML = html;
-}
 
+  const currentPage = window.location.pathname.split('/').pop(); // ej: login.html
   const nav = document.querySelector('.topbar nav');
-  if (!nav) return;
-  if (window.location.pathname.endsWith('login.html')) {
-    const a = document.createElement('a');
-    a.href = 'recover.html';
-    a.textContent = '¿Olvidaste tu contraseña?';
-    nav.append(a);
-  }
-  if (window.location.pathname.endsWith('registro.html')) {
-    const b = document.createElement('a');
-    b.href = 'login.html';
-    b.textContent = 'Inicia Sesión';
-    nav.append(b);
-  }
+
+  const links = nav.querySelectorAll('[data-link]');
+  links.forEach(link => {
+    const target = link.getAttribute('href');
+    const key = link.dataset.link;
+
+    switch (currentPage) {
+      case 'login.html':
+        if (key === 'login' || key === 'recover') link.remove();
+        break;
+
+      case 'registro.html':
+        if (key === 'registro') link.remove();
+        break;
+
+      case 'recover.html':
+        if (key === 'recover') link.remove();
+        break;
+
+      case 'index.html':
+      case '':
+        // En index se muestran todos menos blog
+        break;
+
+      default:
+        break;
+    }
+
+  });
+}
