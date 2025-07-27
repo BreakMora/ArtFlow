@@ -11,15 +11,9 @@
   <div class="layout">
     <aside class="sidebar">
       <h2 class="logo">ArtFlow</h2>
-      <nav class="nav-menu">
-        <a href="#" class="nav-link active">Dashboard</a>
-        <a href="#">Configuración</a>
-        <a href="#">Método de Retiro</a>
-        <a href="#">Perfil Público</a>
-        <a href="#">Cerrar Sesión</a>
-      </nav>
+      <div id="sidebar-placeholder"></div>
     </aside>
-
+ 
     <main class="main-content">
       <section class="stats">
         <div class="stat-card">
@@ -35,7 +29,7 @@
           <p>35</p>
         </div>
       </section>
-
+ 
       <section class="graficas">
         <div class="grafica">
           <h4>Ingresos por Mes</h4>
@@ -51,10 +45,14 @@
         </div>
       </section>
     </main>
-
+ 
     <button class="boton-flotante" onclick="window.location.href='crear-publicacion.html'">+</button>
   </div>
-
+ 
+  <script type="module">
+    import { loadSidebar } from '/public/assets/js/sidebar.js';
+    loadSidebar('artista'); // o 'fan'
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     // Datos dummy para mostrar las gráficas
@@ -73,7 +71,7 @@
         }]
       }
     });
-
+ 
     const suscripcionesCtx = document.getElementById('grafica-suscripciones');
     new Chart(suscripcionesCtx, {
       type: 'doughnut',
@@ -85,7 +83,7 @@
         }]
       }
     });
-
+ 
     const reaccionesCtx = document.getElementById('grafica-reacciones');
     new Chart(reaccionesCtx, {
       type: 'bar',
@@ -99,6 +97,6 @@
       }
     });
   </script>
-
+ 
 </body>
 </html>
