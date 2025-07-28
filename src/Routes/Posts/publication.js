@@ -3,22 +3,26 @@ import MultimediaModel from "../../Models/publicacion.multimedia.js";
 
 async function Publications(fastify, options) {
 
+    // Ruta para crear una nueva publicación
     fastify.post('/create', { preValidation: [fastify.authenticate] }, async (request, reply) => {
         try {
             if (request.user.role !== 'artista') {
                 return reply.status(403).send({ status: 'error', message: 'No tienes permiso para crear publicaciones' });
             }
 
-            const { title, description, multimedia } = request.body;
+            const { title, description, category, type, multimedia } = request.body;
             const user_id = request.user._id; // Obtiene el ID del usuario autenticado
             
             const newPublication = new PublicationModel({
                 user_id,
                 title,
                 description,
+                category,
+                type,
                 multimedia: []
             });
 
+            // Verificar si se proporcionó multimedia
             if ( multimedia && multimedia.length > 0) {
                 const multimediaDocs = await Promise.all(multimedia.map(async (item) => {
                     const newMultimedia = new MultimediaModel({
@@ -140,38 +144,114 @@ async function Publications(fastify, options) {
 
     // Búsqueda por título con paginación
     fastify.get('/search', { preValidation: [fastify.authenticate] }, async (request, reply) => {
-        const { title } = request.query;
+        const { title, category, type, artist } = request.query;
+        const userId = request.user.id;
+        const userRole = request.user.rol;
 
-        if (!title) {
-            return reply.status(400).send({ error: 'El título es requerido para la búsqueda' });
+        const filter = { status: 'active' }; // Solo publicaciones activas
+
+        if (title) {
+            filter.$or = [
+                { title: new RegExp(title, 'i') },
+                { description: new RegExp(title, 'i') }
+            ];
         }
+
+        if (category) {
+            filter.category = category;
+        }
+
+        if (type) {
+            filter.type = type;
+        }
+        
+        // Verificar roles y aplicar restricciones
+        const isAdmin = userRole === 'admin';
+        const isArtist = userRole === 'artista';
+        const isFan = userRole === 'fan';
 
         try {
             const page = parseInt(request.query.page) || 1; // Página por defecto es 1
             const limit = parseInt(request.query.limit) || 10; // Límite por defecto es 10
             const skip = (page - 1) * limit; // Calcular el número de documentos a saltar
-            const userId = request.user._id;
 
-            
+            // Si es artista, filtrar por su ID
+            if (isArtist && !isAdmin) {
+                filter.user_id = userId;
 
+                // si intenta filtrar por otro artista, no se permite
+                if (artist && artist !== request.user.username) {
+                    reply.status(403).send({ status: 'error', message: 'No tienes permiso para ver publicaciones de otros artistas' });
+                    return;
+                }
+            }
 
+            // Si es fan, filtrar por sus suscripciones
+            else if (isFan && !isAdmin) {
+                // Obtener las suscripciones del fan
+                const subscriptions = await SubscriptionModel.find({ fan_id: userId, status: 'active' });
+                const subscribeArtist = subscriptions.map(sub => sub.artist_id);
+
+                // solo pueden ver:
+                /**
+                 * 1. Publicaciones de los artistas a los que están suscritos (premiun y gratis)
+                 * 2. Publicaciones gratis de otros artistas
+                 */
+                filter.$or = [
+                    {
+                        $and: [
+                            { user_id: { $in: subscribeArtist } },
+                            { type: { $in: ['gratis', 'premium'] } }
+                        ]
+                    },
+                    { type: 'gratis' }
+                ];
+
+                // Combinar con otros filtros si existen
+                if (filter.$or) {
+                    filter.$and = filter.$and || [];
+                    filter.$and.push({ $or: filter.$or });
+                    delete filter.$or;
+                }
+            }
+            // Si es admin, puede ver todo (no se aplican restricciones adicionales)
+
+            // Si se especifica un artista en el filtro (y el usuario tiene permiso)
+            if (artist && (!isArtist || isAdmin)) {
+                const artistUser = await UserModel.findOne({ username: artist });
+                if (artistUser) {
+                    filter.user_id = artistUser._id;
+                }
+            }
+
+            // Consulta con paginación
             const publications = await PublicationModel.find({ title: new RegExp(title, 'i') })
                 .populate('user_id', 'username email') // Popula el usuario
                 .populate('multimedia') // Popula la multimedia asociada
                 .skip(skip) // Saltar los documentos de las páginas anteriores
                 .limit(limit); // Limitar el número de documentos devueltos
 
-            // Filtrar publicaciones eliminadas
-            publications = publications.filter(pub => pub.status !== 'deleted');
+            const total = await PublicationModel.countDocuments(filter);
 
             reply.status(200).send({
                 status: 'success',
-                publications
+                data: {
+                    publications,
+                    pagination: {
+                        currentPage: page,
+                        totalPages: Math.ceil(total / limit),
+                        totalResults: total
+                    }
+                }
             });
 
         } catch (error) {
             console.error(error);
-            reply.status(500).send({ error: 'Error al buscar publicaciones' });
+            reply.status(500).send({ 
+                status: 'error',
+                message: 'Error al buscar publicaciones',
+                error: error.message
+            });
         }
     });
 
@@ -269,7 +349,7 @@ async function Publications(fastify, options) {
                     .populate({ path: 'multimedia', select: 'url' }) // Popula la multimedia asociada
                     .skip(skip) // Saltar los documentos de las páginas anteriores
                     .limit(limit), // Limitar el número de documentos devueltos
-                PublicationModel.countDocuments({ user_id: userId })
+                PublicationModel.countDocuments( { user_id: userId })
             ]);
 
             reply.status(200).send({
