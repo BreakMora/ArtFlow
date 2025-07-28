@@ -9,10 +9,11 @@
 </head>
 <body>
   <div class="layout">
-      <aside class="sidebar">
+    <aside class="sidebar">
+      <h2 class="logo">ArtFlow</h2>
       <div id="sidebar-placeholder"></div>
-     </aside>
-
+    </aside>
+ 
     <main class="main-content">
       <section class="stats">
         <div class="stat-card">
@@ -28,7 +29,7 @@
           <p>35</p>
         </div>
       </section>
-
+ 
       <section class="graficas">
         <div class="grafica">
           <h4>Ingresos por Mes</h4>
@@ -44,10 +45,10 @@
         </div>
       </section>
     </main>
-
+ 
     <button class="boton-flotante" onclick="window.location.href='crear-publicacion.html'">+</button>
   </div>
-
+ 
   <script type="module">
     import { loadSidebar } from '/public/assets/js/sidebar.js';
     loadSidebar('artista'); // o 'fan'
@@ -72,7 +73,7 @@
         }]
       }
     });
-
+ 
     const suscripcionesCtx = document.getElementById('grafica-suscripciones');
     new Chart(suscripcionesCtx, {
       type: 'doughnut',
@@ -84,7 +85,7 @@
         }]
       }
     });
-
+ 
     const reaccionesCtx = document.getElementById('grafica-reacciones');
     new Chart(reaccionesCtx, {
       type: 'bar',
@@ -98,6 +99,6 @@
       }
     });
   </script>
-
+ 
 </body>
 </html>
