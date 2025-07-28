@@ -8,18 +8,11 @@
   <link rel="stylesheet" href="/public/assets/css/perfil-artista.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="left">
-      <a href="/" class="logo">ArtFlow</a>
-    </div>
-    <div class="center">
-      <a href="/explorar.html" class="center-link">Descubre</a>
-    </div>
-    <div class="right auth-buttons">
-      <button class="login-btn">Iniciar sesión</button>
-      <button class="register-btn">Registrarse</button>
-    </div>
-  </header>
+
+  <!-- Sidebar dinámico -->
+<aside class="sidebar">
+    <div id="sidebar-placeholder"></div>
+ </aside>
 
   <main class="container">
     <section class="perfil card">
@@ -35,9 +28,7 @@
           </div>
         </div>
         <div class="suscripcion">
-          <!-- Mostrar ícono si ya está suscrito -->
           <button class="btn-primary">Suscribirse</button>
-          <!-- <span class="icono-suscrito">✅ Suscrito</span> -->
         </div>
       </div>
     </section>
@@ -45,14 +36,20 @@
     <section class="galeria">
       <h2>Últimas publicaciones gratuitas</h2>
       <div class="grid-galeria">
-        <img src="https://picsum.photos/300/300?random=1" alt="Publicación 1">
-        <img src="https://picsum.photos/300/300?random=2" alt="Publicación 2">
-        <img src="https://picsum.photos/300/300?random=3" alt="Publicación 3">
-        <img src="https://picsum.photos/300/300?random=4" alt="Publicación 4">
-        <img src="https://picsum.photos/300/300?random=5" alt="Publicación 5">
+        <a href="publicacion.html?id=1"><img src="https://picsum.photos/300/300?random=1" alt="Publicación 1"></a>
+        <a href="publicacion.html?id=2"><img src="https://picsum.photos/300/300?random=2" alt="Publicación 2"></a>
+        <a href="publicacion.html?id=3"><img src="https://picsum.photos/300/300?random=3" alt="Publicación 3"></a>
+        <a href="publicacion.html?id=4"><img src="https://picsum.photos/300/300?random=4" alt="Publicación 4"></a>
+        <a href="publicacion.html?id=5"><img src="https://picsum.photos/300/300?random=5" alt="Publicación 5"></a>
       </div>
     </section>
+
   </main>
+
+<script type="module">
+    import { loadSidebar } from '/public/assets/js/sidebar.js';
+    loadSidebar();
+  </script>
 
 </body>
 </html>
@@ -85,5 +82,7 @@ Procesos backend:
 - POST /api/subscribe/:artistId  → Suscribir al fan
 - GET /api/subscribe/check/:artistId  → Verificar si ya está suscrito
 
-En el HTML se espera que los datos dinámicos sean insertados por JS o por template engine (EJS, Handlebars, etc.).
+Frontend:
+- sidebar.js debe insertar el sidebar correcto según el tipo de usuario actual (fan o artista).
+- Las publicaciones deben generarse dinámicamente en JS si los datos vienen de la API.
 -->

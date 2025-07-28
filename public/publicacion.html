@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ver Publicación | ArtFlow</title>
+  <link rel="stylesheet" href="/public/assets/css/base.css" />
+  <link rel="stylesheet" href="/public/assets/css/ver-publicacion.css" />
+</head>
+<body>
+  <div class="layout">
+    <!-- Sidebar -->
+   <aside class="sidebar">
+      <div id="sidebar-placeholder"></div>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+      <!-- Header con buscador -->
+      <header class="top-bar">
+        <input type="text" class="search-bar" placeholder="Buscar artistas / temas"/>
+      </header>
+
+      <!-- Contenedor de publicación -->
+      <section class="publicacion-container">
+        <div class="info-publicacion">
+          <h1 class="titulo">Título de la publicación</h1>
+          <p class="fecha">Publicado el 25 de julio de 2025</p>
+          <p class="artista">
+            Por <a href="perfil-artista.html">Nombre del Artista</a>
+          </p>
+          <p class="categoria">Categoría: <span>Dibujo Digital</span></p>
+          <p class="descripcion">
+            Esta es la descripción completa de la publicación. Aquí el artista puede explicar su proceso, inspiración y detalles importantes de su obra.
+          </p>
+        </div>
+        <div class="imagen-publicacion">
+          <img src="https://picsum.photos/400/600?random=4" alt="Imagen de la publicación">
+        </div>
+      </section>
+    </main>
+  </div>
+
+   <script type="module">
+    import { loadSidebar } from '/public/assets/js/sidebar.js';
+    loadSidebar();
+  </script>
+  <script type="module" src="public/assets/js/logout.js"></script>
+</body>
+</html>

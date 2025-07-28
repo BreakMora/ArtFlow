@@ -89,12 +89,20 @@ fastify.get('/header.html', (req, reply) => {
     reply.sendFile('header.html', path.join(__dirname, 'public'));
 });
 
+fastify.get('/crear-publicacion.html', (req, reply) => {
+    reply.sendFile('crear-publicacion.html', path.join(__dirname, 'public'));
+});
+
 fastify.get('/perfil-artista.html', (req, reply) => {
     reply.sendFile('perfil-artista.html', path.join(__dirname, 'public'));
 });
 
 fastify.get('/artista-dashboard.html', (req, reply) => {
     reply.sendFile('artista-dashboard.html', path.join(__dirname, 'public'));
+});
+
+fastify.get('/publicacion.html', (req, reply) => {
+    reply.sendFile('publicacion.html', path.join(__dirname, 'public'));
 });
 // Ruta principal
 fastify.get('/', (req, reply) => {

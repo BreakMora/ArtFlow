@@ -37,6 +37,26 @@ export async function loginUser({ identifier, password }) {
   };
 }
 
+export async function crearPublicacion(data) {
+  const token = localStorage.getItem('authToken');
+
+  const response = await fetch(`${API_URL}/publications`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(data)
+  });
+
+  if (!response.ok) {
+    const errData = await response.json();
+    throw new Error(errData.message || 'Error al crear la publicación');
+  }
+
+  return response.json();
+}
+
 /*const API_URL = "http://localhost:3000/api/v1";
 
 export async function registerUser(userData) {
