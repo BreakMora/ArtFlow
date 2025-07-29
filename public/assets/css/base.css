@@ -324,3 +324,13 @@ nav a:hover {
 .nav-link.active {
   text-decoration: underline;
 }
+
+.main-content {
+  flex-grow: 1;
+  padding: 2rem 1rem;
+  background-color: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  margin: 0 auto;
+}

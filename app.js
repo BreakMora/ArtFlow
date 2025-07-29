@@ -85,8 +85,12 @@ fastify.get('/login.html', (req, reply) => {
     reply.sendFile('login.html', path.join(__dirname, 'public'));
 });
 
-fastify.get('/header.html', (req, reply) => {
-    reply.sendFile('header.html', path.join(__dirname, 'public'));
+fastify.get('/suscribirse-artista.html', (req, reply) => {
+    reply.sendFile('suscribirse-artista.html', path.join(__dirname, 'public'));
+});
+
+fastify.get('/ver-suscripciones.html', (req, reply) => {
+    reply.sendFile('ver-suscripciones.html', path.join(__dirname, 'public'));
 });
 
 fastify.get('/crear-publicacion.html', (req, reply) => {

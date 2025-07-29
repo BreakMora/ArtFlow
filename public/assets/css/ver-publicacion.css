@@ -1,71 +1,112 @@
-.publicacion-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  background-color: var(--color-bg);
-  padding: 2rem;
-  border-radius: 16px;
+.publication-container {
   max-width: 800px;
-  margin: 2rem auto;
-  box-shadow: 0 0 12px rgba(0,0,0,0.1);
+  margin: auto;
+  padding: 2rem;
+  background-color: var(--white);
+  border-radius: 1rem;
+  box-shadow: var(--shadow);
 }
 
-.imagen-publicacion img {
-  width: 100%;
-  border-radius: 12px;
+.publication-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.perfil-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
   object-fit: cover;
-  max-height: 500px;
+  margin-right: 1rem;
 }
 
-.info-publicacion .titulo {
-  font-size: 2rem;
+.user-info .artist-name {
   font-weight: bold;
-  color: var(--color-primary);
-}
-
-.info-publicacion .fecha {
-  color: #888;
-  font-size: 0.9rem;
-}
-
-.info-publicacion .artista a {
-  font-weight: 600;
-  color: var(--color-accent);
+  color: var(--primary);
   text-decoration: none;
 }
 
-.info-publicacion .artista a:hover {
-  text-decoration: underline;
+.fecha-publicacion {
+  font-size: 0.9rem;
+  color: var(--text-muted);
 }
 
-.info-publicacion .categoria span {
-  background-color: var(--color-accent-light);
-  padding: 0.2rem 0.6rem;
-  border-radius: 8px;
-  color: var(--color-accent);
-  font-weight: 500;
+.titulo-publicacion {
+  font-size: 2rem;
+  margin: 1rem 0 0.5rem;
 }
 
-.info-publicacion .descripcion {
-  margin-top: 1rem;
+.categoria-publicacion {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.imagen-publicacion {
+  width: 100%;
+  border-radius: 0.75rem;
+  margin: 1rem 0;
+}
+
+.descripcion-publicacion {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.interacciones {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.btn-like, .btn-comentar {
+  border-radius: var(--border-radius);
+  background-color: var(--russian-violet);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
   font-size: 1rem;
-  line-height: 1.6;
 }
 
-/* Adaptación para móviles */
-@media screen and (max-width: 768px) {
-  .publicacion-container {
-    padding: 1rem;
-    margin: 1rem;
-  }
+.btn-like:hover, .btn-comentar:hover {
+  
+  background-color: var(--tekhelet);
 }
 
-.main-content {
-  flex-grow: 1;
-  padding: 2rem 1rem;
-  background-color: var(--color-white);
+.form-comentario {
   display: flex;
   flex-direction: column;
-  max-width: 800px;
-  margin: 0 auto;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.form-comentario textarea {
+    border-radius: var(--border-radius);
+
+  resize: none;
+  padding: 0.75rem;
+  border-radius: var(--rounded);
+  border: 1px solid #ccc;
+  font-family: inherit;
+}
+
+.form-comentario button {
+    border-radius: var(--border-radius);
+
+  align-self: flex-end;
+  padding: 0.5rem 1rem;
+  /*background-color: var(--accent);*/
+  color: white;
+  border: none;
+  background-color: var(--russian-violet);
+  cursor: pointer;
+}
+
+.lista-comentarios .comentario {
+  padding: 0.75rem;
+  background-color: #f4f4f4;
+  border-radius: var(--rounded);
+  margin-bottom: 0.5rem;
 }
