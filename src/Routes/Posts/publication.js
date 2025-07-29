@@ -1,5 +1,7 @@
 import PublicationModel from "../../Models/publication.js";
 import MultimediaModel from "../../Models/publicacion.multimedia.js";
+import UserModel from "../../Models/user.js";
+import SubscriptionModel from "../../Models/subscription.js";
 
 async function Publications(fastify, options) {
 
@@ -144,75 +146,73 @@ async function Publications(fastify, options) {
 
     // Búsqueda por título con paginación
     fastify.get('/search', { preValidation: [fastify.authenticate] }, async (request, reply) => {
-        const { title, category, type, artist } = request.query;
-        const userId = request.user.id;
-        const userRole = request.user.rol;
-
-        const filter = { status: 'active' }; // Solo publicaciones activas
-
-        if (title) {
-            filter.$or = [
-                { title: new RegExp(title, 'i') },
-                { description: new RegExp(title, 'i') }
-            ];
-        }
-
-        if (category) {
-            filter.category = category;
-        }
-
-        if (type) {
-            filter.type = type;
-        }
-        
-        // Verificar roles y aplicar restricciones
-        const isAdmin = userRole === 'admin';
-        const isArtist = userRole === 'artista';
-        const isFan = userRole === 'fan';
-
         try {
-            const page = parseInt(request.query.page) || 1; // Página por defecto es 1
-            const limit = parseInt(request.query.limit) || 10; // Límite por defecto es 10
-            const skip = (page - 1) * limit; // Calcular el número de documentos a saltar
+            const { title, category, type, artist } = request.query;
+            const userId = request.user._id;
+            const userRole = request.user.role;
+
+            // Configuración de paginación
+            const page = parseInt(request.query.page) || 1;
+            const limit = parseInt(request.query.limit) || 10;
+            const skip = (page - 1) * limit;
+
+            // Construir el objeto de filtro base
+            const filter = { status: 'active' };
+
+            // Búsqueda por título (en título o descripción)
+            if (title) {
+                filter.$or = [
+                    { title: new RegExp(title, 'i') },
+                    { description: new RegExp(title, 'i') }
+                ];
+            }
+
+            if (category) {
+                filter.category = category;
+            }
+
+            if (type) {
+                filter.type = type; // Asegúrate que coincida con tu schema (tipo o type)
+            }
+
+            // Verificar roles y aplicar restricciones
+            const isAdmin = userRole === 'admin';
+            const isArtist = userRole === 'artista';
+            const isFan = userRole === 'fan';
 
             // Si es artista, filtrar por su ID
             if (isArtist && !isAdmin) {
                 filter.user_id = userId;
-
+                
                 // si intenta filtrar por otro artista, no se permite
-                if (artist && artist !== request.user.username) {
-                    reply.status(403).send({ status: 'error', message: 'No tienes permiso para ver publicaciones de otros artistas' });
-                    return;
+                if (artist) {
+                    return reply.status(403).send({
+                        status: 'error',
+                        message: 'No tienes permiso para ver publicaciones de otros artistas'
+                    });
                 }
             }
-
             // Si es fan, filtrar por sus suscripciones
             else if (isFan && !isAdmin) {
                 // Obtener las suscripciones del fan
-                const subscriptions = await SubscriptionModel.find({ fan_id: userId, status: 'active' });
-                const subscribeArtist = subscriptions.map(sub => sub.artist_id);
+                const subscriptions = await SubscriptionModel.find({
+                    fan_id: userId,
+                    status: 'active'
+                });
+                const subscribedArtists = subscriptions.map(sub => sub.artist_id);
 
                 // solo pueden ver:
-                /**
-                 * 1. Publicaciones de los artistas a los que están suscritos (premiun y gratis)
-                 * 2. Publicaciones gratis de otros artistas
-                 */
+                // 1. Publicaciones de los artistas a los que están suscritos (premium y gratis)
+                // 2. Publicaciones gratis de otros artistas
                 filter.$or = [
                     {
                         $and: [
-                            { user_id: { $in: subscribeArtist } },
+                            { user_id: { $in: subscribedArtists } },
                             { type: { $in: ['gratis', 'premium'] } }
                         ]
                     },
                     { type: 'gratis' }
                 ];
-
-                // Combinar con otros filtros si existen
-                if (filter.$or) {
-                    filter.$and = filter.$and || [];
-                    filter.$and.push({ $or: filter.$or });
-                    delete filter.$or;
-                }
             }
             // Si es admin, puede ver todo (no se aplican restricciones adicionales)
 
@@ -224,16 +224,17 @@ async function Publications(fastify, options) {
                 }
             }
 
-            // Consulta con paginación
-            const publications = await PublicationModel.find({ title: new RegExp(title, 'i') })
-                .populate('user_id', 'username email') // Popula el usuario
-                .populate('multimedia') // Popula la multimedia asociada
-                .skip(skip) // Saltar los documentos de las páginas anteriores
-                .limit(limit); // Limitar el número de documentos devueltos
+            // CONSULTA CORREGIDA - Usar el objeto filter que construimos
+            const publications = await PublicationModel.find(filter)
+                .populate('user_id', 'username email')
+                .populate('multimedia')
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limit);
 
             const total = await PublicationModel.countDocuments(filter);
 
-            reply.status(200).send({
+            return reply.status(200).send({
                 status: 'success',
                 data: {
                     publications,
@@ -247,7 +248,7 @@ async function Publications(fastify, options) {
 
         } catch (error) {
             console.error(error);
-            reply.status(500).send({ 
+            return reply.status(500).send({
                 status: 'error',
                 message: 'Error al buscar publicaciones',
                 error: error.message
@@ -289,7 +290,8 @@ async function Publications(fastify, options) {
             }
 
             // Permitir acceso solo si es el propietario, admin o fan suscrito
-            if (!isOwner && !isAdmin && !isSubscribed) {
+            const isFree = publication.type === 'gratis';
+            if (!isOwner && !isAdmin && !isSubscribed && !isFree) {
                 return reply.status(403).send({ error: 'No tienes permiso para ver esta publicación' });
             }
 
