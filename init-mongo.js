@@ -93,6 +93,30 @@ db.users.insertMany([
     status: "active",
     createdAt: new Date(),
     updatedAt: new Date()
+  },
+  {
+    firstName: "María",
+    lastName: "García",
+    username: "mariagarcia",
+    email: "maria@artflow.com",
+    password: "fan123", // "fan123" hasheado
+    gender: "Femenino",
+    birthDate: new Date("1995-07-20"),
+    status: "active",
+    createdAt: new Date(),
+    updatedAt: new Date()
+  },
+  {
+    firstName: "Carlos",
+    lastName: "Rodríguez",
+    username: "carlosartista",
+    email: "carlos@artflow.com",
+    password: "artista123", // "artista123" hasheado
+    gender: "Masculino",
+    birthDate: new Date("1988-03-15"),
+    status: "active",
+    createdAt: new Date(),
+    updatedAt: new Date()
   }
 ]);
 
@@ -107,6 +131,87 @@ db.user_roles.insertMany([
     userId: db.users.findOne({username: "juanperez"})._id,
     roleId: db.roles.findOne({name: "artista"})._id,
     assignedAt: new Date()
+  },
+    {
+    userId: db.users.findOne({username: "mariagarcia"})._id,
+    roleId: db.roles.findOne({name: "fan"})._id,
+    assignedAt: new Date()
+  },
+  {
+    userId: db.users.findOne({username: "carlosartista"})._id,
+    roleId: db.roles.findOne({name: "artista"})._id,
+    assignedAt: new Date()
   }
 ]);
+
+// Crear suscripción del fan al artista
+db.subscriptions.insertOne({
+  fan_id: db.users.findOne({username: "mariagarcia"})._id,
+  artist_id: db.users.findOne({username: "carlosartista"})._id,
+  status: "active",
+  createdAt: new Date(),
+  updatedAt: new Date()
+});
+
+// Crear publicaciones del artista
+const artistId = db.users.findOne({username: "carlosartista"})._id;
+const fanId = db.users.findOne({username: "mariagarcia"})._id;
+
+// Publicación 1
+const pub1 = db.publications.insertOne({
+  user_id: artistId,
+  title: "Mi primera obra de arte",
+  description: "Esta es mi primera creación compartida con la comunidad. Espero que les guste.",
+  category: "Arte Visual",
+  type: "gratis",
+  likes: [fanId], // El fan le dio like
+  dislikes: [],
+  views: Math.floor(Math.random() * 100) + 50, // Entre 50 y 150 vistas
+  status: "active",
+  createdAt: new Date(),
+  updatedAt: new Date()
+});
+
+// Multimedia para publicación 1
+db.multimedia.insertOne({
+  publication_id: pub1.insertedId,
+  url: "https://example.com/default-image1.jpg",
+  title: "Obra de arte abstracto",
+  format: "jpg"
+});
+
+// Publicación 2
+const pub2 = db.publications.insertOne({
+  user_id: artistId,
+  title: "Nuevo proyecto musical",
+  description: "Estoy trabajando en un nuevo álbum. Aquí hay un adelanto.",
+  category: "Musica",
+  type: "premium",
+  likes: [],
+  dislikes: [fanId], // El fan le dio dislike
+  views: Math.floor(Math.random() * 200) + 30, // Entre 30 y 230 vistas
+  status: "active",
+  createdAt: new Date(),
+  updatedAt: new Date()
+});
+
+// Multimedia para publicación 2
+db.multimedia.insertOne({
+  publication_id: pub2.insertedId,
+  url: "https://example.com/default-audio1.mp3",
+  title: "Demo musical",
+  format: "mp3"
+});
+
+// Actualizar las publicaciones con referencias al multimedia
+db.publications.updateOne(
+  {_id: pub1.insertedId},
+  {$set: {multimedia: [db.multimedia.findOne({publication_id: pub1.insertedId})._id]}}
+);
+
+db.publications.updateOne(
+  {_id: pub2.insertedId},
+  {$set: {multimedia: [db.multimedia.findOne({publication_id: pub2.insertedId})._id]}}
+);
+
 // Puedes agregar más colecciones, índices, etc.

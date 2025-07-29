@@ -2,11 +2,12 @@ import User from '../../Models/user.js';
 import jsonwebtoken from 'jsonwebtoken';
 
 async function Login(fastify, options) {
+
   fastify.post('/login', async (request, reply) => {
     try {
-      const { username, password } = request.body; // ← cambiamos "email" a "username"
-
-      const user = await User.findOne({ username }).select('+password');
+      const { username, email, password } = request.body; // se utiliza username y email para mayor flexibilidad
+      
+      const user = await User.findOne({ $or: [{ username }, { email }] }).select('+password');
       if (!user) {
         return reply.code(401).send({
           status: 'error',
