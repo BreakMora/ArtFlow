@@ -37,17 +37,22 @@ export async function loginUser({ identifier, password }) {
   };
 }
 
-/*const API_URL = "http://localhost:3000/api/v1";
+export async function crearPublicacion(data) {
+  const token = localStorage.getItem('authToken');
 
-export async function registerUser(userData) {
-  const res = await fetch(`${API_URL}/auth/register`, {
+  const response = await fetch(`${API_URL}/publications`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(userData)
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(data)
   });
 
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Error al registrar');
-  return data;
+  if (!response.ok) {
+    const errData = await response.json();
+    throw new Error(errData.message || 'Error al crear la publicación');
+  }
+
+  return response.json();
 }
-*/

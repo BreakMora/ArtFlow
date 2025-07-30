@@ -1,0 +1,40 @@
+main.container {
+  margin-left: 240px;
+  padding: 2rem;
+}
+
+.publicacion-form h1 {
+  font-size: var(--text-lg);
+  margin-bottom: 2rem;
+  color: var(--color-primary);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.preview iframe,
+.preview img {
+  margin-top: 1rem;
+  box-shadow: var(--box-shadow);
+}
+
+#preview {
+  max-width: 100%;
+  max-height: 400px;
+  overflow: hidden;
+}
+
+select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  background-color: var(--color-light);
+  font-size: var(--text-base);
+}
+

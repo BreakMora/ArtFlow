@@ -45,7 +45,7 @@ console.log('Cargando ---------------------------------');
       if (user.role === 'fan') {
         window.location.href = 'fan-home.html';
       } else if (user.role === 'artista') {
-        window.location.href = 'artist-home.html';
+        window.location.href = 'artista-dashboard.html';
       } else {
         throw new Error('Rol desconocido');
       }
