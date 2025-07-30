@@ -30,6 +30,9 @@ import commentRoutes from "./src/Routes/Posts/comment.js";
 // rout subscription
 import Subscriptions from "./src/Routes/subscription.js";
 
+// rout main user
+import userMenu from "./src/Routes/Main/user.menu.js";
+
 // instancia de fastify
 const fastify = Fastify({
     logger: {
@@ -135,6 +138,10 @@ async function registerRoutes() {
     await fastify.register(Subscriptions, {
         prefix: '/api/v1/subscriptions'
     });
+
+    await fastify.register(userMenu, {
+        prefix: '/api/v1/user'
+    })
 };
 
 fastify.get('/health', async (request, reply) => {
