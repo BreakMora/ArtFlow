@@ -30,6 +30,8 @@ import commentRoutes from "./src/Routes/Posts/comment.js";
 // rout subscription
 import Subscriptions from "./src/Routes/subscription.js";
 
+import stripePlugin from './src/Routes/server.js';
+
 // instancia de fastify
 const fastify = Fastify({
     logger: {
@@ -113,6 +115,11 @@ fastify.get('/', (req, reply) => {
     reply.sendFile('index.html', path.join(__dirname, 'public'));
 });
 
+fastify.get('/cancel.html', (req, reply) => {
+  reply.sendFile('cancel.html', path.join(__dirname, 'public'));
+});
+
+
 // construye las rutas de la api
 async function registerRoutes() {
     // Contenido, pagina principal
@@ -142,11 +149,16 @@ async function registerRoutes() {
     await fastify.register(commentRoutes, {
         prefix: '/api/v1/comments'
     });
+    
 
     // Ruta de suscripciones
     await fastify.register(Subscriptions, {
         prefix: '/api/v1/subscriptions'
     });
+
+// En tu registerRoutes():
+await fastify.register(stripePlugin, { prefix: '/api/v1' });
+
 };
 
 fastify.get('/health', async (request, reply) => {

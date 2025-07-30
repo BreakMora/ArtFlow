@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const API_BASE_URL = 'http://localhost:3000/api/v1';
   const btnSuscribirse = document.querySelector('.btn-primary');
   const modal = document.getElementById('modal-suscripcion');
   const cerrarBtn = document.querySelector('.cerrar-modal');
@@ -33,32 +34,31 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   btnContinuar?.addEventListener('click', async () => {
-    const monto = parseInt(montoInput.value);
+  const monto = parseInt(montoInput.value);
 
-    if (isNaN(monto) || monto < 1 || montoInput.value.includes('.')) {
-      alert("Por favor ingresa un monto entero positivo.");
-      return;
+  if (isNaN(monto) || monto < 1 || montoInput.value.includes('.')) {
+    alert("Por favor ingresa un monto entero positivo.");
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/crear-suscripcion`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ monto })
+    });
+
+    const data = await response.json();
+
+    if (data.url) {
+      window.location.href = data.url;
     }
+  } catch (err) {
+    console.error(err);
+    alert("Error al procesar la suscripción.");
+  }
+});
 
-    try {
-      const res = await fetch('/api/v1/subscribe/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${tuToken}`  // Asegúrate de pasar un token válido
-        },
-        body: JSON.stringify({
-          artist_id: artista._id,  // Debes asegurarte de que `artista` esté definido
-          amount: monto
-        })
-      });
-
-      const data = await res.json();
-      window.location.href = data.url; // Redirige a Stripe
-
-    } catch (err) {
-      console.error(err);
-      alert("Error al procesar la suscripción.");
-    }
-  });
 });

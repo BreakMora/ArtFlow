@@ -5,6 +5,8 @@ services:
       - 3000:3000
     environment:
       - MONGO_URL=mongodb://root:Abcd123!@mongo:27017/ArtFlow?authSource=admin
+      - STRIPE_SECRET_KEY=sk_test_51RhzauRpagimvWOVxZJBg4UxikkxOyIsMZugLhZanICI68nobxO4E3sMUen3zpVEkpC0hDMrrxYDT1GkEH27IhqF000wOYwQEH
+      - APP_BASE_URL=http://localhost:3000
     depends_on:
       - mongo
     volumes:
