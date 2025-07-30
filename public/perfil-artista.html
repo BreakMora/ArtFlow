@@ -6,6 +6,8 @@
   <title>Perfil del Artista | ArtFlow</title>
   <link rel="stylesheet" href="/public/assets/css/base.css">
   <link rel="stylesheet" href="/public/assets/css/perfil-artista.css">
+  <link rel="stylesheet" href="/public/assets/css/suscribirse-artista.css" />
+
 </head>
 <body>
 
@@ -50,6 +52,44 @@
     import { loadSidebar } from '/public/assets/js/sidebar.js';
     loadSidebar();
   </script>
+
+
+<div class="modal" id="modal-suscripcion">
+  <div class="modal-contenido card">
+    <span class="cerrar-modal">&times;</span>
+    <main class="main-content">
+      <section class="carrito-section">
+        <h2>Apoya a <a href="perfil-artista.html">Nombre del Artista</a></h2>
+        <p class="sub-text">Elige cuánto deseas aportar mensualmente</p>
+
+        <div class="input-group">
+          <label for="monto">Monto mensual ($):</label>
+          <input type="number" id="monto" placeholder="Ej. 5.00"/>
+        </div>
+
+        <div class="resumen-suscripcion">
+          <h3>Resumen de Suscripción</h3>
+          <p><strong>Artista:</strong> Nombre del Artista</p>
+          <p><strong>Monto:</strong> $<span id="montoResumen">0.00</span> / mes</p>
+          <p class="mensaje-info">La suscripción se cobrará mensualmente hasta que decidas cancelarla.</p>
+
+          <div class="terminos-card">
+            <h4>Términos y Condiciones</h4>
+            <p>Al suscribirte aceptas que el pago se realizará automáticamente cada mes. Puedes cancelar en cualquier momento desde tu perfil.</p>
+          </div>
+
+          <div class="acciones">
+            <button class="cancelar-btn" id="btn-cancelar">Cancelar</button>
+            <button class="continuar-btn" id="btn-continuar">Continuar al pago</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+
+<script type="module" src="/public/assets/js/modalSuscripcion.js"></script>
 
 </body>
 </html>
