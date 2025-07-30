@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crear Publicación | ArtFlow</title>
+  <link rel="stylesheet" href="/public/assets/css/base.css">
+  <link rel="stylesheet" href="/public/assets/css/crear-publicacion.css">
+</head>
+<body>
+
+  <!-- Sidebar dinámico -->
+  <aside class="sidebar">
+    <div id="sidebar-placeholder"></div>
+  </aside>
+
+  <main class="container">
+    <section class="card publicacion-form">
+      <h1 class="text-center">Crear nueva publicación</h1>
+     <form id="form-publicacion">
+  <div class="form-group">
+    <label for="title">Título de la publicación</label>
+    <input type="text" id="title" name="title" maxlength="75" required placeholder="Ej: Mi obra más reciente">
+  </div>
+
+  <div class="form-group">
+    <label for="description">Descripción</label>
+    <textarea id="description" name="description" maxlength="2000" rows="4" required placeholder="Describe tu publicación..."></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="category">Categoría</label>
+    <select id="category" name="category" required>
+      <option value="">Selecciona una categoría</option>
+      <option value="musica">Música</option>
+      <option value="literatura">Literatura</option>
+      <option value="arte_digital">Arte digital</option>
+      <option value="fotografia">Fotografía</option>
+      <option value="ilustracion">Ilustración</option>
+      <option value="otro">Otro</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="type">Tipo de publicación</label>
+    <select id="type" name="type" required>
+      <option value="">Selecciona el tipo</option>
+      <option value="gratuita">Gratuita</option>
+      <option value="paga">De paga</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="multimedia">Enlaces multimedia (URL de imagen o video)</label>
+    <input type="url" id="multimedia" name="multimedia" placeholder="https://ejemplo.com/imagen.jpg">
+  </div>
+
+  <div class="form-group preview" id="preview-container" style="display: none;">
+    <label>Vista previa:</label>
+    <div id="preview"></div>
+  </div>
+
+  <div class="form-group text-center">
+    <button type="submit" class="btn-primary">Publicar</button>
+  </div>
+</form>
+<p id="error" class="error-text"></p>
+
+    </section>
+  </main>
+
+  <script type="module">
+    import { loadSidebar } from '/public/assets/js/sidebar.js';
+    loadSidebar();
+  </script>
+   
+  <script>
+
+    /*
+    const multimediaInput = document.getElementById('multimedia');
+    const previewContainer = document.getElementById('preview-container');
+    const preview = document.getElementById('preview');
+
+    multimediaInput.addEventListener('input', () => {
+      const url = multimediaInput.value.trim();
+      preview.innerHTML = ''; // reset
+
+      if (!url) {
+        previewContainer.style.display = 'none';
+        return;
+      }
+
+      previewContainer.style.display = 'block';
+      if (url.match(/\.(jpeg|jpg|gif|png|webp)$/)) {
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = "Vista previa de imagen";
+        img.style.maxWidth = "100%";
+        img.style.borderRadius = "var(--border-radius)";
+        preview.appendChild(img);
+      } else if (url.includes("youtube.com") || url.includes("youtu.be")) {
+        const embedUrl = url
+          .replace("watch?v=", "embed/")
+          .replace("youtu.be/", "www.youtube.com/embed/");
+        const iframe = document.createElement('iframe');
+        iframe.src = embedUrl;
+        iframe.width = "100%";
+        iframe.height = "315";
+        iframe.allowFullscreen = true;
+        iframe.style.borderRadius = "var(--border-radius)";
+        preview.appendChild(iframe);
+      } else {
+        const note = document.createElement('p');
+        note.textContent = "Formato no soportado para vista previa.";
+        preview.appendChild(note);
+      }
+    });*/
+  </script>
+
+   <script type="module" src="/public/assets/js/crearPublicacion.js"></script>
+</body>
+</html>

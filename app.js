@@ -15,7 +15,7 @@ const MONGO_URI = 'mongodb://root:Abcd123!@mongo:27017/ArtFlow?authSource=admin'
 import authPlugin from "./src/Routes/Auth/Plugins/auth.js";
 
 // route Connection Database
-import { connectDatabase } from "./src/Database/connection.js";
+import { connectDatabase } from "./src/DataBase/connection.js";
 
 // route Login and register
 import loginRoute from './src/Routes/Auth/login.js';
@@ -92,12 +92,20 @@ fastify.get('/header.html', (req, reply) => {
     reply.sendFile('header.html', path.join(__dirname, 'public'));
 });
 
+fastify.get('/crear-publicacion.html', (req, reply) => {
+    reply.sendFile('crear-publicacion.html', path.join(__dirname, 'public'));
+});
+
 fastify.get('/perfil-artista.html', (req, reply) => {
     reply.sendFile('perfil-artista.html', path.join(__dirname, 'public'));
 });
 
 fastify.get('/artista-dashboard.html', (req, reply) => {
     reply.sendFile('artista-dashboard.html', path.join(__dirname, 'public'));
+});
+
+fastify.get('/publicacion.html', (req, reply) => {
+    reply.sendFile('publicacion.html', path.join(__dirname, 'public'));
 });
 // Ruta principal
 fastify.get('/', (req, reply) => {
