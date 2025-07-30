@@ -11,6 +11,7 @@ async function Comments(fastify, options) {
         const user_id = request.user._id;
 
         try {
+            /*
             // Validar si es fan con subscripción o artista dueño de la publicación
             const isFanWithSubscription = request.user.role === 'fan' && subscription;
             const isOwnerArtist = request.user.role === 'artista' && publication.user_id.toString() === user_id.toString();
@@ -21,7 +22,7 @@ async function Comments(fastify, options) {
                     message: 'Debes estar suscrito al artista o ser el propietario de la publicación para comentar'
                 });
             }
-
+            */
             // Verificar si la publicación existe
             const publication = await PublicationModel.findById(publication_id);
             if (!publication) {
@@ -31,6 +32,7 @@ async function Comments(fastify, options) {
                 });
             }
 
+            /*
             // Verificar si el usuario está suscrito al artista de la publicación
             const subscription = await SubscriptionModel.findOne({
                 fan_id: user_id,
@@ -43,6 +45,31 @@ async function Comments(fastify, options) {
                 return reply.status(403).send({ 
                     status: 'error', 
                     message: 'Debes estar suscrito al artista para comentar' 
+                });
+            }
+            */
+            // Validar permisos para comentar
+            const isOwner = publication.user_id.toString() === user_id.toString();
+            const isAdmin = request.user.role === 'admin';
+            const isFree = publication.type === 'gratis';
+
+            let isSubscribed = false;
+            if (request.user.role === 'fan') {
+                const subscription = await SubscriptionModel.findOne({
+                    fan_id: user_id,
+                    artist_id: publication.user_id,
+                    status: 'active'
+                });
+                isSubscribed = !!subscription;
+            }
+
+            // Reglas:
+            const canComment = isOwner || isAdmin || (request.user.role === 'fan' && ((isFree) || isSubscribed));
+
+            if (!canComment) {
+                return reply.status(403).send({
+                    status: 'error',
+                    message: 'No tienes permiso para comentar en esta publicación'
                 });
             }
 
