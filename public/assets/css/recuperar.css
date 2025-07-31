@@ -1,0 +1,55 @@
+.recovery-section {
+  max-width: 500px;
+  margin: 2rem auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.recovery-section h2 {
+  text-align: center;
+  color: #6e3bbd;
+  margin-bottom: 1.5rem;
+}
+
+.recovery-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.recovery-form input {
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.recovery-form button {
+  background-color: #6e3bbd;
+  color: white;
+  border: none;
+  padding: 0.9rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.recovery-form button:hover {
+  background-color: #572b9e;
+}
+
+.password-rules {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.hidden {
+  display: none;
+}
+
+.active {
+  display: block;
+}

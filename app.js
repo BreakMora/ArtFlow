@@ -82,6 +82,14 @@ fastify.get('/fan-home.html', (req, reply) => {
     reply.sendFile('fan-home.html', path.join(__dirname, 'public'));
 });
 
+fastify.get('/home.html', (req, reply) => {
+    reply.sendFile('home.html', path.join(__dirname, 'public'));
+});
+
+fastify.get('/recuperar-contraseña.html', (req, reply) => {
+    reply.sendFile('recuperar-contraseña.html', path.join(__dirname, 'public'));
+});
+
 fastify.get('/registro.html', (req, reply) => {
     reply.sendFile('registro.html', path.join(__dirname, 'public'));
 });

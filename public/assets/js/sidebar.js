@@ -5,7 +5,7 @@ export function loadSidebar(tipo) {
   const baseMenu = `
     <h2 class="logo">ArtFlow</h2>
     <nav class="nav-menu">
-      <a href="#" class="nav-link active">Dashboard</a>
+      <a href="#" class="nav-link active">Perfil Público</a>
       ${tipo === 'artista' ? `
         <a href="#" class="nav-link">Configuración</a>
         <a href="#"class="nav-link">Método de Retiro</a>

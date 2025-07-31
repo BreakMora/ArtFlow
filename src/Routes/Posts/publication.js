@@ -455,6 +455,15 @@ async function Publications(fastify, options) {
         }
     });
 
+    fastify.get('/feed', async (req, reply) => {
+  const publications = await PublicationModel.find({ status: 'active' })
+    .populate('user_id','username')
+    .populate('multimedia')
+    .sort({ createdAt: -1 })
+    .limit(20);
+  reply.send({ status: 'success', data: { publications } });
+});
+
 }
 
 export default Publications;
