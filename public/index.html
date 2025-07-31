@@ -19,16 +19,15 @@
       <p>ArtFlow es tu espacio para descubrir artistas, compartir tu arte y dejar que fluya tu creatividad.</p>
     </div>
 
-    <div class="hero-images">
-      <div class="hero-image"><img src="https://picsum.photos/400/600?random=4" alt="Obra de arte 1" /></div>
-      <div class="hero-image"><img src="https://picsum.photos/400/600?random=6" alt="Obra de arte 2" /></div>
-      <div class="hero-image"><img src="https://picsum.photos/400/600?random=7" alt="Obra de arte 3" /></div>
-      <div class="hero-image"><img src="https://picsum.photos/400/600?random=24" alt="Obra de arte 4" /></div>
-    </div>
-  </main>
-  <script type="module">
+    <div class="hero-images" id="hero-images-container"></div>
+
+<script type="module">
   import { loadHeader } from '/public/assets/js/header.js';
+  import { loadHeroImages } from '/public/assets/js/loadHeroImages.js';
+
   loadHeader();
-</script>  
+  loadHeroImages();
+</script>
+
 </body>
 </html>

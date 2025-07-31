@@ -18,6 +18,15 @@ const publicationSchema = new mongoose.Schema({
         trim: true,
         maxlength: [200, 'La descripción no puede exceder los 200 caracteres']
     },
+    category:{
+        type: String,
+        required: [true, 'La categoría es requerida'],
+        enum: ['Musica', 'Arte Visual', 'Literatura', 'Digital', 'Fotografía', 'Graffiti', 'Otro']
+    },
+    type: {
+        type: String,
+        enum: ['gratis', 'premium'],
+    },
     likes: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

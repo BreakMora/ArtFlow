@@ -15,7 +15,7 @@ const MONGO_URI = 'mongodb://root:Abcd123!@mongo:27017/ArtFlow?authSource=admin'
 import authPlugin from "./src/Routes/Auth/Plugins/auth.js";
 
 // route Connection Database
-import { connectDatabase } from "./src/Database/connection.js";
+import { connectDatabase } from "./src/DataBase/connection.js";
 
 // route Login and register
 import loginRoute from './src/Routes/Auth/login.js';
@@ -29,6 +29,9 @@ import commentRoutes from "./src/Routes/Posts/comment.js";
 
 // rout subscription
 import Subscriptions from "./src/Routes/subscription.js";
+
+// rout main user
+import userMenu from "./src/Routes/Main/user.menu.js";
 
 // instancia de fastify
 const fastify = Fastify({
@@ -147,6 +150,10 @@ async function registerRoutes() {
     await fastify.register(Subscriptions, {
         prefix: '/api/v1/subscriptions'
     });
+
+    await fastify.register(userMenu, {
+        prefix: '/api/v1/user'
+    })
 };
 
 fastify.get('/health', async (request, reply) => {
