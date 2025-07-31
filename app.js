@@ -33,6 +33,8 @@ import Subscriptions from "./src/Routes/subscription.js";
 // rout main user
 import userMenu from "./src/Routes/Main/user.menu.js";
 
+import stripePlugin from './src/Routes/server.js';
+
 // instancia de fastify
 const fastify = Fastify({
     logger: {
@@ -88,8 +90,12 @@ fastify.get('/login.html', (req, reply) => {
     reply.sendFile('login.html', path.join(__dirname, 'public'));
 });
 
-fastify.get('/header.html', (req, reply) => {
-    reply.sendFile('header.html', path.join(__dirname, 'public'));
+fastify.get('/suscribirse-artista.html', (req, reply) => {
+    reply.sendFile('suscribirse-artista.html', path.join(__dirname, 'public'));
+});
+
+fastify.get('/ver-suscripciones.html', (req, reply) => {
+    reply.sendFile('ver-suscripciones.html', path.join(__dirname, 'public'));
 });
 
 fastify.get('/crear-publicacion.html', (req, reply) => {
@@ -111,6 +117,11 @@ fastify.get('/publicacion.html', (req, reply) => {
 fastify.get('/', (req, reply) => {
     reply.sendFile('index.html', path.join(__dirname, 'public'));
 });
+
+fastify.get('/cancel.html', (req, reply) => {
+  reply.sendFile('cancel.html', path.join(__dirname, 'public'));
+});
+
 
 // construye las rutas de la api
 async function registerRoutes() {
@@ -141,6 +152,7 @@ async function registerRoutes() {
     await fastify.register(commentRoutes, {
         prefix: '/api/v1/comments'
     });
+    
 
     // Ruta de suscripciones
     await fastify.register(Subscriptions, {
@@ -150,6 +162,10 @@ async function registerRoutes() {
     await fastify.register(userMenu, {
         prefix: '/api/v1/user'
     })
+
+// En tu registerRoutes():
+await fastify.register(stripePlugin, { prefix: '/api/v1' });
+
 };
 
 fastify.get('/health', async (request, reply) => {

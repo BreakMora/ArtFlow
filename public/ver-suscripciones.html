@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mis Suscripciones</title>
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/suscripciones.css" />
+</head>
+<body>
+  <div class="layout">
+    <!-- Sidebar izquierda -->
+    <aside class="sidebar">
+      <div id="sidebar-placeholder"></div>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+      <header class="top-bar">
+        <input type="text" class="search-bar" placeholder="Buscar artistas / temas" />
+      </header>
+
+      <section class="subscriptions-section">
+        <h1 class="section-title">Tus suscripciones</h1>
+        
+        <ul class="subscription-list">
+          <li class="subscription-item">
+            <a href="perfil-artista.html" class="artist-info">
+              <img src="assets/imgs/perfil-artista1.jpg" alt="Artista 1" class="artist-avatar">
+              <span class="artist-name">LunaArt</span>
+            </a>
+            <div class="subscription-details">
+              <p>Aportación mensual: <strong>$5.00</strong></p>
+              <p>Último cobro: 20/07/2025</p>
+              <p>Próximo cobro: 20/08/2025</p>
+            </div>
+            <div class="actions">
+              <a href="cancelar-suscripcion.html" class="cancel-btn">Cancelar</a>
+            </div>
+          </li>
+
+          <!-- Otro artista (dummy) -->
+          <li class="subscription-item">
+            <a href="perfil-artista.html" class="artist-info">
+              <img src="assets/imgs/perfil-artista2.jpg" alt="Artista 2" class="artist-avatar">
+              <span class="artist-name">SketchKing</span>
+            </a>
+            <div class="subscription-details">
+              <p>Aportación mensual: <strong>$3.00</strong></p>
+              <p>Último cobro: 10/07/2025</p>
+              <p>Próximo cobro: 10/08/2025</p>
+            </div>
+            <div class="actions">
+              <a href="cancelar-suscripcion.html" class="cancel-btn">Cancelar</a>
+            </div>
+          </li>
+
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <!-- Sidebar dinámico -->
+  <script type="module">
+    import { loadSidebar } from '/public/assets/js/sidebar.js';
+    loadSidebar();
+  </script>
+</body>
+</html>
+
+<!-- 
+Variables y procesos necesarios para hacerlo funcional:
+
+- Obtener el usuario activo desde localStorage (activeUser).
+- Hacer una petición al backend: GET /api/v1/subscriptions?user_id={id}
+- Para cada suscripción recibida:
+  - Mostrar nombre y foto del artista (artist.name, artist.profilePic)
+  - Mostrar la cantidad aportada (subscription.amount)
+  - Mostrar fecha del último cobro (subscription.lastPayment)
+  - Mostrar fecha del próximo cobro (subscription.nextPayment)
+  - Link a perfil-artista.html con ?id=artist._id
+  - Botón "Cancelar" con link a cancelar-suscripcion.html?id=subscription._id
+-->

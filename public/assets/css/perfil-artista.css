@@ -96,3 +96,124 @@ main.container {
   margin-left: 240px;
   padding: 2rem;
 }
+
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-contenido {
+  background-color: white;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  /*max-width: 800px; /* o 90% si quieres que sea relativo a la pantalla */
+  width: 70%;
+  position: relative;
+}
+
+.cerrar-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.perfil-modal {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+#form-suscripcion {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#form-suscripcion input[type="number"] {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+}
+.checkbox-condiciones {
+  display: block;
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  font-size: var(--text-sm);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Ocultar el checkbox nativo */
+.checkbox-condiciones input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Checkbox personalizado */
+.checkbox-condiciones .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1rem;
+  width: 1rem;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+/* Al pasar el mouse */
+.checkbox-condiciones:hover input ~ .checkmark {
+  background-color: #f1f1f1;
+}
+
+/* Cuando está marcado */
+.checkbox-condiciones input:checked ~ .checkmark {
+  background-color: var(--color-accent);
+}
+
+/* Crear el checkmark (oculto cuando no está marcado) */
+.checkbox-condiciones .checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Mostrar el checkmark cuando está marcado */
+.checkbox-condiciones input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Estilo del checkmark */
+.checkbox-condiciones .checkmark:after {
+  left: 0.35rem;
+  top: 0.1rem;
+  width: 0.25rem;
+  height: 0.5rem;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.checkbox-condiciones a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
