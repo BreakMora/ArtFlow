@@ -16,7 +16,6 @@ import authPlugin from "./src/Routes/Auth/Plugins/auth.js";
 
 // route Connection Database
 import { connectDatabase } from "./src/DataBase/connection.js";
-import { connectDatabase } from "./src/DataBase/connection.js";
 
 // route Login and register
 import loginRoute from './src/Routes/Auth/login.js';

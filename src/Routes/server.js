@@ -1,7 +1,7 @@
 import Stripe from 'stripe';
 
 export default async function stripePlugin(fastify, options) {
-  const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+  const stripe = Stripe(process.env.STRIPE_API_KEY);
   const BASE_URL = process.env.APP_BASE_URL || 'http://localhost:3000';
 
   fastify.post('/crear-suscripcion', async (req, reply) => {
@@ -20,7 +20,7 @@ export default async function stripePlugin(fastify, options) {
           },
           quantity: 1
         }],
-        success_url: `${BASE_URL}/descubre.html?session_id={CHECKOUT_SESSION_ID}`,
+        success_url: `${BASE_URL}/perfil-artista.html?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${BASE_URL}/cancel.html`
 
       });
