@@ -16,7 +16,7 @@
     "flow",
     "style"
   ],
-  "author": "Jesus Delgado, Edgar Mora, Yuriannis Soto",
+  "author": "Jesus Delgado, Edgar Mora, Yurianys Soto",
   "license": "MIT",
   "packageManager": "pnpm@10.12.1",
   "dependencies": {

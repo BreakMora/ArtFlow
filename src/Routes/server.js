@@ -22,7 +22,6 @@ export default async function stripePlugin(fastify, options) {
         }],
         success_url: `${BASE_URL}/perfil-artista.html?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${BASE_URL}/cancel.html`
-
       });
 
       return { url: session.url };
