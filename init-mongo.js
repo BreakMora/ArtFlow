@@ -75,7 +75,7 @@ db.users.insertMany([
     lastName: "System",
     username: "admin",
     email: "admin@artflow.com",
-    password: "admin123", // "admin123" hay que hashearlo
+    password: "$2a$12$4EAn.06j4.VVCQZKqsZYkujXf84qDI.kSOYD1Sg4axtL6FvJ4zLQi", // admin123
     gender: "masculino",
     birthDate: new Date("1980-01-01"),
     status: "active",
@@ -87,7 +87,7 @@ db.users.insertMany([
     lastName: "Pérez",
     username: "juanperez",
     email: "juan@artflow.com",
-    password: "user123", // "user123" hay que hashearlo
+    password: "$2a$12$C48HH/lPwiqvkz8eOiVHue5tQ3P7lgbcze5NvYSmo5cQe8Te/fk4S", // user123
     gender: "masculino",
     birthDate: new Date("1990-05-15"),
     status: "active",
@@ -99,7 +99,7 @@ db.users.insertMany([
     lastName: "García",
     username: "mariagarcia",
     email: "maria@artflow.com",
-    password: "fan123", // "fan123" hasheado
+    password: "$2a$12$ZpwqirfGLOsc8zONdajmYOtTnZrdHFfxAyZXMvCiyZ/oH3QvfyHZa", // fan123
     gender: "Femenino",
     birthDate: new Date("1995-07-20"),
     status: "active",
@@ -111,7 +111,7 @@ db.users.insertMany([
     lastName: "Rodríguez",
     username: "carlosartista",
     email: "carlos@artflow.com",
-    password: "artista123", // "artista123" hasheado
+    password: "$2a$12$NQ6LVMl13kwW3XRn7vdpzunIbgUV.qM.aR4Dsj3jRFkbPN.g8IEoa", // artista123
     gender: "Masculino",
     birthDate: new Date("1988-03-15"),
     status: "active",
@@ -160,9 +160,9 @@ const fanId = db.users.findOne({username: "mariagarcia"})._id;
 // Publicación 1
 const pub1 = db.publications.insertOne({
   user_id: artistId,
-  title: "Mi primera obra de arte",
-  description: "Esta es mi primera creación compartida con la comunidad. Espero que les guste.",
-  category: "Arte Visual",
+  title: "Mi visita al Zoologico",
+  description: "Hace poco fui al zoologico y vi unos pandas rojos. Espero que les guste.",
+  category: "Fotografía",
   type: "gratis",
   likes: [fanId], // El fan le dio like
   dislikes: [],
@@ -175,17 +175,17 @@ const pub1 = db.publications.insertOne({
 // Multimedia para publicación 1
 db.multimedia.insertOne({
   publication_id: pub1.insertedId,
-  url: "https://example.com/default-image1.jpg",
-  title: "Obra de arte abstracto",
-  format: "jpg"
+  url: "https://drive.google.com/thumbnail?id=1-NvDaC-mOJe4vGGMgGlzqbjnSCaUMooa&sz=w1000",
+  title: "Foto - Panda rojo",
+  format: "jpeg"
 });
 
 // Publicación 2
 const pub2 = db.publications.insertOne({
   user_id: artistId,
-  title: "Nuevo proyecto musical",
-  description: "Estoy trabajando en un nuevo álbum. Aquí hay un adelanto.",
-  category: "Musica",
+  title: "Ganyu pintura",
+  description: "Estoy trabajando en mi estilo de pintura. Aquí hay un adelanto.",
+  category: "Digital",
   type: "premium",
   likes: [],
   dislikes: [fanId], // El fan le dio dislike
@@ -198,9 +198,9 @@ const pub2 = db.publications.insertOne({
 // Multimedia para publicación 2
 db.multimedia.insertOne({
   publication_id: pub2.insertedId,
-  url: "https://example.com/default-audio1.mp3",
-  title: "Demo musical",
-  format: "mp3"
+  url: "https://drive.google.com/thumbnail?id=1xIJ4AFCC_-GgvE2JBEnh_mx1Ry6_vljs&sz=w1000",
+  title: "Ganyu",
+  format: "jpeg"
 });
 
 // Actualizar las publicaciones con referencias al multimedia

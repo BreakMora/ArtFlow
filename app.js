@@ -5,6 +5,8 @@ import fastifyStatic from "@fastify/static";
 import mongoose from "mongoose";
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { collectDefaultMetrics, Counter, register } from 'prom-client';
+
 
 // constantes, puertos y url de la base de datos
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -131,6 +133,7 @@ fastify.get('/cancel.html', (req, reply) => {
 });
 
 
+
 // construye las rutas de la api
 async function registerRoutes() {
     // Contenido, pagina principal
@@ -169,10 +172,12 @@ async function registerRoutes() {
 
     await fastify.register(userMenu, {
         prefix: '/api/v1/user'
-    })
+    });
 
-// En tu registerRoutes():
-await fastify.register(stripePlugin, { prefix: '/api/v1' });
+    // En tu registerRoutes():
+    await fastify.register(stripePlugin, {
+         prefix: '/api/v1' 
+    });
 
 };
 
@@ -190,6 +195,32 @@ fastify.get('/health', async (request, reply) => {
 });
 
 registerRoutes();
+
+// integracion de Prometheus
+collectDefaultMetrics({ register });
+
+const httpRequestsTotal = new Counter({
+  name: 'http_requests_total',
+  help: 'Total de requests HTTP',
+  labelNames: ['method', 'route', 'status_code'],
+});
+
+register.registerMetric(httpRequestsTotal); 
+
+fastify.get('/metrics', async (req, reply) => {
+  reply.header('Content-Type', register.contentType);
+  reply.send(await register.metrics());
+});
+
+fastify.addHook('onResponse', (request, reply, done) => {
+  const route = request.routerPath || request.url; // fallback a URL
+  httpRequestsTotal.inc({
+    method: request.method,
+    route: route,
+    status_code: reply.statusCode
+  });
+  done();
+});
 
 // manejo de iniciacion del servicio
 const start = async () => {
