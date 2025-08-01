@@ -1,101 +1,41 @@
-/* home.css */
-.layout {
-  display: grid;
-  grid-template-columns: 240px 1fr 240px;
-  min-height: 100vh;
-  background-color: var(--color-gray-light);
+
+  .post-title {
+  font-size: var(--text-lg);
+  margin: 0.5rem 0;
 }
 
-.sidebar, .right-sidebar {
-  background: var(--russian-violet-2);
-  padding: 1.5rem;
-    width: 240px;
+.post-description {
+  font-size: var(--text-md);
+  color: var(--color-gray-medium);
+  margin-bottom: 0.75rem;
 }
 
-.main-content {
-  background: var(--color-white);
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Top-bar */
-.top-bar {
-  margin-bottom: 1.5rem;
-}
-
-.search-bar {
-  width: 100%;
-  max-width: 600px;
-}
-
-/* Feed */
 .feed {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-}
-
-.post-card {
-  background: var(--color-white);
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
-  cursor: pointer;
   display: flex;
   flex-direction: column;
+  gap: 2rem;
+  margin-top: 2rem;
 }
 
-.post-card img {
-  width: 100%;
+.loading-spinner,
+.end-feed {
+  text-align: center;
+  color: var(--color-gray-medium);
+  margin: 1rem 0;
+}
+
+.no-img {
   height: 200px;
-  object-fit: cover;
-  border-top-left-radius: var(--border-radius);
-  border-top-right-radius: var(--border-radius);
-}
-
-.post-card .info {
-  padding: 1rem;
-  flex-grow: 1;
-}
-
-.post-card .actions {
-  padding: 0.5rem 1rem;
-  display: flex;
-  gap: 1rem;
-  border-top: 1px solid var(--color-gray-medium);
-}
-
-/* Right sidebar */
-.right-sidebar h3 {
-  color: var(--color-white);
-  margin-bottom: 1rem;
-}
-.subscription {
-  background: var(--russian-violet);
-  padding: 0.75rem;
-  border-radius: var(--border-radius);
+  background: var(--color-gray-light);
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-}
-.subscription .avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
+  justify-content: center;
+  color: var(--color-gray-medium);
+  border-radius: var(--border-radius);
 }
 
-.subscription a {
-  color: var(--color-white);
-  font-weight: 600;
-}
 
-.subscription p {
-  color: var(--mauve);
-  font-size: var(--text-sm);}
-
-/*.layout {
+.layout {
   display: flex;
   min-height: 100vh;
   background-color: var(--color-white);
@@ -217,4 +157,3 @@
   flex-direction: column;
   gap: 1rem;
 }
-*/
