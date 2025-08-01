@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inicio | ArtFlow</title>
+  <link rel="stylesheet" href="/public/assets/css/base.css" />
+  <link rel="stylesheet" href="/public/assets/css/fan-home.css" />
+</head>
+<body>
+  <div class="layout">
+    <!-- Sidebar izquierda -->
+    <aside class="sidebar">
+      <div id="sidebar-placeholder"></div>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+      <header class="top-bar">
+        <div id="topbar-placeholder"></div>
+      </header>
+
+      <!-- Carrusel de recomendados (puede quedarse estático o dinamizarse luego) -->
+      <section class="recomendados">
+        <h2>Artistas recomendados</h2>
+        <div class="carousel" id="recommended-artists">
+          <!-- … -->
+        </div>
+      </section>
+
+      <!-- Aquí irán las publicaciones -->
+      <section class="feed" id="feed-container">
+        <!-- renderFeed() volcará aquí los <article>… -->
+      </section>
+    </main>
+
+    <!-- Sidebar derecha (suscripciones) -->
+    <aside class="right-sidebar" id="subs-container">
+      <h3>Suscripciones activas</h3>
+      <!-- getSubscriptions() volcará aquí cada suscripción -->
+    </aside>
+  </div>
+
+  <!-- Carga dinámica de sidebar y topbar -->
+  <script type="module">
+    import { loadSidebar } from '/public/assets/js/sidebar.js';
+    import { loadTopbar }  from '/public/assets/js/topbar.js';
+    await loadSidebar();
+    await loadTopbar();
+  </script>
+
+  <!-- Tu lógica de página -->
+  <script type="module" src="/public/assets/js/home.js"></script>
+</body>
+</html>
+
+<!--
+Variables / procesos necesarios para hacerlo funcional:
+
+- En el backend (Fastify), exponer sin auth temporalmente:
+  fastify.get('/feed', async (req, reply) => { … reply.send({ status:'success', data:{ publications } }) });
+  fastify.get('/subscriptions', async (req, reply) => { … reply.send({ status:'success', data:{ subscriptions } }) });
+
+- Cliente:
+  • getFeed() → GET /api/v1/publications/feed  
+  • getSubscriptions() → GET /api/v1/subscriptions  
+  • renderFeed(publications)  
+  • renderSubscriptions(subscriptions)
+-->
+
+
+
+
+<!-- public/home.html 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inicio | ArtFlow</title>
+  <link rel="stylesheet" href="/public/assets/css/base.css" />
+  <link rel="stylesheet" href="/public/assets/css/home.css" />
+</head>
+<body>
+  <div class="layout">
+  Sidebar izquierda (menú principal)
+    <aside class="sidebar">
+      <div id="sidebar-placeholder"></div>
+    </aside>
+
+  Contenido principal 
+    <main class="main-content">
+    Topbar búsqueda reutilizable 
+      <header class="top-bar">
+        <div id="topbar-placeholder"></div>
+      </header>
+
+     Feed de publicaciones 
+      <section class="feed" id="feed-posts"></section>
+    </main>
+
+   Sidebar derecha (suscripciones para fan) 
+    <aside class="right-sidebar" id="right-sidebar-placeholder"></aside>
+  </div>
+
+  <script type="module">
+    import { loadSidebar } from '/public/assets/js/sidebar.js';
+    import { loadTopbar } from '/public/assets/js/topbar.js';
+    loadSidebar();
+    loadTopbar();
+  </script>
+  <script type="module" src="/public/assets/js/home.js"></script>
+</body>
+</html>
+-->

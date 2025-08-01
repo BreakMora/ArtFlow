@@ -17,7 +17,7 @@ export default async function stripePlugin(fastify, options) {
             product_data: { name: 'Suscripción Mensual' },
             unit_amount: monto * 100,
             recurring: { interval: 'month' }
-          },
+          }, 
           quantity: 1
         }],
         success_url: `${BASE_URL}/perfil-artista.html?session_id={CHECKOUT_SESSION_ID}`,
