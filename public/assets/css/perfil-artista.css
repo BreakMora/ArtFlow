@@ -97,7 +97,6 @@ main.container {
   padding: 2rem;
 }
 
-
 .modal {
   display: none;
   position: fixed;
@@ -216,4 +215,27 @@ main.container {
 .checkbox-condiciones a {
   color: var(--color-accent);
   text-decoration: underline;
+}
+
+.boton-flotante {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #a855f7;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.boton-flotante:hover {
+  background: #7e22ce;
 }

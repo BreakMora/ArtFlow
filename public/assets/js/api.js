@@ -1,5 +1,18 @@
 const API_URL = "http://localhost:3000/api/v1";
 
+async function authFetch(path, opts = {}) {
+  const token = localStorage.getItem('authToken');
+  const headers = {
+    ...opts.headers,
+    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+  };
+  const res = await fetch(`${API_URL}${path}`, { ...opts, headers });
+  const data = await res.json().catch(() => null);
+  if (!res.ok) throw new Error(data?.message || res.statusText);
+  return data;
+}
+
+
 export async function registerUser(userData) {
   const res = await fetch(`${API_URL}/auth/register`, {
     method: 'POST',
@@ -73,4 +86,26 @@ export async function getSubscriptions(/* token? */) {
     console.error('Error en getSubscriptions:', err);
     throw err;
   }
+}
+
+export function getArtist(id) {
+  return authFetch(`/artists/${id}`, { method: 'GET' });
+}
+
+export function getArtistPosts(id, { freeOnly = false, limit = 20 } = {}) {
+  const qs = new URLSearchParams();
+  if (freeOnly) qs.set('freeOnly', 'true');
+  if (limit)    qs.set('limit', limit);
+  return authFetch(`/artists/${id}/posts?${qs}`, { method: 'GET' });
+}
+// check subscription
+export function checkSubscription(artistId) {
+  return authFetch(`/artists/${artistId}/check-subscription`);
+}
+// subscribe / unsubscribe
+export function subscribe(artistId) {
+  return authFetch(`/artists/${artistId}/subscribe`, { method: 'POST' });
+}
+export function unsubscribe(artistId) {
+  return authFetch(`/artists/${artistId}/unsubscribe`, { method: 'DELETE' });
 }

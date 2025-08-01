@@ -37,6 +37,8 @@ import userMenu from "./src/Routes/Main/user.menu.js";
 
 import stripePlugin from './src/Routes/server.js';
 
+import profileRoutes from './src/Routes/Artists/profile.js'
+
 // instancia de fastify
 const fastify = Fastify({
     logger: {
@@ -178,6 +180,11 @@ async function registerRoutes() {
     await fastify.register(stripePlugin, {
          prefix: '/api/v1' 
     });
+
+    await fastify.register(profileRoutes, { 
+        prefix: '/api/v1/artists' 
+    });
+
 
 };
 

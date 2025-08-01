@@ -4,57 +4,57 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Perfil del Artista | ArtFlow</title>
-  <link rel="stylesheet" href="/public/assets/css/base.css">
-  <link rel="stylesheet" href="/public/assets/css/perfil-artista.css">
+  <link rel="stylesheet" href="/public/assets/css/base.css" />
+  <link rel="stylesheet" href="/public/assets/css/perfil-artista.css" />
   <link rel="stylesheet" href="/public/assets/css/suscribirse-artista.css" />
-
 </head>
 <body>
+  <div class="layout">
+    <!-- Sidebar izquierda -->
+    <aside class="sidebar">
+      <div id="sidebar-placeholder"></div>
+    </aside>
 
-  <!-- Sidebar dinámico -->
-<aside class="sidebar">
-    <div id="sidebar-placeholder"></div>
- </aside>
-
-  <main class="container">
-    <section class="perfil card">
-      <div class="perfil-header">
-        <img src="https://i.pravatar.cc/150?img=32" alt="Foto del artista" class="foto-perfil">
-        <div class="perfil-info">
-          <h1 class="nombre-artista">@Artista1</h1>
-          <p class="bio">Artista digital enfocada en ilustración fantástica. Aquí comparto obras gratis y exclusivas para mis fans 💜</p>
-          <div class="social-links">
-            <a href="#">🌐 Web</a>
-            <a href="#">🐦 Twitter</a>
-            <a href="#">📷 Instagram</a>
-          </div>
-        </div>
+    <!-- Contenido principal -->
+    <main class="main-content">
+      <!-- Cabecera del artista -->
+      <section class="perfil card">
+        <div class="perfil-header">
+          <img id="foto-perfil" src="" alt="Foto del artista" class="foto-perfil" />
+          <div class="perfil-info">
+            <h1 id="nombre-artista" class="nombre-artista">@Artista</h1>
+            <p id="bio-artista" class="bio">Bio del artista aquí…</p>
+            <div class="social-links">
+              <a id="web" href="#" target="_blank">🌐 Web</a>
+              <a id="twitter" href="#" target="_blank">🐦 Twitter</a>
+              <a id="instagram" href="#" target="_blank">📷 Instagram</a>
+            </div>
+         </div>
         <div class="suscripcion">
           <button class="btn-primary">Suscribirse</button>
         </div>
       </div>
-    </section>
+      </section>
 
-    <section class="galeria">
-      <h2>Últimas publicaciones gratuitas</h2>
-      <div class="grid-galeria">
-        <a href="publicacion.html?id=1"><img src="https://picsum.photos/300/300?random=1" alt="Publicación 1"></a>
-        <a href="publicacion.html?id=2"><img src="https://picsum.photos/300/300?random=2" alt="Publicación 2"></a>
-        <a href="publicacion.html?id=3"><img src="https://picsum.photos/300/300?random=3" alt="Publicación 3"></a>
-        <a href="publicacion.html?id=4"><img src="https://picsum.photos/300/300?random=4" alt="Publicación 4"></a>
-        <a href="publicacion.html?id=5"><img src="https://picsum.photos/300/300?random=5" alt="Publicación 5"></a>
-      </div>
-    </section>
+      <!-- Galería de publicaciones -->
+      <section class="galeria">
+        <h2>Publicaciones</h2>
+        <div id="galeria-posts" class="grid-galeria">
+          <!-- perfilArtista.js inyectará aquí los <a>…</a> -->
+        </div>
+      </section>
+    </main>
+  </div>
+  <!-- Botón flotante crear publicación -->
+  <button class="boton-flotante" onclick="location.href='crear-publicacion.html'">+</button>
 
-  </main>
-
-<script type="module">
+  <!-- Carga de sidebar -->
+  <script type="module">
     import { loadSidebar } from '/public/assets/js/sidebar.js';
-    loadSidebar();
+    await loadSidebar();
   </script>
 
-
-<div class="modal" id="modal-suscripcion">
+  <div class="modal" id="modal-suscripcion">
   <div class="modal-contenido card">
     <span class="cerrar-modal">&times;</span>
     <main class="main-content">
@@ -90,11 +90,70 @@
 
 
 <script type="module" src="/public/assets/js/modalSuscripcion.js"></script>
+  <!-- Lógica dinámica -->
+  <script type="module" src="/public/assets/js/perfilArtista.js"></script>
+</body>
+</html>
+
+
+ <!-- Lógica de perfil dinámico 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil del Artista | ArtFlow</title>
+  <link rel="stylesheet" href="/public/assets/css/base.css">
+  <link rel="stylesheet" href="/public/assets/css/perfil-artista.css">
+  <link rel="stylesheet" href="/public/assets/css/suscribirse-artista.css" />
+
+</head>
+<body>
+
+Sidebar dinámico 
+<aside class="sidebar">
+    <div id="sidebar-placeholder"></div>
+ </aside>
+
+  <main class="container">
+    <section class="perfil card">
+      <div class="perfil-header">
+        <img src="https://i.pravatar.cc/150?img=32" alt="Foto del artista" class="foto-perfil">
+        <div class="perfil-info">
+          <h1 class="nombre-artista">@Artista1</h1>
+          <p class="bio">Artista digital enfocada en ilustración fantástica. Aquí comparto obras gratis y exclusivas para mis fans 💜</p>
+          <div class="social-links">
+            <a href="#">🌐 Web</a>
+            <a href="#">🐦 Twitter</a>
+            <a href="#">📷 Instagram</a>
+          </div>
+       
+    </section>
+
+    <section class="galeria">
+      <h2>Últimas publicaciones gratuitas</h2>
+      <div class="grid-galeria">
+        <a href="publicacion.html?id=1"><img src="https://picsum.photos/300/300?random=1" alt="Publicación 1"></a>
+        <a href="publicacion.html?id=2"><img src="https://picsum.photos/300/300?random=2" alt="Publicación 2"></a>
+        <a href="publicacion.html?id=3"><img src="https://picsum.photos/300/300?random=3" alt="Publicación 3"></a>
+        <a href="publicacion.html?id=4"><img src="https://picsum.photos/300/300?random=4" alt="Publicación 4"></a>
+        <a href="publicacion.html?id=5"><img src="https://picsum.photos/300/300?random=5" alt="Publicación 5"></a>
+      </div>
+    </section>
+
+  </main>
+
+<script type="module">
+    import { loadSidebar } from '/public/assets/js/sidebar.js';
+    loadSidebar();
+  </script>
+
+
 
 </body>
 </html>
 
-<!--
+
 📌 Variables necesarias para hacerlo funcional:
 
 Desde la base de datos:
