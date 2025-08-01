@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   app:
     build: .
@@ -14,6 +16,10 @@ services:
       - ./public:/app/public:ro
     networks:
       - development
+    labels:  
+      - "prometheus-job=fastify-app"
+      - "prometheus-port=3000"
+      - "prometheus-path=/metrics"
 
   mongo:
     image: mongo
@@ -46,9 +52,34 @@ services:
     networks:
       - development
 
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml  
+    networks:
+      - development
+    depends_on:
+      - app  
+  grafana:
+    image: grafana/grafana-oss:latest
+    ports:
+      - 3001:3000  
+    volumes:
+      - grafana_data:/var/lib/grafana  e 
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=grafana-admin  
+    networks:
+      - development
+    depends_on:
+      - prometheus  
 volumes:
   mongo_data:
   node_modules:
+  grafana_data: 
 
 networks:
   development:
