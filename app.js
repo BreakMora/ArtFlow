@@ -169,10 +169,12 @@ async function registerRoutes() {
 
     await fastify.register(userMenu, {
         prefix: '/api/v1/user'
-    })
+    });
 
-// En tu registerRoutes():
-await fastify.register(stripePlugin, { prefix: '/api/v1' });
+    // En tu registerRoutes():
+    await fastify.register(stripePlugin, {
+         prefix: '/api/v1' 
+    });
 
 };
 
