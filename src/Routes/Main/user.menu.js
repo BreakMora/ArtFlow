@@ -6,76 +6,46 @@ import bcrypt from 'bcrypt';
 
 async function userMenu(fastify, options) {
 
-    // Endpoint para obtener el feed del usuario (publicaciones de artistas suscritos)
-    fastify.get('/feed', { preValidation: [fastify.authenticate] }, async (request, reply) => {
-        try {
-            const userId = request.user._id;
-            const userRole = request.user.role;
+   // Endpoint para obtener el feed del usuario (publicaciones de artistas suscritos)
+fastify.get('/feed', { preValidation: [fastify.authenticate] }, async (request, reply) => {
+    try {
+        const userId = request.user._id;
+        const userRole = request.user.role;
 
-            // Configuración de paginación
-            const page = parseInt(request.query.page) || 1;
-            const limit = parseInt(request.query.limit) || 10;
-            const skip = (page - 1) * limit;
+        // Configuración de paginación
+        const page = parseInt(request.query.page) || 1;
+        const limit = parseInt(request.query.limit) || 10;
+        const skip = (page - 1) * limit;
 
-            // Si es admin, puede ver todas las publicaciones activas
-            if (userRole === 'admin') {
-                const publications = await PublicationModel.find({ status: 'active' })
-                    .populate('user_id', 'username email')
-                    .populate('multimedia')
-                    .sort({ createdAt: -1 })
-                    .skip(skip)
-                    .limit(limit);
+        // Si es admin, puede ver todas las publicaciones activas
+        if (userRole === 'admin') {
+            const publications = await PublicationModel.find({ status: 'active' })
+                .populate('user_id', 'username email')
+                .populate('multimedia')
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limit);
 
-                const total = await PublicationModel.countDocuments({ status: 'active' });
+            const total = await PublicationModel.countDocuments({ status: 'active' });
 
-                return reply.status(200).send({
-                    status: 'success',
-                    data: {
-                        publications,
-                        pagination: {
-                            currentPage: page,
-                            totalPages: Math.ceil(total / limit),
-                            totalResults: total
-                        }
+            return reply.status(200).send({
+                status: 'success',
+                data: {
+                    publications,
+                    pagination: {
+                        currentPage: page,
+                        totalPages: Math.ceil(total / limit),
+                        totalResults: total
                     }
-                });
-            }
-
-            // Si es artista, no tiene feed
-            if (userRole === 'artista') {
-                return reply.status(200).send({
-                    status: 'success',
-                    data: {
-                        publications: [],
-                        pagination: {
-                            currentPage: 1,
-                            totalPages: 0,
-                            totalResults: 0
-                        }
-                    },
-                    message: 'Los artistas no tienen feed de publicaciones'
-                });
-            }
-
-            // Si es fan, obtener publicaciones de artistas suscritos y publicaciones gratis
-            const subscriptions = await SubscriptionModel.find({
-                fan_id: userId,
-                status: 'active'
+                }
             });
+        }
 
-            const subscribedArtists = subscriptions.map(sub => sub.artist_id);
-
+        // Si es artista, solo ve sus propias publicaciones
+        if (userRole === 'artista') {
             const filter = {
-                status: 'active',
-                $or: [
-                    {
-                        $and: [
-                            { user_id: { $in: subscribedArtists } },
-                            { type: { $in: ['gratis', 'premium'] } }
-                        ]
-                    },
-                    { type: 'gratis' }
-                ]
+                user_id: userId,
+                status: 'active'
             };
 
             const publications = await PublicationModel.find(filter)
@@ -98,7 +68,7 @@ async function userMenu(fastify, options) {
                 };
             }));
 
-            reply.status(200).send({
+            return reply.status(200).send({
                 status: 'success',
                 data: {
                     publications: publicationsWithComments,
@@ -109,16 +79,70 @@ async function userMenu(fastify, options) {
                     }
                 }
             });
-
-        } catch (error) {
-            fastify.log.error(error);
-            reply.status(500).send({
-                status: 'error',
-                message: 'Error al obtener el feed de publicaciones',
-                error: error.message
-            });
         }
-    });
+
+        // Si es fan, obtener publicaciones de artistas suscritos y publicaciones gratis
+        const subscriptions = await SubscriptionModel.find({
+            fan_id: userId,
+            status: 'active'
+        });
+
+        const subscribedArtists = subscriptions.map(sub => sub.artist_id);
+
+        const filter = {
+            status: 'active',
+            $or: [
+                {
+                    $and: [
+                        { user_id: { $in: subscribedArtists } },
+                        { type: { $in: ['gratis', 'premium'] } }
+                    ]
+                },
+                { type: 'gratis' }
+            ]
+        };
+
+        const publications = await PublicationModel.find(filter)
+            .populate('user_id', 'username email')
+            .populate('multimedia')
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+
+        const total = await PublicationModel.countDocuments(filter);
+
+        // Obtener comentarios para cada publicación
+        const publicationsWithComments = await Promise.all(publications.map(async pub => {
+            const comments = await CommentModel.find({ publication_id: pub._id })
+                .populate('user_id', 'username')
+                .limit(3); // Solo los últimos 3 comentarios
+            return {
+                ...pub.toObject(),
+                comments
+            };
+        }));
+
+        reply.status(200).send({
+            status: 'success',
+            data: {
+                publications: publicationsWithComments,
+                pagination: {
+                    currentPage: page,
+                    totalPages: Math.ceil(total / limit),
+                    totalResults: total
+                }
+            }
+        });
+
+    } catch (error) {
+        fastify.log.error(error);
+        reply.status(500).send({
+            status: 'error',
+            message: 'Error al obtener el feed de publicaciones',
+            error: error.message
+        });
+    }
+});
 
     // Endpoint para obtener artistas recomendados (solo para fans)
     fastify.get('/recommended-artists', { preValidation: [fastify.authenticate] }, async (request, reply) => {

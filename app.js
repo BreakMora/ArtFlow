@@ -196,8 +196,6 @@ fastify.get('/health', async (request, reply) => {
 
 registerRoutes();
 
-
-
 // integracion de Prometheus
 collectDefaultMetrics({ register });
 
@@ -223,10 +221,6 @@ fastify.addHook('onResponse', (request, reply, done) => {
   });
   done();
 });
-
-
-
-
 
 // manejo de iniciacion del servicio
 const start = async () => {
