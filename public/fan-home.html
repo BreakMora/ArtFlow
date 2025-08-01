@@ -1,237 +1,152 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Inicio | ArtFlow</title>
   <link rel="stylesheet" href="public/assets/css/base.css" />
   <link rel="stylesheet" href="public/assets/css/fan-home.css" />
 </head>
+
 <body>
   <div class="layout">
-    <!-- Sidebar izquierda (menú principal) -->
+    <!-- Sidebar izquierda -->
     <aside class="sidebar">
       <div id="sidebar-placeholder"></div>
     </aside>
 
     <!-- Contenido principal -->
     <main class="main-content">
-      
       <header class="top-bar">
-      <div id="topbar-placeholder"></div> 
-    </header>
+        <div id="topbar-placeholder"></div>
+      </header>
 
       <section class="recomendados">
         <h2>Artistas recomendados</h2>
-        <div class="carousel">
-          <div class="artist-bubble"><a href="perfil-artista.html">Artista A</a></div>
-          <div class="artist-bubble"><a href="perfil-artista.html">Artista B</a></div>
-          <div class="artist-bubble"><a href="perfil-artista.html">Arte Digital</a></div>
-          <div class="artist-bubble"><a href="perfil-artista.html">Acrílico</a></div>
-          <div class="artist-bubble"><a href="perfil-artista.html">Arte Fantástico</a></div>
+        <div class="carousel" id="recomendados-carousel">
+          <p>Cargando artistas recomendados...</p>
         </div>
       </section>
 
-      <section class="feed">
-        <article class="post-card" onclick="location.href='publicacion.html'">
-          <header>
-            <div class="artist-info">
-              <strong><a href="perfil-artista.html">🎨 Claude Monet</a></strong>
-              <span class="tag">Impresionismo</span>
-            </div>
-            <span class="date">7 jul.</span>
-          </header>
-          <img src="https://picsum.photos/800/800?random=1" alt="Obra de arte"/>
-          <footer class="stats">
-            ❤️ 211 &nbsp; 💬 10 &nbsp; 👁️ 344
-          </footer>
-        </article>
-
-        <article class="post-card" onclick="location.href='publicacion.html'">
-          <header>
-            <div class="artist-info">
-              <strong><a href="perfil-artista.html">🌌 Van Gogh</a></strong>
-              <span class="tag">Postimpresionismo</span>
-            </div>
-            <span class="date">5 jul.</span>
-          </header>
-          <img src="https://picsum.photos/800/800?random=2" alt="Obra de arte"/>
-          <footer class="stats">
-            ❤️ 310 &nbsp; 💬 42 &nbsp; 👁️ 1002
-          </footer>
-        </article>
+      <section class="feed" id="feed">
+        <p>Cargando publicaciones...</p>
       </section>
     </main>
 
-    <!-- Sidebar derecha (suscripciones activas) -->
-    <aside class="right-sidebar">
+    <!-- Sidebar derecha -->
+    <aside class="right-sidebar" id="subs-sidebar">
       <h3>Suscripciones activas</h3>
-      <div class="subscription">
-        <img src="https://picsum.photos/50/50?artist=1" alt="Perfil" class="avatar" />
-        <div class="sub-info">
-          <a href="perfil-artista.html">Claude Monet</a>
-          <p>3 nuevas publicaciones</p>
-        </div>
-      </div>
-      <div class="subscription">
-        <img src="https://picsum.photos/50/50?artist=2" alt="Perfil" class="avatar" />
-        <div class="sub-info">
-          <a href="perfil-artista.html">Van Gogh</a>
-          <p>1 nueva publicación</p>
-        </div>
-      </div>
+      <!-- Suscripciones dinámicas -->
     </aside>
   </div>
 
+  <!-- Sidebar dinámica -->
   <script type="module">
     import { loadSidebar } from '/public/assets/js/sidebar.js';
     loadSidebar();
   </script>
 
-</body>
-</html>
+  <!-- Feed dinámico -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const feed = document.getElementById('feed');
+      const carousel = document.getElementById('recomendados-carousel');
+      const sidebar = document.getElementById('subs-sidebar');
 
+      const token = localStorage.getItem('authToken');
 
-<!-- 
+      if (!token) {
+        feed.innerHTML = '<p>Debes iniciar sesión para ver el contenido.</p>';
+        return;
+      }
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Inicio | ArtFlow</title>
-  <link rel="stylesheet" href="public/assets/css/base.css" />
-  <link rel="stylesheet" href="public/assets/css/fan-home.css" />
-</head>
-<body>
-  <div class="layout">
+      try {
 
-    <main class="main-content">
-      <header class="top-bar">
-        <input 
-          type="text" 
-          class="search-bar" 
-          placeholder="Buscar artistas / temas"
-          oninput="handleSearch(this.value)"
-        />
-      </header>
+        const fetchOptions = {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        };
 
-      
-      <section class="recomendados">
-        <h2>Artistas recomendados</h2>
-        <div class="carousel" id="recommended-artists">
-           Ejemplo de render dinámico (plantilla): 
-        
-            recommendedArtists.forEach(artist => {
-              <div class="artist-bubble">
-                ${artist.name}
-              </div>
-            })
-       
-        </div>
-      </section>
+        const resFeed = await fetch('/api/v1/user/feed', fetchOptions);
+        const feedData = await resFeed.json();
 
-      <section class="feed" id="feed-posts">
-      
-          posts.forEach(post => {
-            <article class="post-card">
-              <header>
-                <div class="artist-info">
-                  <strong>${post.artist.name}</strong>
-                  <span class="tag">${post.artist.category}</span>
-                </div>
-                <span class="date">${formatDate(post.createdAt)}</span>
-              </header>
-              <img src="${post.imageUrl}" alt="Obra de ${post.artist.name}" />
-              <footer class="stats">
-                ❤️ ${post.likes} &nbsp; 💬 ${post.comments} &nbsp; 👁️ ${post.views}
-              </footer>
-            </article>
-          })
-       
-      </section>
-    </main>
-  </div>
+        if (feedData.status === 'success') {
+          const pubs = feedData.data.publications;
+          feed.innerHTML = pubs.length ? '' : '<p>No hay publicaciones por ahora.</p>';
 
-  <script type="module">
-    // ====== Variables simuladas desde el backend ======
-    const user = {
-      id: "fan123",
-      username: "YurianysFan",
-    };
+          pubs.forEach(pub => {
+            const artist = pub.user_id?.username || 'Artista';
+            const artistId = pub.user_id?._id || '#';
+            const tag = pub.category || 'Sin categoría';
+            const date = new Date(pub.createdAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+            const img = pub.multimedia?.[0]?.url || 'https://picsum.photos/800/800?random=404';
 
-    const recommendedArtists = [
-      { id: "a1", name: "Claude Monet" },
-      { id: "a2", name: "Van Gogh" },
-      { id: "a3", name: "Arte Digital" },
-      { id: "a4", name: "Acrílico" },
-      { id: "a5", name: "Arte Fantástico" },
-    ];
+            const commentsHTML = pub.comments?.map(c => `
+          <p><strong>${c.user_id?.username || 'Anon'}:</strong> ${c.content}</p>
+        `).join('') || '';
 
-    const posts = [
-      {
-        id: "p1",
-        artist: { name: "Claude Monet", category: "Impresionismo" },
-        imageUrl: "https://picsum.photos/800/800?random=1",
-        likes: 211,
-        comments: 10,
-        views: 344,
-        createdAt: "2025-07-07",
-      },
-      {
-        id: "p2",
-        artist: { name: "Van Gogh", category: "Postimpresionismo" },
-        imageUrl: "https://picsum.photos/800/800?random=2",
-        likes: 310,
-        comments: 42,
-        views: 1002,
-        createdAt: "2025-07-05",
-      },
-    ];
-
-    // ====== Funciones ======
-    function formatDate(dateStr) {
-      const options = { day: "numeric", month: "short" };
-      const date = new Date(dateStr);
-      return date.toLocaleDateString("es-ES", options);
-    }
-
-    function renderRecommendedArtists() {
-      const container = document.getElementById("recommended-artists");
-      container.innerHTML = recommendedArtists
-        .map(artist => `<div class="artist-bubble">${artist.name}</div>`)
-        .join("");
-    }
-
-    function renderPosts() {
-      const container = document.getElementById("feed-posts");
-      container.innerHTML = posts
-        .map(post => `
-          <article class="post-card">
+            const postHTML = `
+          <article class="post-card" onclick="location.href='publicacion.html?id=${pub._id}'">
             <header>
               <div class="artist-info">
-                <strong>${post.artist.name}</strong>
-                <span class="tag">${post.artist.category}</span>
+                <strong><a href="perfil-artista.html?id=${artistId}" onclick="event.stopPropagation()">${artist}</a></strong>
+                <span class="tag">${tag}</span>
               </div>
-              <span class="date">${formatDate(post.createdAt)}</span>
+              <span class="date">${date}</span>
             </header>
-            <img src="${post.imageUrl}" alt="Obra de ${post.artist.name}" />
+            <img src="${img}" alt="Obra de arte" />
             <footer class="stats">
-              ❤️ ${post.likes} &nbsp; 💬 ${post.comments} &nbsp; 👁️ ${post.views}
+              ❤ ${pub.likes || 0} &nbsp; 💬 ${pub.comments?.length || 0} &nbsp; 👁 ${pub.views || 0}
             </footer>
+            ${commentsHTML ? `<div class="comments">${commentsHTML}</div>` : ''}
           </article>
-        `)
-        .join("");
-    }
+        `;
+            feed.insertAdjacentHTML('beforeend', postHTML);
+          });
+        } else {
+          feed.innerHTML = `<p>${feedData.message || 'No se pudo cargar el feed.'}</p>`;
+        }
 
-    function handleSearch(query) {
-      console.log("Buscando:", query);
-      // Aquí iría una llamada fetch() al backend con el término de búsqueda.
-    }
+        const resRecs = await fetch('/api/v1/user/recommended-artists', fetchOptions);
+        const recData = await resRecs.json();
 
-    // ====== Inicialización ======
-    renderRecommendedArtists();
-    renderPosts();
+        if (recData.status === 'success') {
+          const artists = recData.data.artists;
+          carousel.innerHTML = artists.length
+            ? artists.map(a => `<div class="artist-bubble"><a href="perfil-artista.html?id=${a._id}">${a.username}</a></div>`).join('')
+            : '<p>No hay recomendaciones nuevas.</p>';
+        } else {
+          carousel.innerHTML = `<p>${recData.message || 'Error al cargar artistas recomendados.'}</p>`;
+        }
+
+        // Cargar suscripciones activas
+        const resProfile = await fetch('/api/v1/user/profile', fetchOptions);
+        const profileData = await resProfile.json();
+
+        if (profileData.status === 'success' && profileData.data.subscriptions) {
+          const subs = profileData.data.subscriptions;
+          sidebar.innerHTML += subs.length
+            ? subs.map(sub => `
+          <div class="subscription">
+            <img src="https://picsum.photos/50/50?random=${Math.random()}" alt="Perfil" class="avatar" />
+            <div class="sub-info">
+              <a href="perfil-artista.html?id=${sub.artist_id._id}">${sub.artist_id.username}</a>
+              <p>Artista suscrito</p>
+            </div>
+          </div>`).join('')
+            : '<p>No estás suscrito a ningún artista.</p>';
+        }
+
+      } catch (error) {
+        feed.innerHTML = '<p>Error al conectar con el servidor.</p>';
+        console.error('Error:', error);
+      }
+    });
   </script>
 </body>
-</html> -->
+
+</html>

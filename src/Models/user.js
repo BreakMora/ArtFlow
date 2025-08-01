@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import UserRole from './userRole.js';
 import bcrypt from 'bcrypt';
 
-
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -63,20 +62,24 @@ userSchema.methods.getRole = async function() {
         console.error('Error al obtener roles:', error);
     }
 }
-/* hash y comparar contraseñas 
-// 🔐 Comparar contraseñas
-userSchema.methods.comparePassword = function(inputPassword) {
-  return bcrypt.compare(inputPassword, this.password);
+
+// Método para comparar contraseñas
+userSchema.methods.comparePassword = async function(candidatePassword) {
+    return await bcrypt.compare(candidatePassword, this.password);
 };
 
-// 🔒 Hashear contraseña antes de guardar
+// Middleware para hashear antes de guardar
 userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
+    if (!this.isModified('password')) return next();
+    
+    try {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+        next();
+    } catch (error) {
+        next(error);
+    }
 });
-*/
+
 const User = mongoose.model('User', userSchema);
 export default User;
