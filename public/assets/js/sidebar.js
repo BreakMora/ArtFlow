@@ -26,6 +26,8 @@ export function loadSidebar(tipo) {
   // Lógica de logout (puedes reemplazarla con la real)
   document.getElementById('cerrar-sesion').addEventListener('click', () => {
     // Aquí limpias sesión/cookies/localStorage y rediriges
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('activeUser');
     alert('Sesión cerrada');
     window.location.href = '/login.html';
   });
