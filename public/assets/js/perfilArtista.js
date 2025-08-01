@@ -1,67 +1,86 @@
-
-import { getArtist, getArtistPosts, checkSubscription, subscribe, unsubscribe } from './api.js';
-
+// public/assets/js/perfilArtista.js
+import {
+  getArtist,
+  getArtistPosts,
+  checkSubscription,
+  subscribe,
+  unsubscribe
+} from './api.js';
+ 
 function getQueryParam(name) {
   return new URLSearchParams(window.location.search).get(name);
 }
-
+ 
 async function init() {
-  // 1) Determinar el artistId (viene en ?id= o, si soy artista, del token)
+  // 1) Determinar artistId
   let artistId = getQueryParam('id');
   const me = JSON.parse(localStorage.getItem('activeUser') || '{}');
-  if (!artistId) {
-    if (me._id && me.role === 'artista') artistId = me._id;
-    else return console.error('PerfilArtista: no hay id de artista en la URL ni soy artista.');
-  }
-
-  // 2) Capturar los nodos (al menos necesitamos la galería)
-  const fotoEl    = document.querySelector('.foto-perfil');
-  const nombreEl  = document.querySelector('.nombre-artista');
-  const bioEl     = document.querySelector('.bio');
-  const susWrp    = document.querySelector('.suscripcion');
+  if (!artistId && me.role === 'artista') artistId = me._id;
+  if (!artistId) return console.error('PerfilArtista: faltó ID de artista.');
+ 
+  // 2) Capturar nodos
+  const fotoEl    = document.getElementById('foto-perfil');
+  const nombreEl  = document.getElementById('nombre-artista');
+  const bioEl     = document.getElementById('bio-artista');
+  const webEl     = document.getElementById('web');
+  const twitterEl = document.getElementById('twitter');
+  const instaEl   = document.getElementById('instagram');
+  const susWrp    = document.querySelector('.suscripcion') || document.getElementById('btn-suscribirse').parentNode;
   const grid      = document.querySelector('.grid-galeria');
-  
-  if (!grid) {
-    return console.error('PerfilArtista: falta <div class="grid-galeria"> para poner las publicaciones.');
-  }
-
-  // 3) Cargar datos del artista
+ 
+  // 3) Cargar datos básicos del artista
   try {
     const { data: { artist } } = await getArtist(artistId);
-    if (fotoEl)   fotoEl.src           = artist.profilePicture || '/public/assets/img/placeholder.png';
-    if (nombreEl) nombreEl.textContent = '@' + artist.username;
-    if (bioEl)    bioEl.textContent    = artist.bio || '';
-  } catch (err) {
-    return console.error('PerfilArtista: error fetching artist', err);
+    fotoEl.src    = artist.profilePicture || '/public/assets/img/placeholder.png';
+    nombreEl.textContent = '@' + artist.username;
+    bioEl.textContent    = artist.bio || '';
+    webEl.href       = artist.socials.website  || '#';
+    twitterEl.href   = artist.socials.twitter  || '#';
+    instaEl.href     = artist.socials.instagram|| '#';
+  } catch (e) {
+    return console.error('PerfilArtista: error al cargar artista', e);
   }
-
-  // 4) Renderizar botón de suscripción (sólo para fans viendo a otro artista)
+ 
   const isOwner = me._id === artistId;
-  if (susWrp && me.role === 'fan' && !isOwner) {
+ 
+  // 4) Renderizar botón de suscripción o cancelar
+  if (me.role === 'fan' && !isOwner) {
+    let isSub = false;
     try {
       const { data: { isSubscribed } } = await checkSubscription(artistId);
-      const btn = document.createElement('button');
-      btn.className = 'btn-primary';
-      btn.textContent = isSubscribed ? 'Cancelar suscripción' : 'Suscribirse';
-      btn.onclick = async () => {
+      isSub = isSubscribed;
+    } catch (_) {
+      console.warn('PerfilArtista: no se pudo verificar suscripción');
+    }
+    susWrp.innerHTML = '';
+    if (isSub) {
+      const btnCancel = document.createElement('button');
+      btnCancel.className = 'btn-secondary';
+      btnCancel.textContent = 'Cancelar suscripción';
+      btnCancel.onclick = async () => {
+        if (!confirm('¿Seguro que quieres cancelar la suscripción?')) return;
         try {
-          if (isSubscribed) await unsubscribe(artistId);
-          else             await subscribe(artistId);
+          await unsubscribe(artistId);
+          alert('Suscripción cancelada. Tendrás acceso hasta fin de periodo.');
           location.reload();
-        } catch(e) {
-          console.error('PerfilArtista: error toggling subscription', e);
+        } catch (e) {
+          console.error(e);
+          alert('No se pudo cancelar la suscripción.');
         }
       };
-      susWrp.innerHTML = '';
-      susWrp.append(btn);
-    } catch(e) {
-      console.warn('PerfilArtista: no pudimos verificar suscripción', e);
+      susWrp.append(btnCancel);
+    } else {
+      // el modal maneja el subscribe
+      const btnSub = document.createElement('button');
+      btnSub.id = 'btn-suscribirse';
+      btnSub.className = 'btn-primary';
+      btnSub.textContent = 'Suscribirse';
+      susWrp.append(btnSub);
     }
-  } else if (susWrp) {
-    // artista no ve botón, fan dueño tampoco
+  } else {
     susWrp.style.display = 'none';
   }
-
+ 
   // 5) Cargar y renderizar posts
   try {
     const { data: { posts } } = await getArtistPosts(artistId, {
@@ -69,16 +88,16 @@ async function init() {
       limit: 20
     });
     grid.innerHTML = posts.map(p => `
-      <a href="publicacion.html?id=${p._id}">
-        <img 
+<a href="publicacion.html?id=${p._id}">
+<img 
           src="${p.multimedia?.[0]?.url || '/public/assets/img/placeholder.png'}" 
           alt="${p.title}" 
         />
-      </a>
+</a>
     `).join('');
-  } catch(e) {
-    console.error('PerfilArtista: error fetching posts', e);
+  } catch (e) {
+    console.error('PerfilArtista: error al cargar publicaciones', e);
   }
 }
-
+ 
 document.addEventListener('DOMContentLoaded', init);
