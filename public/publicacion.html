@@ -1,3 +1,4 @@
+<!-- ver-publicacion.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,59 +10,23 @@
 </head>
 <body>
   <div class="app">
-    <!-- Sidebar -->
-   <aside class="sidebar">
+    <aside class="sidebar">
       <div id="sidebar-placeholder"></div>
     </aside>
 
-   <main class="main-content">
+    <main class="main-content">
       <header class="top-bar">
         <input type="text" class="search-bar" placeholder="Buscar artistas / temas"/>
       </header>
 
-      <section class="publication-container">
-        <div class="publication-header">
-          <img src="https://picsum.photos/800/800?random=2" alt="Perfil" class="perfil-img" />
-          <div class="user-info">
-            <a href="perfil-artista.html" class="artist-name">Artista Nombre</a>
-            <p class="fecha-publicacion">Publicado el 27 de julio de 2025</p>
-          </div>
-        </div>
-
-        <h1 class="titulo-publicacion">Título de la publicación</h1>
-        <p class="categoria-publicacion">Categoría: <span>Ilustración</span></p>
-
-        <img src="https://picsum.photos/800/800?random=2" alt="Publicación" class="imagen-publicacion" />
-
-        <p class="descripcion-publicacion">
-          Aquí va la descripción de la publicación. Este texto explica los detalles de la imagen, el proceso creativo, o cualquier otro mensaje del artista.
-        </p>
-
-        <div class="interacciones">
-          <button class="btn-like">❤️ Me gusta</button>
-          <button class="btn-comentar">💬 Comentar</button>
-        </div>
-
-        <form class="form-comentario">
-          <textarea placeholder="Escribe un comentario..." required></textarea>
-          <button type="submit">Publicar</button>
-        </form>
-
-        <div class="lista-comentarios">
-          <!-- Comentarios dummy -->
-          <div class="comentario">
-            <strong>Usuario123:</strong> ¡Me encanta esta obra!
-          </div>
-          <div class="comentario">
-            <strong>FanArte:</strong> Muy bonito estilo 😍
-          </div>
-        </div>
+      <section class="publication-container" id="publication-container">
       </section>
     </main>
   </div>
 
- <script type="module">
+  <script type="module">
     import { loadSidebar } from '/public/assets/js/sidebar.js';
+    import '/public/assets/js/verPublicacion.js';
     loadSidebar();
   </script>
 </body>
