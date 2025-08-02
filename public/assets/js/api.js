@@ -109,3 +109,20 @@ export function subscribe(artistId) {
 export function unsubscribe(artistId) {
   return authFetch(`/artists/${artistId}/unsubscribe`, { method: 'DELETE' });
 }
+
+export async function getPublicationById(id, token) {
+  const res = await fetch(`${API_URL}/publications/${id}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.error || 'Error al obtener publicación');
+  }
+
+  return data.publication;
+}
