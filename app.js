@@ -132,6 +132,10 @@ fastify.get('/cancel.html', (req, reply) => {
   reply.sendFile('cancel.html', path.join(__dirname, 'public'));
 });
 
+fastify.get('/success.html', (req, reply) => {
+  reply.sendFile('success.html', path.join(__dirname, 'public'));
+});
+
 // construye las rutas de la api
 async function registerRoutes() {
     // Contenido, pagina principal
