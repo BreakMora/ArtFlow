@@ -1,0 +1,13 @@
+global:
+  scrape_interval: 15s  # Frecuencia de recolección de métricas
+
+scrape_configs:
+  - job_name: 'fastify-app'
+    static_configs:
+      - targets: ['app:3000']  # "app" es el nombre del servicio en Docker Compose
+    metrics_path: '/metrics'   # Ruta expuesta por tu aplicación
+    scrape_interval: 5s       # Frecuencia específica para este job
+
+  - job_name: 'mongo'
+    static_configs:
+      - targets: ['mongo:27017']

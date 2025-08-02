@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recuperar Contraseña - ArtFlow</title>
+  <link rel="stylesheet" href="public/assets/css/base.css" />
+  <link rel="stylesheet" href="public/assets/css/recuperar.css" />
+</head>
+<body>
+  <div class="layout">
+    <!-- Sidebar izquierda -->
+    <aside class="sidebar">
+      <div id="sidebar-placeholder"></div>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+      <!-- Topbar del buscador -->
+      <div id="topbar-placeholder"></div>
+
+      <section class="recovery-section">
+        <h2>Recuperar contraseña</h2>
+
+        <!-- Paso 1: Ingresar correo y usuario -->
+        <form id="step1" class="recovery-form active">
+          <label for="username">Usuario</label>
+          <input type="text" id="username" name="username" required />
+
+          <label for="email">Correo registrado</label>
+          <input type="email" id="email" name="email" required />
+
+          <button type="submit">Enviar código</button>
+        </form>
+
+        <!-- Paso 2: Ingresar código -->
+        <form id="step2" class="recovery-form hidden">
+          <label for="code">Código recibido</label>
+          <input type="text" id="code" name="code" maxlength="6" required />
+
+          <button type="submit">Verificar código</button>
+        </form>
+
+        <!-- Paso 3: Nueva contraseña -->
+        <form id="step3" class="recovery-form hidden">
+          <label for="new-password">Nueva contraseña</label>
+          <input type="password" id="new-password" name="new-password" required placeholder="********"/>
+
+          <label for="confirm-password">Confirmar contraseña</label>
+          <input type="password" id="confirm-password" name="confirm-password" required placeholder="********"/>
+
+          <p class="password-rules">Mínimo 8 caracteres, incluir mayúsculas, minúsculas, números y símbolos.</p>
+
+          <button type="submit">Cambiar contraseña</button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <!-- Cargar sidebar -->
+  <script type="module">
+    import { loadSidebar } from '/public/assets/js/sidebar.js';
+    loadSidebar();
+  </script>
+
+  <!-- Cargar topbar -->
+  <script type="module">
+    import { loadTopbar } from '/public/assets/js/topbar.js';
+    loadTopbar();
+  </script>
+
+  <!-- Script de pasos (opcional si quieres usar JS) -->
+  <script type="module">
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+
+    step1.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Simular envío de código
+      step1.classList.add('hidden');
+      step2.classList.remove('hidden');
+    });
+
+    step2.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Simular verificación de código
+      step2.classList.add('hidden');
+      step3.classList.remove('hidden');
+    });
+
+    step3.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Simular cambio de contraseña
+      alert('¡Contraseña actualizada!');
+    });
+  </script>
+</body>
+</html>
+
+<!-- 
+📌 Variables necesarias en backend y lógica:
+- username (string): nombre del usuario registrado
+- email (string): email vinculado a la cuenta
+- recoveryCode (string): código generado temporalmente y enviado al correo
+- expirationTime (Date): marca de tiempo en que expira el código (30 minutos)
+- newPassword (string): nueva contraseña enviada tras validación
+
+📌 Procesos backend con MongoDB y Fastify:
+1. POST /api/v1/auth/send-recovery-code
+   - Body: { username, email }
+   - Acciones:
+     • Validar que el email y usuario existen
+     • Generar código de 6 dígitos aleatorio
+     • Guardarlo temporalmente en MongoDB con fecha de expiración
+     • Enviar el código por correo
+
+2. POST /api/v1/auth/verify-code
+   - Body: { username, code }
+   - Validar que el código es correcto y no ha expirado
+
+3. POST /api/v1/auth/reset-password
+   - Body: { username, newPassword }
+   - Validar seguridad de contraseña
+   - Hashear y actualizar contraseña en MongoDB
+-->

@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (data.user.role === 'fan') {
         window.location.href = 'fan-home.html';
       } else if (data.user.role === 'artista') {
-        window.location.href = 'artista-dashboard.html';
+        window.location.href = 'perfil-artista.html';
       } else {
         throw new Error('Rol desconocido');
       }

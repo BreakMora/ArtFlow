@@ -1,5 +1,18 @@
 const API_URL = "http://localhost:3000/api/v1";
 
+async function authFetch(path, opts = {}) {
+  const token = localStorage.getItem('authToken');
+  const headers = {
+    ...opts.headers,
+    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+  };
+  const res = await fetch(`${API_URL}${path}`, { ...opts, headers });
+  const data = await res.json().catch(() => null);
+  if (!res.ok) throw new Error(data?.message || res.statusText);
+  return data;
+}
+
+
 export async function registerUser(userData) {
   const res = await fetch(`${API_URL}/auth/register`, {
     method: 'POST',
@@ -37,10 +50,10 @@ export async function loginUser({ identifier, password }) {
   };
 }
 
+
 export async function crearPublicacion(data) {
   const token = localStorage.getItem('authToken');
-
-  const response = await fetch(`${API_URL}/publications`, {
+  const res = await fetch(`${API_URL}/publications/create`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -49,10 +62,53 @@ export async function crearPublicacion(data) {
     body: JSON.stringify(data)
   });
 
-  if (!response.ok) {
-    const errData = await response.json();
-    throw new Error(errData.message || 'Error al crear la publicación');
+  if (!res.ok) {
+    const text = await res.text();
+    console.error('Error completo del servidor:', text);
+    let errData;
+    try { errData = JSON.parse(text); }
+    catch { errData = { message: text }; }
+    throw new Error(errData.details || errData.message || 'Error al crear la publicación');
   }
 
-  return response.json();
+  return res.json();
+}
+
+export async function getSubscriptions(/* token? */) {
+  try {
+    const res = await fetch(`${API_URL}/subscriptions` /*, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` }
+    }*/);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Error al obtener suscripciones');
+    return data;  // { status:'success', data:{ subscriptions: [...] } }
+  } catch (err) {
+    console.error('Error en getSubscriptions:', err);
+    throw err;
+  }
+}
+
+export function getArtist(id) {
+  return authFetch(`/user/artist/${id}`, { method: 'GET' });
+}
+
+export function getArtistPosts(id, { freeOnly = false, limit = 20 } = {}) {
+  const qs = new URLSearchParams();
+  if (freeOnly) qs.set('freeOnly', 'true');
+  if (limit)    qs.set('limit', limit);
+  return authFetch(`/user/artist/${id}/posts?${qs}`, { method: 'GET' });
+}
+
+// check subscription
+export function checkSubscription(artistId) {
+  return authFetch(`/user/artist/${artistId}/check-subscription`);
+}
+
+// subscribe / unsubscribe
+export function subscribe(artistId) {
+  return authFetch(`/user/artist/${artistId}/subscribe`, { method: 'POST' });
+}
+
+export function unsubscribe(artistId) {
+  return authFetch(`/user/artist/${artistId}/unsubscribe`, { method: 'DELETE' });
 }
