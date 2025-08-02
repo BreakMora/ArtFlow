@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pago exitoso</title>
+  <link rel="stylesheet" href="/public/assets/css/base.css"/>
+  <link rel="stylesheet" href="/public/assets/css/success.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div id="sidebar-placeholder"></div>
+  </aside>
+  <section class="hero">
+    <div class="hero-content">
+      <h1>¡Pago realizado con éxito!</h1>
+      <p>
+        Tu suscripción se ha completado correctamente. Ya puedes disfrutar de los beneficios del artista que has apoyado.
+      </p>
+      <p>
+        Puedes gestionar tu suscripción desde tu perfil en cualquier momento.
+      </p>
+      <a href="fan-home.html" class="logo" style="margin-top: 2rem; display: inline-block;">Ir al inicio</a>
+    </div>
+    <div class="hero-images">
+      <div class="hero-image">
+        <img src="https://picsum.photos/400/600?random=6" alt="Éxito 1" />
+      </div>
+      <div class="hero-image">
+        <img src="https://picsum.photos/400/600?random=7" alt="Éxito 2" />
+      </div>
+    </div>
+  </section>
+   <script type="module">
+    import { loadSidebar } from '/public/assets/js/sidebar.js';
+    loadSidebar();
+  </script>
+</body>
+</html>
