@@ -37,8 +37,6 @@ import userMenu from "./src/Routes/Main/user.menu.js";
 
 import stripePlugin from './src/Routes/server.js';
 
-import profileRoutes from './src/Routes/Artists/profile.js'
-
 // instancia de fastify
 const fastify = Fastify({
     logger: {
@@ -134,8 +132,6 @@ fastify.get('/cancel.html', (req, reply) => {
   reply.sendFile('cancel.html', path.join(__dirname, 'public'));
 });
 
-
-
 // construye las rutas de la api
 async function registerRoutes() {
     // Contenido, pagina principal
@@ -165,7 +161,6 @@ async function registerRoutes() {
     await fastify.register(commentRoutes, {
         prefix: '/api/v1/comments'
     });
-    
 
     // Ruta de suscripciones
     await fastify.register(Subscriptions, {
@@ -180,12 +175,6 @@ async function registerRoutes() {
     await fastify.register(stripePlugin, {
          prefix: '/api/v1' 
     });
-
-    await fastify.register(profileRoutes, { 
-        prefix: '/api/v1/artists' 
-    });
-
-
 };
 
 fastify.get('/health', async (request, reply) => {
