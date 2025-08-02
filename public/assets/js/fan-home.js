@@ -33,7 +33,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const artistId = pub.user_id?._id || '#';
                 const tag = pub.category || 'Sin categoría';
                 const date = new Date(pub.createdAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
-                const img = pub.multimedia?.[0]?.url || 'https://picsum.photos/800/800?random=404';
+                const img = pub.multimedia?.[0]?.url || '';
+                const hasImage = Boolean(pub.multimedia?.[0]?.url);
 
                 const commentsHTML = pub.comments?.map(c => `
                     <p><strong>${c.user_id?.username || 'Anon'}:</strong> ${c.content}</p>
@@ -48,7 +49,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                             </div>
                             <span class="date">${date}</span>
                         </header>
-                        <img src="${img}" alt="Obra de arte" />
+                        <div class="image-container">
+                            ${hasImage
+                        ? `<img src="${img}" alt="Obra de arte" />`
+                        : `<div class="no-img">Sin imagen disponible</div>`}
+                        </div>
                         <footer class="stats">
                             ❤ ${pub.likes || 0} &nbsp; 💬 ${pub.comments?.length || 0} &nbsp; 👁 ${pub.views || 0}
                         </footer>
@@ -61,17 +66,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Mostrar suscripciones (ahora vienen en feedData)
             if (feedData.data.subscriptions) {
                 const subs = feedData.data.subscriptions;
-                sidebar.innerHTML = subs.length
-                    ? subs.map(sub => `
+                sidebar.innerHTML = subs.length? `
+                    <h3>Tus artistas suscritos</h3>
+                    <div class="sub-list">
+                    ${subs.map(sub => `
                         <div class="subscription">
-                            <img src="https://picsum.photos/50/50?random=${Math.random()}" alt="Perfil" class="avatar" />
-                            <div class="sub-info">
-                                <a href="perfil-artista.html?id=${sub.artist_id._id}">${sub.artist_id.username}</a>
-                                <p>Artista suscrito</p>
-                            </div>
+                        <img src="${sub.artist_id.avatar || `https://picsum.photos/50/50?random=${Math.random()}`}" 
+                            alt="Perfil de ${sub.artist_id.username}" 
+                            class="avatar" />
+                        <div class="sub-info">
+                            <a href="perfil-artista.html?id=${sub.artist_id._id}">${sub.artist_id.username}</a>
+                            <p>${sub.category || 'Artista digital'}</p>
                         </div>
-                    `).join('')
-                    : '<p>No estás suscrito a ningún artista.</p>';
+                        </div>
+                    `).join('')}
+                    </div>
+                ` : `
+                    <h3>Tus artistas suscritos</h3>
+                    <p>Aún no sigues a ningún artista</p>
+                    <a href="/descubrir.html" class="btn-secondary" style="margin-top:1rem;display:inline-block">
+                    Descubrir artistas
+                    </a>
+                `;
             }
         } else {
             feed.innerHTML = `<p>${feedData.message || 'No se pudo cargar el feed.'}</p>`;

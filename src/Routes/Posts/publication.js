@@ -14,7 +14,7 @@ async function Publications(fastify, options) {
 
             const { title, description, category, type, multimedia } = request.body;
             const user_id = request.user._id; // Obtiene el ID del usuario autenticado
-            
+
             const newPublication = new PublicationModel({
                 user_id,
                 title,
@@ -25,7 +25,7 @@ async function Publications(fastify, options) {
             });
 
             // Verificar si se proporcionó multimedia
-            if ( multimedia && multimedia.length > 0) {
+            if (multimedia && multimedia.length > 0) {
                 const multimediaDocs = await Promise.all(multimedia.map(async (item) => {
                     const newMultimedia = new MultimediaModel({
                         publication_id: newPublication._id,
@@ -36,7 +36,7 @@ async function Publications(fastify, options) {
                     await newMultimedia.save();
                     return newMultimedia._id;
                 }));
-                newPublication.multimedia = multimediaDocs; 
+                newPublication.multimedia = multimediaDocs;
             }
 
             await newPublication.save();
@@ -72,7 +72,7 @@ async function Publications(fastify, options) {
             publication.description = description || publication.description;
 
             // Actualizar multimedia
-            if ( multimedia && multimedia.length > 0) {
+            if (multimedia && multimedia.length > 0) {
                 // Eliminar multimedia existente asociada a la publicación
                 await MultimediaModel.deleteMany({ publication_id: publication._id });
                 // Crear nueva multimedia
@@ -183,7 +183,7 @@ async function Publications(fastify, options) {
             // Si es artista, filtrar por su ID
             if (isArtist && !isAdmin) {
                 filter.user_id = userId;
-                
+
                 // si intenta filtrar por otro artista, no se permite
                 if (artist) {
                     return reply.status(403).send({
@@ -314,26 +314,26 @@ async function Publications(fastify, options) {
     });
 
     // Obtener todas las publicaciones de un usuario 
-/*  // Descomentar si se desea habilitar esta ruta
-    fastify.get('/user/:userId', { preValidation: [fastify.authenticate] }, async (request, reply) => {
-        const { userId } = request.params;
-
-        try {
-            const publications = await PublicationModel.find({ user_id: userId })
-                .populate('user_id', 'username email') // Popula el usuario
-                .populate('multimedia'); // Popula la multimedia asociada
-
-            reply.status(200).send({
-                status: 'success',
-                publications
-            });
-
-        } catch (error) {
-            console.error(error);
-            reply.status(500).send({ error: 'Error al obtener las publicaciones del usuario' });
-        }
-    });
-*/ 
+    /*  // Descomentar si se desea habilitar esta ruta
+        fastify.get('/user/:userId', { preValidation: [fastify.authenticate] }, async (request, reply) => {
+            const { userId } = request.params;
+    
+            try {
+                const publications = await PublicationModel.find({ user_id: userId })
+                    .populate('user_id', 'username email') // Popula el usuario
+                    .populate('multimedia'); // Popula la multimedia asociada
+    
+                reply.status(200).send({
+                    status: 'success',
+                    publications
+                });
+    
+            } catch (error) {
+                console.error(error);
+                reply.status(500).send({ error: 'Error al obtener las publicaciones del usuario' });
+            }
+        });
+    */
 
     // Obtener todas mis publicaciones con paginación
     fastify.get('/my', { preValidation: [fastify.authenticate] }, async (request, reply) => {
@@ -351,7 +351,7 @@ async function Publications(fastify, options) {
                     .populate({ path: 'multimedia', select: 'url' }) // Popula la multimedia asociada
                     .skip(skip) // Saltar los documentos de las páginas anteriores
                     .limit(limit), // Limitar el número de documentos devueltos
-                PublicationModel.countDocuments( { user_id: userId })
+                PublicationModel.countDocuments({ user_id: userId })
             ]);
 
             reply.status(200).send({
@@ -386,7 +386,7 @@ async function Publications(fastify, options) {
                 artist_id: publication.user_id,
                 status: 'active'
             });
-            
+
             if (!isSubscribed) {
                 return reply.status(403).send({ error: 'Debes estar suscrito al artista para dar like' });
             }
@@ -454,16 +454,6 @@ async function Publications(fastify, options) {
             reply.status(500).send({ error: 'Error al registrar el dislike' });
         }
     });
-
-    fastify.get('/feed', async (req, reply) => {
-  const publications = await PublicationModel.find({ status: 'active' })
-    .populate('user_id','username')
-    .populate('multimedia')
-    .sort({ createdAt: -1 })
-    .limit(20);
-  reply.send({ status: 'success', data: { publications } });
-});
-
 }
 
 export default Publications;
