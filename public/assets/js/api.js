@@ -89,23 +89,26 @@ export async function getSubscriptions(/* token? */) {
 }
 
 export function getArtist(id) {
-  return authFetch(`/artists/${id}`, { method: 'GET' });
+  return authFetch(`/user/artist/${id}`, { method: 'GET' });
 }
 
 export function getArtistPosts(id, { freeOnly = false, limit = 20 } = {}) {
   const qs = new URLSearchParams();
   if (freeOnly) qs.set('freeOnly', 'true');
   if (limit)    qs.set('limit', limit);
-  return authFetch(`/artists/${id}/posts?${qs}`, { method: 'GET' });
+  return authFetch(`/user/artist/${id}/posts?${qs}`, { method: 'GET' });
 }
+
 // check subscription
 export function checkSubscription(artistId) {
-  return authFetch(`/artists/${artistId}/check-subscription`);
+  return authFetch(`/user/artist/${artistId}/check-subscription`);
 }
+
 // subscribe / unsubscribe
 export function subscribe(artistId) {
-  return authFetch(`/artists/${artistId}/subscribe`, { method: 'POST' });
+  return authFetch(`/user/artist/${artistId}/subscribe`, { method: 'POST' });
 }
+
 export function unsubscribe(artistId) {
-  return authFetch(`/artists/${artistId}/unsubscribe`, { method: 'DELETE' });
+  return authFetch(`/user/artist/${artistId}/unsubscribe`, { method: 'DELETE' });
 }
