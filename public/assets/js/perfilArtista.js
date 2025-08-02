@@ -31,7 +31,7 @@ async function init() {
   // 3) Cargar datos básicos del artista
   try {
     const { data: { artist } } = await getArtist(artistId);
-    fotoEl.src    = artist.profilePicture || '/public/assets/img/placeholder.png';
+    fotoEl.src    = artist.profilePicture || 'https://picsum.photos/400/600?random=6';
     nombreEl.textContent = '@' + artist.username;
     bioEl.textContent    = artist.bio || '';
     webEl.href       = artist.socials.website  || '#';
