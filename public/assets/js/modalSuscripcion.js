@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!btnSuscribirse || !modal) return;
 
+  // Obtener el artistId de la URL
+  const artistId = new URLSearchParams(window.location.search).get('id');
+
   btnSuscribirse.addEventListener('click', () => {
     modal.style.display = 'flex';
   });
@@ -34,31 +37,36 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   btnContinuar?.addEventListener('click', async () => {
-  const monto = parseInt(montoInput.value);
+    const monto = parseInt(montoInput.value);
 
-  if (isNaN(monto) || monto < 1 || montoInput.value.includes('.')) {
-    alert("Por favor ingresa un monto entero positivo.");
-    return;
-  }
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/crear-suscripcion`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ monto })
-    });
-
-    const data = await response.json();
-
-    if (data.url) {
-      window.location.href = data.url;
+    if (isNaN(monto) || monto < 1 || montoInput.value.includes('.')) {
+      alert("Por favor ingresa un monto entero positivo.");
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    alert("Error al procesar la suscripción.");
-  }
-});
 
+    try {
+      const response = await fetch(`${API_BASE_URL}/crear-suscripcion`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ 
+          monto,
+          artist_id: artistId 
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else if (data.error) {
+        alert(data.message || "Error al procesar la suscripción.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error al procesar la suscripción.");
+    }
+  });
 });

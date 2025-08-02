@@ -109,3 +109,24 @@ export function subscribe(artistId) {
 export function unsubscribe(artistId) {
   return authFetch(`/artists/${artistId}/unsubscribe`, { method: 'DELETE' });
 }
+
+export async function checkSubscription(artistId) {
+    const response = await fetch(`/api/v1/check-subscription?id=${artistId}`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+    return await response.json();
+}
+
+export async function createSubscription(artistId, monto) {
+    const response = await fetch('/api/v1/crear-suscripcion', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ artist_id: artistId, monto })
+    });
+    return await response.json();
+}

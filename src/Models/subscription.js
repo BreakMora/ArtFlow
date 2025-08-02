@@ -1,5 +1,3 @@
-import mongoose from "mongoose";
-
 const subscriptionSchema = new mongoose.Schema({
     fan_id: { 
         type: mongoose.Schema.Types.ObjectId, 
@@ -13,8 +11,15 @@ const subscriptionSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['active', 'inactive'],
-        default: 'active'
+        enum: ['pending', 'active', 'cancelled', 'failed'],
+        default: 'pending'
+    },
+    monto: {
+        type: Number,
+        required: true
+    },
+    payment_id: {
+        type: String
     },
     createdAt: {
         type: Date,
@@ -25,12 +30,11 @@ const subscriptionSchema = new mongoose.Schema({
         default: Date.now
     },
 }, {
-    timestamps: true, // mongoose maneja automáticamente createdAt y updatedAt
-    versionKey: false // quita el campo __v
+    timestamps: true,
+    versionKey: false
 });
 
-// Asegura que no haya duplicados de suscripciones entre el mismo fan y artista
-subscriptionSchema.index({ fan_id: 1, artist_id: 1 }, { unique: true }); 
+subscriptionSchema.index({ fan_id: 1, artist_id: 1 }, { unique: true, partialFilterExpression: { status: 'active' } });
 
 const SubscriptionModel = mongoose.model("Subscription", subscriptionSchema);
 export default SubscriptionModel;

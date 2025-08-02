@@ -1,23 +1,35 @@
 import SubscriptionModel from "../Models/subscription.js";
+import stripe from 'stripe'; // Asegúrate de instalar el paquete stripe
 
 async function Subscriptions(fastify, options) {
+    const stripeClient = stripe('tu_clave_secreta_stripe');
 
-    fastify.post('/subscribe', { preValidation: [fastify.authenticate] }, async (request, reply) => {
-        const { artist_id } = request.body;
+    fastify.post('/crear-suscripcion', { preValidation: [fastify.authenticate] }, async (request, reply) => {
+        const { monto, artist_id } = request.body;
+        const fan_id = request.user._id;
+
+        // Validaciones
+        if (request.user.role !== 'fan') {
+            return reply.status(403).send({ 
+                status: 'error', 
+                message: 'Solo los fans pueden suscribirse' 
+            });
+        }
+
+        if (!monto || monto < 1) {
+            return reply.status(400).send({ 
+                status: 'error', 
+                message: 'Monto inválido' 
+            });
+        }
 
         try {
-            const fan_id = request.user._id;
-
-            // verificar si el usuario es un fan para suscribirse
-            if (request.user.role !== 'fan') {
-                return reply.status(403).send({ 
-                    status: 'error', 
-                    message: 'No tienes permiso para suscribirte' 
-                });
-            }
-
             // Verificar si el artista existe
-            const artist = await fastify.mongo.db.collection('users').findOne({ _id: artist_id, role: 'artista' });
+            const artist = await fastify.mongo.db.collection('users').findOne({ 
+                _id: new fastify.mongo.ObjectId(artist_id), 
+                role: 'artista' 
+            });
+            
             if (!artist) {
                 return reply.status(404).send({ 
                     status: 'error', 
@@ -25,91 +37,72 @@ async function Subscriptions(fastify, options) {
                 });
             }
 
-            // Verficar si ya existe una suscripción activa
-            const existingSubscription = await SubscriptionModel.findOne({
-                fan_id,
-                artist_id,
-                status: 'active'
-            });
-            
-            if (existingSubscription) {
-                return reply.status(409).send({ 
-                    status: 'error', 
-                    message: 'Ya estás suscrito a este artista' 
-                });
-            }
-
-            // Crear la nueva suscripción
+            // Crear suscripción con estado pending
             const newSubscription = new SubscriptionModel({
                 fan_id,
                 artist_id,
-                status: 'active'
+                monto,
+                status: 'pending'
             });
 
             await newSubscription.save();
-            reply.status(201).send({
-                status: 'success',
-                message: 'Suscripción creada exitosamente',
-                subscription: newSubscription
+
+            // Crear sesión de pago con Stripe
+            const session = await stripeClient.checkout.sessions.create({
+                payment_method_types: ['card'],
+                line_items: [{
+                    price_data: {
+                        currency: 'usd',
+                        product_data: {
+                            name: `Suscripción a ${artist.username}`,
+                        },
+                        unit_amount: monto * 100,
+                    },
+                    quantity: 1,
+                }],
+                mode: 'payment',
+                success_url: `${request.headers.origin}/pago-exitoso?subscription_id=${newSubscription._id}`,
+                cancel_url: `${request.headers.origin}/perfil-artista.html?id=${artist_id}`,
             });
-        
+
+            return { url: session.url };
+
         } catch (error) {
-
-            if (error.code === 11000) {
-                return reply.status(409).send({ 
-                    status: 'error', 
-                    message: 'Ya estás suscrito a este artista'
-                });
-            }
-
-            reply.status(500).send({
+            console.error(error);
+            return reply.status(500).send({
                 status: 'error',
-                message: 'Error interno del servidor, no se pudo completar la suscripción',
+                message: 'Error al procesar el pago',
                 error: error.message
             });
         }
     });
 
+    // Mantén los otros endpoints (unsubscribe, etc.)
     fastify.delete('/unsubscribe/:artist_id', { preValidation: [fastify.authenticate] }, async (request, reply) => {
-        const { artist_id } = request.params;
-        const fan_id = request.user._id;
-
-        try {
-            // Verificar si el usuario es un fan para cancelar la suscripción
-            if (request.user.role !== 'fan') {
-                return reply.status(403).send({ 
-                    status: 'error', 
-                    message: 'No tienes permiso para cancelar la suscripción' 
-                });
-            }
-
-            const subscription = await SubscriptionModel.findOneAndUpdate(
-                { fan_id, artist_id },
-                { status: 'cancelled' },
-                { new: true }
-            );
-
-            if (!subscription) {
-                return reply.status(404).send({ 
-                    status: 'error', 
-                    message: 'Suscripción no encontrada' 
-                });
-            }
-
-            reply.status(200).send({
-                status: 'success',
-                message: 'Suscripción cancelada exitosamente'
-            });
-
-        } catch (error) {
-            reply.status(500).send({
-                status: 'error',
-                message: 'Error interno del servidor, no se pudo cancelar la suscripción',
-                error: error.message
-            });
-        }
+        // ... (mantén el mismo código que ya tienes)
     });
+
+    fastify.get('/pago-exitoso', async (request, reply) => {
+    const { subscription_id } = request.query;
     
+    try {
+        const subscription = await SubscriptionModel.findByIdAndUpdate(
+            subscription_id,
+            { status: 'active' },
+            { new: true }
+        );
+
+        if (!subscription) {
+            return reply.redirect('/error-pago');
+        }
+
+        return reply.redirect(`/perfil-artista.html?id=${subscription.artist_id}?suscription_success=true`);
+        
+    } catch (error) {
+        console.error(error);
+        return reply.redirect('/error-pago');
+    }
+});
 }
 
 export default Subscriptions;
