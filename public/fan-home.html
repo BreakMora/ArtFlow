@@ -1,237 +1,52 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Inicio | ArtFlow</title>
   <link rel="stylesheet" href="public/assets/css/base.css" />
   <link rel="stylesheet" href="public/assets/css/fan-home.css" />
 </head>
+
 <body>
   <div class="layout">
-    <!-- Sidebar izquierda (menú principal) -->
+    <!-- Sidebar izquierda -->
     <aside class="sidebar">
       <div id="sidebar-placeholder"></div>
     </aside>
 
     <!-- Contenido principal -->
     <main class="main-content">
-      
       <header class="top-bar">
-      <div id="topbar-placeholder"></div> 
-    </header>
+        <div id="topbar-placeholder"></div>
+      </header>
 
       <section class="recomendados">
         <h2>Artistas recomendados</h2>
-        <div class="carousel">
-          <div class="artist-bubble"><a href="perfil-artista.html">Artista A</a></div>
-          <div class="artist-bubble"><a href="perfil-artista.html">Artista B</a></div>
-          <div class="artist-bubble"><a href="perfil-artista.html">Arte Digital</a></div>
-          <div class="artist-bubble"><a href="perfil-artista.html">Acrílico</a></div>
-          <div class="artist-bubble"><a href="perfil-artista.html">Arte Fantástico</a></div>
+        <div class="carousel" id="recomendados-carousel">
+          <p>Cargando artistas recomendados...</p>
         </div>
       </section>
 
-      <section class="feed">
-        <article class="post-card" onclick="location.href='publicacion.html'">
-          <header>
-            <div class="artist-info">
-              <strong><a href="perfil-artista.html">🎨 Claude Monet</a></strong>
-              <span class="tag">Impresionismo</span>
-            </div>
-            <span class="date">7 jul.</span>
-          </header>
-          <img src="https://picsum.photos/800/800?random=1" alt="Obra de arte"/>
-          <footer class="stats">
-            ❤️ 211 &nbsp; 💬 10 &nbsp; 👁️ 344
-          </footer>
-        </article>
-
-        <article class="post-card" onclick="location.href='publicacion.html'">
-          <header>
-            <div class="artist-info">
-              <strong><a href="perfil-artista.html">🌌 Van Gogh</a></strong>
-              <span class="tag">Postimpresionismo</span>
-            </div>
-            <span class="date">5 jul.</span>
-          </header>
-          <img src="https://picsum.photos/800/800?random=2" alt="Obra de arte"/>
-          <footer class="stats">
-            ❤️ 310 &nbsp; 💬 42 &nbsp; 👁️ 1002
-          </footer>
-        </article>
+      <section class="feed" id="feed">
+        <p>Cargando publicaciones...</p>
       </section>
     </main>
 
-    <!-- Sidebar derecha (suscripciones activas) -->
-    <aside class="right-sidebar">
+    <!-- Sidebar derecha -->
+    <aside class="right-sidebar" id="subs-sidebar">
       <h3>Suscripciones activas</h3>
-      <div class="subscription">
-        <img src="https://picsum.photos/50/50?artist=1" alt="Perfil" class="avatar" />
-        <div class="sub-info">
-          <a href="perfil-artista.html">Claude Monet</a>
-          <p>3 nuevas publicaciones</p>
-        </div>
-      </div>
-      <div class="subscription">
-        <img src="https://picsum.photos/50/50?artist=2" alt="Perfil" class="avatar" />
-        <div class="sub-info">
-          <a href="perfil-artista.html">Van Gogh</a>
-          <p>1 nueva publicación</p>
-        </div>
-      </div>
+      <!-- Suscripciones dinámicas -->
     </aside>
   </div>
-
+  <script src="/public/assets/js/fan-home.js"></script>
   <script type="module">
     import { loadSidebar } from '/public/assets/js/sidebar.js';
     loadSidebar();
+    
   </script>
 
 </body>
+
 </html>
-
-
-<!-- 
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Inicio | ArtFlow</title>
-  <link rel="stylesheet" href="public/assets/css/base.css" />
-  <link rel="stylesheet" href="public/assets/css/fan-home.css" />
-</head>
-<body>
-  <div class="layout">
-
-    <main class="main-content">
-      <header class="top-bar">
-        <input 
-          type="text" 
-          class="search-bar" 
-          placeholder="Buscar artistas / temas"
-          oninput="handleSearch(this.value)"
-        />
-      </header>
-
-      
-      <section class="recomendados">
-        <h2>Artistas recomendados</h2>
-        <div class="carousel" id="recommended-artists">
-           Ejemplo de render dinámico (plantilla): 
-        
-            recommendedArtists.forEach(artist => {
-              <div class="artist-bubble">
-                ${artist.name}
-              </div>
-            })
-       
-        </div>
-      </section>
-
-      <section class="feed" id="feed-posts">
-      
-          posts.forEach(post => {
-            <article class="post-card">
-              <header>
-                <div class="artist-info">
-                  <strong>${post.artist.name}</strong>
-                  <span class="tag">${post.artist.category}</span>
-                </div>
-                <span class="date">${formatDate(post.createdAt)}</span>
-              </header>
-              <img src="${post.imageUrl}" alt="Obra de ${post.artist.name}" />
-              <footer class="stats">
-                ❤️ ${post.likes} &nbsp; 💬 ${post.comments} &nbsp; 👁️ ${post.views}
-              </footer>
-            </article>
-          })
-       
-      </section>
-    </main>
-  </div>
-
-  <script type="module">
-    // ====== Variables simuladas desde el backend ======
-    const user = {
-      id: "fan123",
-      username: "YurianysFan",
-    };
-
-    const recommendedArtists = [
-      { id: "a1", name: "Claude Monet" },
-      { id: "a2", name: "Van Gogh" },
-      { id: "a3", name: "Arte Digital" },
-      { id: "a4", name: "Acrílico" },
-      { id: "a5", name: "Arte Fantástico" },
-    ];
-
-    const posts = [
-      {
-        id: "p1",
-        artist: { name: "Claude Monet", category: "Impresionismo" },
-        imageUrl: "https://picsum.photos/800/800?random=1",
-        likes: 211,
-        comments: 10,
-        views: 344,
-        createdAt: "2025-07-07",
-      },
-      {
-        id: "p2",
-        artist: { name: "Van Gogh", category: "Postimpresionismo" },
-        imageUrl: "https://picsum.photos/800/800?random=2",
-        likes: 310,
-        comments: 42,
-        views: 1002,
-        createdAt: "2025-07-05",
-      },
-    ];
-
-    // ====== Funciones ======
-    function formatDate(dateStr) {
-      const options = { day: "numeric", month: "short" };
-      const date = new Date(dateStr);
-      return date.toLocaleDateString("es-ES", options);
-    }
-
-    function renderRecommendedArtists() {
-      const container = document.getElementById("recommended-artists");
-      container.innerHTML = recommendedArtists
-        .map(artist => `<div class="artist-bubble">${artist.name}</div>`)
-        .join("");
-    }
-
-    function renderPosts() {
-      const container = document.getElementById("feed-posts");
-      container.innerHTML = posts
-        .map(post => `
-          <article class="post-card">
-            <header>
-              <div class="artist-info">
-                <strong>${post.artist.name}</strong>
-                <span class="tag">${post.artist.category}</span>
-              </div>
-              <span class="date">${formatDate(post.createdAt)}</span>
-            </header>
-            <img src="${post.imageUrl}" alt="Obra de ${post.artist.name}" />
-            <footer class="stats">
-              ❤️ ${post.likes} &nbsp; 💬 ${post.comments} &nbsp; 👁️ ${post.views}
-            </footer>
-          </article>
-        `)
-        .join("");
-    }
-
-    function handleSearch(query) {
-      console.log("Buscando:", query);
-      // Aquí iría una llamada fetch() al backend con el término de búsqueda.
-    }
-
-    // ====== Inicialización ======
-    renderRecommendedArtists();
-    renderPosts();
-  </script>
-</body>
-</html> -->

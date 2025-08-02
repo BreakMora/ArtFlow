@@ -1,7 +1,7 @@
 import Stripe from 'stripe';
 
 export default async function stripePlugin(fastify, options) {
-  const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+  const stripe = Stripe(process.env.STRIPE_API_KEY);
   const BASE_URL = process.env.APP_BASE_URL || 'http://localhost:3000';
 
   fastify.post('/crear-suscripcion', async (req, reply) => {
@@ -14,15 +14,14 @@ export default async function stripePlugin(fastify, options) {
         line_items: [{
           price_data: {
             currency: 'usd',
-            product_data: { name: 'Suscripción Mensual' },
+            product_data: { name: 'este artista ' },
             unit_amount: monto * 100,
             recurring: { interval: 'month' }
-          },
+          }, 
           quantity: 1
         }],
-        success_url: `${BASE_URL}/descubre.html?session_id={CHECKOUT_SESSION_ID}`,
+        success_url: `${BASE_URL}/success.html`,
         cancel_url: `${BASE_URL}/cancel.html`
-
       });
 
       return { url: session.url };
