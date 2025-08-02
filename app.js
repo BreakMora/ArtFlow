@@ -7,7 +7,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { collectDefaultMetrics, Counter, register } from 'prom-client';
 
-
 // constantes, puertos y url de la base de datos
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = 3000;

@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 const subscriptionSchema = new mongoose.Schema({
     fan_id: { 
         type: mongoose.Schema.Types.ObjectId, 
